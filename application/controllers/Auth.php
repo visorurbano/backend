@@ -121,7 +121,7 @@ class Auth extends CI_Controller {
 
     public function recuperarContrasena(){
         if ($this->session->userdata('loged')){
-            redirect('http://localhost/vu/admin', 'refresh');
+            redirect('http://localhost/backend/admin', 'refresh');
         }
         $this->output->set_template('login');
         $this->load->view('auth/recuperarContrasena');

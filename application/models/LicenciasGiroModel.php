@@ -72,4 +72,8 @@ class LicenciasGiroModel extends CI_Model {
             return array('status'=>true);
         }
     }
+    public function isMercado($clave){
+        $mercado =  $this->db->select('*')->from('tbl_predios_mercado')->where('clave_catastral', $clave)->get()->row();
+        return $mercado;
+    }
 }

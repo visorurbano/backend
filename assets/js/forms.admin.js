@@ -1,6 +1,6 @@
 var userURL = 'http://licenciasprueba.guadalajara.gob.mx/gdlusuarios/auth/';
 //var baseURL = 'http://visorurbano.guadalajara.gob.mx/';
-var baseURL = "http://localhost/vu/";
+var baseURL = "http://localhost/backend/";
 //var userURL = "http://localhost/usrGDL/auth/";*/
 
 var stepsForm = null;
@@ -971,7 +971,7 @@ function loadFile(element){
     if (el.valid() == true) {
         $.ajax({
             type: 'POST',
-            url: 'http://localhost/upload/vu_up.php',
+            url: 'http://192.168.66.93/api/vu_up.php',
             contentType:false,
             data:data,
             processData:false,
@@ -983,17 +983,18 @@ function loadFile(element){
                 });
 
                 circle.animate(1.0, {
-                    duration: 1200
+                    duration: 900
                 }, function() {
                    circle.destroy();
                     $('#'+el.data('elastic')).css('margin','0px');
+                    contObj.find('.link-to-file').remove();
                     contObj.append('<a href="" class="link-to-file"><i class="fa fa-file-text-o" aria-hidden="true"></i> '+el.data('text')+'</a>');
                 });
 
 
             },
             success:function(data){
-                contObj.find('.link-to-file').remove();
+                contObj.find('.link-to-file').attr('')
             },
             error:function(){
 

@@ -39,11 +39,18 @@ class LicenciasGiro extends CI_Controller {
             $data['error']= false;
             $cuenta = $licencia->clave_catastral;
             $data['cuenta'] = $cuenta;
+            $mercado =  $this->LicenciasGiroModel->isMercado($cuenta);
             $predio = json_decode($this->utils->getJson('http://192.168.66.94:3030/api/catastro/predio/VU?clave='.$cuenta));
             if (!$predio){
                 $data['error']= true;
                 $data['msg']= '<b>Upss</b> Lo sentimos estamos teniendo problemas temporalmente; estamos trabajando para resolver esta situación los mas pronto posible, por favor intenta de nuevo mas tarde  :(';
             }else{
+                //Config
+                if (empty($mercado)){
+                    $data['mercado'] = false;
+                }else{
+                    $data['mercado'] = true;
+                }
                 //Step 1
                 $data['st1_tipo_solicitante'] = $licencia->st1_tipo_solicitante;
                 $data['st1_tipo_representante'] = $licencia->st1_tipo_representante;

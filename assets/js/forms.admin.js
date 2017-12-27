@@ -1003,3 +1003,54 @@ function loadFile(element){
     }
 }
 
+function firmar(element){
+    el = $("#" + element.id);
+    var file = document.getElementById(element.id).files[0];
+    var data = new FormData();
+    data.append('folio', $('#tramite').val());
+    data.append('pass', $('#txtPassFIEL').val());
+    data.append('cadena_original', $('.cadenaFirmar').text());
+    data.append('tipo', 'key');
+    data.append('uploaded_file',file);
+    if (el.valid() == true) {
+        $.ajax({
+            type: 'POST',
+            url: baseURL + "licenciasGiro/subir_archivos",
+            contentType:false,
+            data:data,
+            processData:false,
+            success:function(data){
+              $('#firma_electronica').text(data);
+            },
+            error:function(){
+
+            }
+        });
+      }
+  }
+
+  function get_certificado(element){
+      el = $("#" + element.id);
+      var file = document.getElementById(element.id).files[0];
+      var data = new FormData();
+      data.append('folio', $('#tramite').val());
+      data.append('pass', $('#txtPassFIEL').val());
+      data.append('cadena_original', $('.cadenaFirmar').text());
+      data.append('tipo', 'cer');
+      data.append('uploaded_file1',file);
+      if (el.valid() == true) {
+          $.ajax({
+              type: 'POST',
+              url: baseURL + "licenciasGiro/subir_archivos",
+              contentType:false,
+              data:data,
+              processData:false,
+              success:function(data){
+                  console.log(data);
+              },
+              error:function(){
+
+              }
+          });
+        }
+    }

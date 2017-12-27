@@ -23,8 +23,8 @@
                                 <div class="project-date"><span class="hidden-sm-down"><?=$licencia->descripcion_factibilidad?></span></div>
                             </div>
                             <div class="right-col col-lg-3 d-flex align-items-center">
-                                <a href="<?=base_url()?>formatos/licencia.pdf" target="_blank" class="mui-btn mui-btn--primary"><i class="fa fa-print" aria-hidden="true"></i> Imprimir Licencia</a>
-                                <!--<a href="<?=base_url()?>licencia/<?= $this->utils->encode($licencia->id_licencia);?>/<?= $this->utils->encode($licencia->id_usuario);?>" target="_blank" class="mui-btn mui-btn--primary"><i class="fa fa-print" aria-hidden="true"></i> Imprimir Licencia</a>-->
+                              <!--a href="<?=base_url()?>formatos/licencia.pdf" target="_blank" class="mui-btn mui-btn--primary"><i class="fa fa-print" aria-hidden="true"></i> Imprimir Licencia</a-->
+                              <a href="<?=base_url()?>formatos/licencia_pdf?lic=<?= $this->utils->encode($licencia->id_licencia);?>&usu=<?= $this->utils->encode($licencia->id_usuario);?>" target="_blank" class="mui-btn mui-btn--primary"><i class="fa fa-print" aria-hidden="true"></i> Imprimir Licencia</a>
                             </div>
                         </div>
                     </div>

@@ -260,6 +260,122 @@ class LicenciasGiro extends CI_Controller {
         }
     }
 
+    function subir_archivos(){
+        if(!empty($_FILES['uploaded_file']) || !empty($_FILES['uploaded_file1'])){
+          if(!empty($_FILES['uploaded_file'])){
+            $file_name = $_FILES['uploaded_file']['name'];
+            $file_tmp = $_FILES['uploaded_file']['tmp_name'];
+          }else if(!empty($_FILES['uploaded_file1'])){
+            $file_name = $_FILES['uploaded_file1']['name'];
+            $file_tmp = $_FILES['uploaded_file1']['tmp_name'];
+          }
+          $folio=$_POST['folio'];
+          $tipo=$_POST['tipo'];
+          $pass=$_POST['pass'];
+          if(!is_dir(__DIR__.'/archivos_sat/'.$folio)){
+              mkdir(__DIR__.'/archivos_sat/'.$folio, 0777);
+          }
+          chmod(__DIR__.'/archivos_sat/'.$folio, 0777);
+          copy($file_tmp, __DIR__."/archivos_sat/".$folio."/".$file_name);
 
+          switch($tipo){
+              case "key":
+                if($firma = $this->generar_key_pem($folio,$pass,$file_name)){
+                  $this->eliminar_archivos($folio,$file_name);
+                  echo $firma;
+                }
+              break;
+              case "cer":
+                if($cer = $this->get_certificado($folio,$file_name)){
+                  $this->eliminar_archivos($folio,$file_name);
+                  print_r($cer);
+                }
+              break;
+          }
+        }
+    }
 
-}
+    function eliminar_archivos($folio,$file_name){
+       $dir = __DIR__.'/archivos_sat/'.$folio.'/';
+       $handle = opendir($dir);
+       $ficherosEliminados = 0;
+       while ($file = readdir($handle)) {
+           if (is_file($dir.$file)) {
+               if (unlink($dir.$file) ){
+                   $ficherosEliminados++;
+               }
+           }
+       }
+       rmdir(__DIR__.'/archivos_sat/'.$folio);
+    }
+
+    function sellar($cadenaOriginal,$folio,$file_name){
+        $key = __DIR__.'/archivos_sat/'.$folio.'/'.$file_name.'.pem';
+        $fp = fopen (__DIR__.'/archivos_sat/'.$folio.'/utf.txt', 'w+');
+        $fw = fwrite($fp, $cadenaOriginal);
+        fclose($fp);
+        $fs = fopen (__DIR__.'/archivos_sat/'.$folio.'/sello.txt', 'w+');
+        fclose($fs);
+        $firma = shell_exec ('openssl dgst -sha256 '.$key.' utf.txt | openssl enc -base64 -A > '.__DIR__.'/archivos_sat/'.$folio.'/sello.txt');
+        $leer = readfile(__DIR__.'/archivos_sat/'.$folio.'/sello.txt');
+        return $leer;
+      }
+
+      public function generar_key_pem($folio,$pass,$file_name){
+          $nombreKey =__DIR__.'/archivos_sat/'.$folio.'/'.$file_name;
+          $password = $this->input->post('pass');
+          $cadenaOriginal = $this->input->post('cadena_original');
+          if (file_exists($nombreKey)) {
+              $salida = shell_exec('openssl pkcs8 -inform DER -in '.$nombreKey.' -out '.$nombreKey.'.pem -passin pass:'.$password.' 2>&1');
+              if($salida == '' || $salida == false || $salida == null){
+                $keypem = $nombreKey.'.pem';
+                if($sello = $this->sellar($cadenaOriginal,$folio,$file_name)){
+                  return $sello;
+                }else{
+                  echo 'No se logro generar el key.pem';
+                }
+              }else if (strpos($salida, 'Error decrypting') !== false) {
+                echo 'contraseña incorrecta';
+                return false;
+              }else {
+                echo 'No se logro generar el key.pem';
+                return false;
+              }
+          }else {
+              echo'El archivo requerido no esta disponible';
+              return false;
+          }
+      }
+
+      public function get_certificado($folio,$file_name){
+          /*
+            [1] => LUIS xxx xxxx xxxx
+            [2] => LUIS xxx xxx xxxx
+            [3] => LUIS xxx xxx xxxx
+            [4] => MX
+            [5] => lbeasxxxx@xxxx.com
+            [6] => BEJX83XXXX8V9
+            [7] => BEJX83XXXXHJCSMS01
+          */
+          $data = shell_exec ('openssl x509 -inform der -in '.__DIR__.'/archivos_sat/'.$folio.'/'.$file_name.' -noout -text');
+          if($data){
+            $inicio = strrpos($data, 'Subject:');
+            $rest = substr($data, $inicio);
+            $porciones = explode('Subject Public Key Info:', $rest);
+            $porciones = explode(':', $porciones[0]);
+            $porciones = str_replace('/',',',$porciones[1]);
+            $porciones = explode('=',$porciones);
+            $arrayCertificado = array();
+            for ($i=0; $i < count($porciones); $i++) {
+              if($i > 2){
+                $recorte = explode(',',$porciones[$i]);
+                array_push($arrayCertificado, $recorte[0]);
+              }
+            }
+            return $arrayCertificado;
+          }else{
+            return false;
+          }
+      }
+
+    }

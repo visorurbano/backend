@@ -71,9 +71,12 @@
                                        <div class="col-md-6">
                                            <div class="form-group">
                                                <label for="exampleInputFile"><b>* Adjuntar Carta Poder</b>&nbsp;&nbsp;&nbsp;<small><a href="<?=base_url()?>formatos/carta_poder.docx"><i class="fa fa-download" aria-hidden="true"></i> Descarga aquí el formato</a></small></label>
-                                               <input type="file" name="st1_carta_poder" class="form-control-file" onchange="loadFile(this);" id="fleCrataPoder" aria-describedby="fileHelp" data-type="carta_poder" data-elastic="fleCrataPoderElastic" data-text="Carta poder">
+                                               <input type="file" name="st1_carta_poder" class="form-control-file <?php if(!empty($st1_carta_poder)){echo 'valid';}?>" onchange="loadFile(this);" id="fleCrataPoder" aria-describedby="fileHelp" data-type="carta_poder" data-elastic="fleCrataPoderElastic" data-text="Carta poder">
                                                <div id="fleCrataPoderElastic" class="progress-bar-custom"></div>
                                                <small id="fileHelp" class="form-text text-muted">Carta Poder simple firmada por el otorgante y dos testigos.<br>El formato requerido del archivo es: .pdf</small>
+                                               <?php if(!empty($st1_carta_poder)):?>
+                                                <a href="<?=$st1_carta_poder?>" target="_blank" class="link-to-file"><i class="fa fa-file-text-o" aria-hidden="true"></i> Carta Poder</a>
+                                               <?php endif;?>
                                            </div>
                                        </div>
                                        <div class="col-md-6 ">
@@ -336,14 +339,14 @@
                            <div class="row">
                                <div class="col-md-8">
                                    <div class="mui-textfield mui-textfield--float-label nerror">
-                                       <input id="txtDomicilio" type="text" name="st3_domicilio_establecimiento"  class="input-material" value="<?=$st3_domicilio_establecimiento;?>" required>
-                                       <label for="txtDomicilio">* Calle</label>
+                                       <input id="txtDomicilio_establecimiento" type="text" name="st3_domicilio_establecimiento"  class="input-material" value="<?=$st3_domicilio_establecimiento;?>" required>
+                                       <label for="txtDomicilio_establecimiento">* Calle</label>
                                    </div>
                                </div>
                                <div class="col-md-2">
                                    <div class="mui-textfield mui-textfield--float-label nerror">
-                                       <input id="txtNExterior" type="text" name="st3_num_ext_establecimiento"  class="input-material" value="<?=$st3_num_ext_establecimiento;?>" required>
-                                       <label for="txtNExterior">* No. Exterior</label>
+                                       <input id="txtNExterior_establecimiento" type="text" name="st3_num_ext_establecimiento"  class="input-material" value="<?=$st3_num_ext_establecimiento;?>" required>
+                                       <label for="txtNExterior_establecimiento">* No. Exterior</label>
                                    </div>
                                </div>
                                <div class="col-md-2">
@@ -362,8 +365,8 @@
                                </div>
                                <div class="col-md-2">
                                    <div class="mui-textfield mui-textfield--float-label nerror">
-                                       <input id="txtNInterior" type="text" name="st3_num_int_establecimiento" class="input-material" value="<?=$st3_num_int_establecimiento;?>">
-                                       <label for="txtNInterior">No. Interior</label>
+                                       <input id="txtNInterior_establecimiento" type="text" name="st3_num_int_establecimiento" class="input-material" value="<?=$st3_num_int_establecimiento;?>">
+                                       <label for="txtNInterior_establecimiento">No. Interior</label>
                                    </div>
                                </div>
                                <div class="col-md-2">

@@ -32,6 +32,7 @@ class LicenciasGiroModel extends CI_Model {
                 $this->db->trans_start();
                 $this->db->insert('tbl_licencias_giro',$data);
                 $idLicencia = $this->db->insert_id();
+                $this->db->query('insert into tbl_rel_licencia_usuario values(0,'.$idLicencia.','.$idU.',"")');
                 if ($this->db->trans_status() === FALSE){
                     $this->db->trans_rollback();
                     return array('status'=>false);
@@ -61,7 +62,8 @@ class LicenciasGiroModel extends CI_Model {
         return $licencia;
     }
 
-    public function updateLicencia($idTramite, $params){
+    public function updateLicencia($idTramite, $params, $firma){
+        $this->db->query('update tbl_rel_licencia_usuario set firma_e= "'.$firma.'" where id_licencia='.$idTramite);
         $this->db->trans_start();
         $this->db->where('id_licencia',$idTramite)->update('tbl_licencias_giro', $params);
         if ($this->db->trans_status() === FALSE){
@@ -72,6 +74,7 @@ class LicenciasGiroModel extends CI_Model {
             return array('status'=>true);
         }
     }
+
     public function isMercado($clave){
         $mercado =  $this->db->select('*')->from('tbl_predios_mercado')->where('clave_catastral', $clave)->get()->row();
         return $mercado;

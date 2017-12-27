@@ -494,14 +494,14 @@
                            <div class="row">
                                <div class="col-md-6">
                                    <div class="form-group">
-                                       <label for="exampleInputFile"><b>Archivo .cer</b></label>
-                                       <input type="file" class="form-control-file" id="exampleInputFile" aria-describedby="fileHelp">
+                                       <label for="uploaded_file1"><b>Archivo .cer</b></label>
+                                       <input type="file" class="form-control-file" id="uploaded_file1" aria-describedby="fileHelp" onchange="get_certificado(this)">
                                    </div>
                                </div>
                                <div class="col-md-6">
                                    <div class="form-group">
-                                       <label for="exampleInputFile"><b>Archivo .key</b></label>
-                                       <input type="file" class="form-control-file" id="exampleInputFile" aria-describedby="fileHelp">
+                                       <label for="uploaded_file"><b>Archivo .key</b></label>
+                                       <input type="file" class="form-control-file" id="uploaded_file" aria-describedby="fileHelp" onchange="firmar(this)">
                                    </div>
                                </div>
                            </div>
@@ -514,8 +514,9 @@
                                </div>
                            </div>
                            <div class="card card-body bg-light">
-                               <h2>Cadena Firmada</h2>
-                               U0hBMjU2KC9BcHBsaWNhdGlvbnMvTUFNUC9odGRvY3Mvc2VsbG9EaWdpdGFsL2xiZWFzLmtleS5wZW0pPSA4NGM2NTRiZWUyMzc2NDRjYmZkZDc5YTVlN2Y0YTFiY2M3YjQ0MjE0OGU5ZThiZDQ3YTA3NjBjYzdlMDQyNzM4ClNIQTI1Nih1dGYudHh0KT0gZWMwOWIzYmE5Y2Q5ZTBmZDc2ZmI0ZTUxNWU2ZjU1MjA5MjE0NzQ2NjE5ODY4YTliNWI4N2Y2YjQwOWM3YmVjOQo
+                             <h2>Cadena Firmada</h2>
+                             <span id="firma_electronica"></span>
+                            <!--U0hBMjU2KC9BcHBsaWNhdGlvbnMvTUFNUC9odGRvY3Mvc2VsbG9EaWdpdGFsL2xiZWFzLmtleS5wZW0pPSA4NGM2NTRiZWUyMzc2NDRjYmZkZDc5YTVlN2Y0YTFiY2M3YjQ0MjE0OGU5ZThiZDQ3YTA3NjBjYzdlMDQyNzM4ClNIQTI1Nih1dGYudHh0KT0gZWMwOWIzYmE5Y2Q5ZTBmZDc2ZmI0ZTUxNWU2ZjU1MjA5MjE0NzQ2NjE5ODY4YTliNWI4N2Y2YjQwOWM3YmVjOQo-->
                            </div>
                            <div class="row">
                                <div class="form-group aviso-privacidad">

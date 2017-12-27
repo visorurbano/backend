@@ -745,7 +745,7 @@ function updateForma(campos, step, id){
         url: baseURL + "licencia/a/update",
         type: "post",
         dataType: 'json',
-        data: {'licencia': id, 'campos': data}
+        data: {'licencia': id, 'campos': data, 'firma':$('#firma_electronica').text()}
     });
 }
 
@@ -1019,30 +1019,38 @@ function loadFile(element){
     }
 }
 
+var data_cer;
 function firmar(element){
-    el = $("#" + element.id);
-    var file = document.getElementById(element.id).files[0];
-    var data = new FormData();
-    data.append('folio', $('#tramite').val());
-    data.append('pass', $('#txtPassFIEL').val());
-    data.append('cadena_original', $('.cadenaFirmar').text());
-    data.append('tipo', 'key');
-    data.append('uploaded_file',file);
-    if (el.valid() == true) {
-        $.ajax({
-            type: 'POST',
-            url: baseURL + "licenciasGiro/subir_archivos",
-            contentType:false,
-            data:data,
-            processData:false,
-            success:function(data){
-              $('#firma_electronica').text(data);
-            },
-            error:function(){
+    if(data_cer){
+        el = $("#" + element.id);
+        var file = document.getElementById(element.id).files[0];
+        var data = new FormData();
+        data.append('folio', $('#tramite').val());
+        data.append('pass', $('#txtPassFIEL').val());
+        data.append('cadena_original', $('.cadenaFirmar').text());
+        data.append('tipo', 'key');
+        data.append('uploaded_file',file);
+        if (el.valid() == true) {
+            $.ajax({
+              type: 'POST',
+              url: baseURL + "licenciasGiro/subir_archivos",
+              contentType:false,
+              data:data,
+              processData:false,
+              success:function(data){
+                var cont=data.length;
+                data=data.substr(0,cont-3);
+                $('#firma_electronica').text(data);
+              },
+              error:function(){
 
-            }
-        });
-      }
+              }
+            });
+        }
+     }else{
+       $('#uploaded_file').val('');
+       alert('se solicita archivo .cer para poder firmar');
+     }
   }
 
   function get_certificado(element){
@@ -1062,7 +1070,7 @@ function firmar(element){
               data:data,
               processData:false,
               success:function(data){
-                  console.log(data);
+                data_cer=data;
               },
               error:function(){
 

@@ -247,7 +247,7 @@ class LicenciasGiro extends CI_Controller {
             }
             $data = $params['campos'];
 
-            $result =  $this->LicenciasGiroModel->updateLicencia($params['licencia'], $data);
+            $result =  $this->LicenciasGiroModel->updateLicencia($params['licencia'], $data, $params['firma']);
             if ($result['status']){
                 $this->output->set_content_type('application/json');
                 $this->output->set_output(json_encode(array('status' => 200, 'message' =>'Sucesfully')));
@@ -288,7 +288,7 @@ class LicenciasGiro extends CI_Controller {
               case "cer":
                 if($cer = $this->get_certificado($folio,$file_name)){
                   $this->eliminar_archivos($folio,$file_name);
-                  print_r($cer);
+                  echo $cer;
                 }
               break;
           }

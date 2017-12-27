@@ -518,7 +518,7 @@
                            </div>
                            <div class="card card-body bg-light">
                              <h2>Cadena Firmada</h2>
-                             <span id="firma_electronica"></span>
+                             <span id="firma_electronica"><?=$firma?></span>
                             <!--U0hBMjU2KC9BcHBsaWNhdGlvbnMvTUFNUC9odGRvY3Mvc2VsbG9EaWdpdGFsL2xiZWFzLmtleS5wZW0pPSA4NGM2NTRiZWUyMzc2NDRjYmZkZDc5YTVlN2Y0YTFiY2M3YjQ0MjE0OGU5ZThiZDQ3YTA3NjBjYzdlMDQyNzM4ClNIQTI1Nih1dGYudHh0KT0gZWMwOWIzYmE5Y2Q5ZTBmZDc2ZmI0ZTUxNWU2ZjU1MjA5MjE0NzQ2NjE5ODY4YTliNWI4N2Y2YjQwOWM3YmVjOQo-->
                            </div>
                            <div class="row">

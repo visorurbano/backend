@@ -418,7 +418,7 @@ $(document).ready(function () {
             startIndex: parseInt(currentStep),
             onStepChanging: function (event, currentIndex, newIndex)
             {
-                form.validate().settings.ignore = ":disabled,:hidden";
+                form.validate().settings.ignore = ":disabled,:hidden,.valid";
                 if (form.valid()){
                     var frm  = form.find(":input:not(:hidden)").serializeArray();
                     updateForma(frm, newIndex, $('#tramite').val());
@@ -734,13 +734,24 @@ function unsetError(){
 }
 
 function updateForma(campos, step, id){
-    console.log(campos);
+    //console.log(campos);
     var data = {};
     $.each(campos, function(index, val){
         data[val.name] = val.value;
     });
     data['step'] = step;
     console.log(data);
+    return $.ajax({
+        url: baseURL + "licencia/a/update",
+        type: "post",
+        dataType: 'json',
+        data: {'licencia': id, 'campos': data}
+    });
+}
+
+function updateFiles(field, fleName, id){
+    var data = {};
+    data[field] = fleName;
     return $.ajax({
         url: baseURL + "licencia/a/update",
         type: "post",
@@ -987,14 +998,19 @@ function loadFile(element){
                 }, function() {
                    circle.destroy();
                     $('#'+el.data('elastic')).css('margin','0px');
-                    contObj.find('.link-to-file').remove();
-                    contObj.append('<a href="" class="link-to-file"><i class="fa fa-file-text-o" aria-hidden="true"></i> '+el.data('text')+'</a>');
+
                 });
 
 
             },
             success:function(data){
-                contObj.find('.link-to-file').attr('')
+                var serialized = eval("(" + data + ")");
+                contObj.find('.link-to-file').remove();
+                contObj.append('<a href="'+serialized.url+'" target="_blank" class="link-to-file"><i class="fa fa-file-text-o" aria-hidden="true"></i> '+el.data('text')+'</a>');
+
+                updateFiles('st1_'+el.data('type'), serialized.url ,$('#tramite').val()).done(function(data){
+                    //window.location.href = baseURL + "admin";
+                });
             },
             error:function(){
 

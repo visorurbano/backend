@@ -418,15 +418,37 @@ $(document).ready(function () {
             startIndex: parseInt(currentStep),
             onStepChanging: function (event, currentIndex, newIndex)
             {
-                form.validate().settings.ignore = ":disabled,:hidden,.valid";
-                if (form.valid()){
+                var validado = false;
+                if(currentIndex == 3 && data_cer){
+
+                    validado = validar_cer();
+                }else if(currentIndex == 3 && !data_cer){
+                    alert('Subir archivo .cer');
+                }
+
+                if(currentIndex != 3){
+                  form.validate().settings.ignore = ":disabled,:hidden,.valid";
+                  if (form.valid()){
                     var frm  = form.find(":input:not(:hidden)").serializeArray();
                     updateForma(frm, newIndex, $('#tramite').val());
-                }
-                if (newIndex == 3){
+                  }
+                  if (newIndex == 3){
                     resumenLicenciaGiro();
+                  }
+                  return form.valid();
                 }
-                return form.valid();
+
+                if(currentIndex == 3 && validado){
+                  form.validate().settings.ignore = ":disabled,:hidden,.valid";
+                  if (form.valid()){
+                    var frm  = form.find(":input:not(:hidden)").serializeArray();
+                    updateForma(frm, newIndex, $('#tramite').val());
+                  }
+                  if (newIndex == 3){
+                    resumenLicenciaGiro();
+                  }
+                  return form.valid();
+                }
 
             },
             onInit: function(event, currentIndex){
@@ -1019,7 +1041,7 @@ function loadFile(element){
     }
 }
 
-var data_cer;
+var data_cer=[];
 function firmar(element){
     if(data_cer){
         el = $("#" + element.id);
@@ -1070,11 +1092,26 @@ function firmar(element){
               data:data,
               processData:false,
               success:function(data){
-                data_cer=data;
+                data=JSON.parse(data);
+                data_cer=data.data;
               },
               error:function(){
 
               }
           });
         }
+    }
+
+    function validar_cer(){
+      if(($('input[name=st1_tipo_solicitante]:checked').val() == 'propietario' || $('input[name=st1_tipo_solicitante]:checked').val() == 'promotor') && data_cer){
+          console.log(data_cer);
+          if(data_cer[0] != $('input:text[name=st2_nombre_solicitante]').val() || data_cer[3] != $('input:text[name=st2_rfc_solicitante]').val()){
+            alert('Datos de certificacion son diferentes');
+            return false;
+          }else{
+            return true;
+          }
+      }else{
+          console.log("false");
+      }
     }

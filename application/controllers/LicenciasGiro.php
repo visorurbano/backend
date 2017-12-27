@@ -290,7 +290,7 @@ class LicenciasGiro extends CI_Controller {
               case "cer":
                 if($cer = $this->get_certificado($folio,$file_name)){
                   $this->eliminar_archivos($folio,$file_name);
-                  echo $cer;
+                  echo json_encode(array('data' => $cer));
                 }
               break;
           }

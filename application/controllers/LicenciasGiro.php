@@ -52,7 +52,7 @@ class LicenciasGiro extends CI_Controller {
                 }else{
                     $data['mercado'] = true;
                 }
-                $data['firma']= $firma->firma_e;
+                //$data['firma']= $firma->firma_e;
                 //Step 1
                 $data['st1_tipo_solicitante'] = $licencia->st1_tipo_solicitante;
                 $data['st1_tipo_representante'] = $licencia->st1_tipo_representante;

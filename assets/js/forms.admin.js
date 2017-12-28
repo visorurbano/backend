@@ -419,11 +419,12 @@ $(document).ready(function () {
             onStepChanging: function (event, currentIndex, newIndex)
             {
                 var validado = false;
-                console.log(currentIndex == 3 && data_cer &&  newIndex > 3);
                 if(currentIndex == 3 && data_cer != "" &&  newIndex > 3){
                     validado = validar_cer();
                 }else if(currentIndex == 3 && data_cer == ""){
-                    alert('Subir archivo .cer');
+                    var errores=[];
+                    errores[0] = 'Falta subir archivo .cer';
+                    setError(errores);
                 }
 
                 if(currentIndex != 3){
@@ -1043,16 +1044,17 @@ function loadFile(element){
 
 var data_cer=[];
 function firmar(element){
-    if(data_cer){
-        el = $("#" + element.id);
-        var file = document.getElementById(element.id).files[0];
-        var data = new FormData();
-        data.append('folio', $('#tramite').val());
-        data.append('pass', $('#txtPassFIEL').val());
-        data.append('cadena_original', $('.cadenaFirmar').text());
-        data.append('tipo', 'key');
-        data.append('uploaded_file',file);
-        if (el.valid() == true) {
+    if(data_cer != ""){
+        if($('#txtPassFIEL').val() != ""){
+          el = $("#" + element.id);
+          var file = document.getElementById(element.id).files[0];
+          var data = new FormData();
+          data.append('folio', $('#tramite').val());
+          data.append('pass', $('#txtPassFIEL').val());
+          data.append('cadena_original', $('.cadenaFirmar').text());
+          data.append('tipo', 'key');
+          data.append('uploaded_file',file);
+          if (el.valid() == true) {
             $.ajax({
               type: 'POST',
               url: baseURL + "licenciasGiro/subir_archivos",
@@ -1060,18 +1062,35 @@ function firmar(element){
               data:data,
               processData:false,
               success:function(data){
-                var cont=data.length;
-                data=data.substr(0,cont-3);
-                $('#firma_electronica').text(data);
+                if(data.indexOf('status') == -1){
+                  var cont=data.length;
+                  data=data.substr(0,cont-3);
+                  $('#firma_electronica').text(data);
+                  unsetError();
+                }else{
+                  data=JSON.parse(data);
+                  $('#uploaded_file').val('');
+                  var errores=[];
+                  errores[0] = data.data;
+                  setError(errores);
+                }
               },
               error:function(){
 
               }
             });
+          }
+        }else{
+          $('#uploaded_file').val('');
+          var errores=[];
+          errores[0] = 'Falta colocar contraseña para poder firmar';
+          setError(errores);
         }
      }else{
        $('#uploaded_file').val('');
-       alert('se solicita archivo .cer para poder firmar');
+       var errores=[];
+       errores[0] = 'Falta subir archivo .cer para poder firmar';
+       setError(errores);
      }
   }
 
@@ -1093,7 +1112,15 @@ function firmar(element){
               processData:false,
               success:function(data){
                 data=JSON.parse(data);
-                data_cer=data.data;
+                if(data.status){
+                  data_cer=data.data;
+                  unsetError();
+                }else{
+                  $('#uploaded_file1').val('');
+                  var errores=[];
+                  errores[0] = data.data;
+                  setError(errores);
+                }
               },
               error:function(){
 
@@ -1105,12 +1132,14 @@ function firmar(element){
     function validar_cer(){
       if(($('input[name=st1_tipo_solicitante]:checked').val() == 'propietario' || $('input[name=st1_tipo_solicitante]:checked').val() == 'promotor') && data_cer){
           if(data_cer[0] != $('input:text[name=st2_nombre_solicitante]').val() || data_cer[3] != $('input:text[name=st2_rfc_solicitante]').val()){
-            alert('Datos de certificacion son diferentes');
+            var errores=[];
+            errores[0] = 'Datos del archivo .cer no son iguales a los proporcionados anteriormente';
+            setError(errores);
             return false;
           }else{
             return true;
           }
       }else{
-          console.log("false");
+          return true;
       }
     }

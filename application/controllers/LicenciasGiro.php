@@ -267,9 +267,11 @@ class LicenciasGiro extends CI_Controller {
           if(!empty($_FILES['uploaded_file'])){
             $file_name = $_FILES['uploaded_file']['name'];
             $file_tmp = $_FILES['uploaded_file']['tmp_name'];
+            $file_ext=explode('.',$file_name);
           }else if(!empty($_FILES['uploaded_file1'])){
             $file_name = $_FILES['uploaded_file1']['name'];
             $file_tmp = $_FILES['uploaded_file1']['tmp_name'];
+            $file_ext=explode('.',$file_name);
           }
           $folio=$_POST['folio'];
           $tipo=$_POST['tipo'];
@@ -282,15 +284,25 @@ class LicenciasGiro extends CI_Controller {
 
           switch($tipo){
               case "key":
+              if($file_ext[1] == 'key'){
                 if($firma = $this->generar_key_pem($folio,$pass,$file_name)){
                   $this->eliminar_archivos($folio,$file_name);
                   echo $firma;
                 }
+              }else{
+                echo json_encode(array('status' => false, 'data' => 'Archivo incorrecto'));
+              }
               break;
               case "cer":
-                if($cer = $this->get_certificado($folio,$file_name)){
-                  $this->eliminar_archivos($folio,$file_name);
-                  echo json_encode(array('data' => $cer));
+                if($file_ext[1] == 'cer'){
+                  if($cer = $this->get_certificado($folio,$file_name)){
+                    $this->eliminar_archivos($folio,$file_name);
+                    echo json_encode(array('status' => true, 'data' => $cer));
+                  }else{
+                    echo json_encode(array('status' => false, 'data' => 'No se genero el proceso de verificación .cer'));
+                  }
+                }else{
+                  echo json_encode(array('status' => false, 'data' => 'Archivo incorrecto'));
                 }
               break;
           }
@@ -334,17 +346,17 @@ class LicenciasGiro extends CI_Controller {
                 if($sello = $this->sellar($cadenaOriginal,$folio,$file_name)){
                   return $sello;
                 }else{
-                  echo 'No se logro generar el key.pem';
+                  echo json_encode(array('status' => false, "data" => 'No se logro generar el key.pem'));
                 }
               }else if (strpos($salida, 'Error decrypting') !== false) {
-                echo 'contraseña incorrecta';
+                echo json_encode(array('status' => false, "data" => 'contraseña incorrecta'));
                 return false;
               }else {
-                echo 'No se logro generar el key.pem';
+                echo json_encode(array('status' => false, "data" => 'No se logro generar el key.pem'));
                 return false;
               }
           }else {
-              echo'El archivo requerido no esta disponible';
+              echo json_encode(array('status' => false, "data" => 'El archivo requerido no esta disponible'));
               return false;
           }
       }

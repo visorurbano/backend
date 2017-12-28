@@ -71,7 +71,7 @@
                                        <div class="col-md-6">
                                            <div class="form-group">
                                                <label for="exampleInputFile"><b>* Adjuntar Carta Poder</b>&nbsp;&nbsp;&nbsp;<small><a href="<?=base_url()?>formatos/carta_poder.docx"><i class="fa fa-download" aria-hidden="true"></i> Descarga aquí el formato</a></small></label>
-                                               <input type="file" name="st1_carta_poder" class="form-control-file <?php if(!empty($st1_carta_poder)){echo 'valid';}?>" onchange="loadFile(this);" id="fleCrataPoder" aria-describedby="fileHelp" data-type="carta_poder" data-elastic="fleCrataPoderElastic" data-text="Carta poder">
+                                               <input type="file" name="st1_carta_poder" class="form-control-file <?php if(!empty($st1_carta_poder)){echo 'valid';}?>" onchange="loadFile(this);" id="fleCrataPoder" aria-describedby="fileHelp" data-type="st1_carta_poder" data-elastic="fleCrataPoderElastic" data-text="Carta poder">
                                                <div id="fleCrataPoderElastic" class="progress-bar-custom"></div>
                                                <small id="fileHelp" class="form-text text-muted">Carta Poder simple firmada por el otorgante y dos testigos.<br>El formato requerido del archivo es: .pdf</small>
                                                <?php if(!empty($st1_carta_poder)):?>
@@ -82,9 +82,12 @@
                                        <div class="col-md-6 ">
                                            <div class="form-group anexoCartaPoder">
                                                <label for="exampleInputFile"><b>* Adjuntar Identificación del Otorgante</b></label>
-                                               <input type="file" class="form-control-file" id="fleIdentificacionOtorgante" name="fleIdentificacionOtorgante" onchange="loadFile(this);" aria-describedby="fileHelp" data-type="carta_poder_identificacion_otorgante" data-elastic="fleIdentificacionOtorganteElastic" data-text="Identificación del otorgante">
+                                               <input type="file" class="form-control-file <?php if(!empty($st1_identificacion_otorgante)){echo 'valid';}?>" id="fleIdentificacionOtorgante" name="fleIdentificacionOtorgante" onchange="loadFile(this);" aria-describedby="fileHelp" data-type="st1_identificacion_otorgante" data-elastic="fleIdentificacionOtorganteElastic" data-text="Identificación del otorgante">
                                                <div id="fleIdentificacionOtorganteElastic" class="progress-bar-custom"></div>
                                                <small id="fileHelp" class="form-text text-muted">puede ser (INE, IFE, Pasaporte); la identicficacón debe estar vigente.<br>El formato requerido del archivo es: .pdf</small>
+                                               <?php if(!empty($st1_identificacion_otorgante)):?>
+                                                   <a href="<?=$st1_identificacion_otorgante?>" target="_blank" class="link-to-file"><i class="fa fa-file-text-o" aria-hidden="true"></i> Identificación del otorgante</a>
+                                               <?php endif;?>
                                            </div>
                                        </div>
                                    </div>

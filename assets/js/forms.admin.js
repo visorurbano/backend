@@ -779,7 +779,7 @@ function updateFiles(field, fleName, id){
         url: baseURL + "licencia/a/update",
         type: "post",
         dataType: 'json',
-        data: {'licencia': id, 'campos': data}
+        data: {'licencia': id, 'campos': data, 'firma':$('#firma_electronica').text()}
     });
 }
 
@@ -1021,7 +1021,6 @@ function loadFile(element){
                 }, function() {
                    circle.destroy();
                     $('#'+el.data('elastic')).css('margin','0px');
-
                 });
 
 
@@ -1030,9 +1029,7 @@ function loadFile(element){
                 var serialized = eval("(" + data + ")");
                 contObj.find('.link-to-file').remove();
                 contObj.append('<a href="'+serialized.url+'" target="_blank" class="link-to-file"><i class="fa fa-file-text-o" aria-hidden="true"></i> '+el.data('text')+'</a>');
-
-                updateFiles('st1_'+el.data('type'), serialized.url ,$('#tramite').val()).done(function(data){
-                    //window.location.href = baseURL + "admin";
+                updateFiles(el.data('type'), serialized.url ,$('#tramite').val()).done(function(data){
                 });
             },
             error:function(){

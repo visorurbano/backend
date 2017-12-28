@@ -419,10 +419,10 @@ $(document).ready(function () {
             onStepChanging: function (event, currentIndex, newIndex)
             {
                 var validado = false;
-                if(currentIndex == 3 && data_cer){
-
+                console.log(currentIndex == 3 && data_cer &&  newIndex > 3);
+                if(currentIndex == 3 && data_cer != "" &&  newIndex > 3){
                     validado = validar_cer();
-                }else if(currentIndex == 3 && !data_cer){
+                }else if(currentIndex == 3 && data_cer == ""){
                     alert('Subir archivo .cer');
                 }
 
@@ -438,7 +438,7 @@ $(document).ready(function () {
                   return form.valid();
                 }
 
-                if(currentIndex == 3 && validado){
+                if((currentIndex == 3 && validado) || newIndex < 3){
                   form.validate().settings.ignore = ":disabled,:hidden,.valid";
                   if (form.valid()){
                     var frm  = form.find(":input:not(:hidden)").serializeArray();
@@ -1104,7 +1104,6 @@ function firmar(element){
 
     function validar_cer(){
       if(($('input[name=st1_tipo_solicitante]:checked').val() == 'propietario' || $('input[name=st1_tipo_solicitante]:checked').val() == 'promotor') && data_cer){
-          console.log(data_cer);
           if(data_cer[0] != $('input:text[name=st2_nombre_solicitante]').val() || data_cer[3] != $('input:text[name=st2_rfc_solicitante]').val()){
             alert('Datos de certificacion son diferentes');
             return false;

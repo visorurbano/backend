@@ -58,9 +58,9 @@ class LicenciasGiroModel extends CI_Model {
     }
 
     public function getFirma($idU,$id_lic){
-        $firma = $this->db->query('Select * from tbl_rel_licencia_usuario where id_licencia='.$id_lic.' and id_usuario='.$idU);
-        $firma = $firma->result()[0];
-        return $firma;
+        $firma =  $this->db->query('Select * from tbl_rel_licencia_usuario where id_licencia='.$id_lic.' and id_usuario='.$idU);
+        //$firma = $firma->result()[0];
+        return '';
     }
 
     public function getLicencia($idU, $idLicencia){

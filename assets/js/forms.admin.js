@@ -419,11 +419,15 @@ $(document).ready(function () {
             onStepChanging: function (event, currentIndex, newIndex)
             {
                 var validado = false;
-                if(currentIndex == 3 && data_cer != "" &&  newIndex > 3){
+                if(currentIndex == 3 && data_cer != "" && $('#firma_electronica').text() != "" &&  newIndex > 3){
                     validado = validar_cer();
-                }else if(currentIndex == 3 && data_cer == ""){
+                }else if(currentIndex == 3 && data_cer == "" &&  newIndex > 3){
                     var errores=[];
                     errores[0] = 'Falta subir archivo .cer';
+                    setError(errores);
+                }else if(currentIndex == 3 && $('#firma_electronica').text() == '' &&  newIndex > 3){
+                    var errores=[];
+                    errores[0] = 'Falta subir archivo .key';
                     setError(errores);
                 }
 
@@ -448,6 +452,7 @@ $(document).ready(function () {
                   if (newIndex == 3){
                     resumenLicenciaGiro();
                   }
+                  unsetError();
                   return form.valid();
                 }
 
@@ -870,6 +875,7 @@ function ResumeLicenciaGiro(){
 }
 
 function resumenLicenciaGiro(){
+    $("#resumenIdentificacionSolicitante").remove();
     var resumen_isd = $('<div/>', {id: 'resumenIdentificacionSolicitante'}).appendTo('#resumen-container');
     resumen_isd.append('<h3>Identificación del solicitante</h3><br>');
     var RtipoSolicitante = $('<div/>', {addClass:'row'}).appendTo(resumen_isd);
@@ -1127,16 +1133,35 @@ function firmar(element){
     }
 
     function validar_cer(){
-      if(($('input[name=st1_tipo_solicitante]:checked').val() == 'propietario' || $('input[name=st1_tipo_solicitante]:checked').val() == 'promotor') && data_cer){
-          if(data_cer[0] != $('input:text[name=st2_nombre_solicitante]').val() || data_cer[3] != $('input:text[name=st2_rfc_solicitante]').val()){
-            var errores=[];
-            errores[0] = 'Datos del archivo .cer no son iguales a los proporcionados anteriormente';
-            setError(errores);
-            return false;
-          }else{
-            return true;
-          }
-      }else{
-          return true;
+      switch ($('input[name=st1_tipo_solicitante]:checked').val()) {
+        case "propietario":
+              if(data_cer[0] != $('input:text[name=st2_nombre_solicitante]').val().toUpperCase() || data_cer[3] != $('input:text[name=st2_rfc_solicitante]').val().toUpperCase()){
+                var errores=[];
+                errores[0] = 'Datos del archivo .cer no son iguales a los proporcionados anteriormente';
+                setError(errores);
+                return false;
+              }else{
+                return true;
+              }
+          break;
+        case "promotor":
+              if(data_cer[0] != $('input:text[name=st2_nombre_representante]').val().toUpperCase() || data_cer[3] != $('input:text[name=st2_rfc_representante]').val().toUpperCase()){
+                var errores=[];
+                errores[0] = 'Datos del archivo .cer no son iguales a los proporcionados anteriormente';
+                setError(errores);
+                return false;
+              }else{
+                return true;
+              }
+          break;
+        default:
+            if(data_cer[0] != $('input:text[name=st2_nombre_solicitante]').val().toUpperCase() || data_cer[3] != $('input:text[name=st2_rfc_solicitante]').val().toUpperCase()){
+              var errores=[];
+              errores[0] = 'Datos del archivo .cer no son iguales a los proporcionados anteriormente';
+              setError(errores);
+              return false;
+            }else{
+              return true;
+            }
       }
     }

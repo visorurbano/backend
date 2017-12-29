@@ -379,471 +379,537 @@ class Formatos extends CI_Controller {
     }
 
     public function licencia_pdf(){
-        extract($_GET);
-        $idTramite = $this->utils->decode($lic);
-        $idUsuario = $this->utils->decode($usu);
-        $licencia = $this->LicenciasGiroModel->getLicencia($idUsuario, $idTramite);
-        $no_licencia=$licencia->clave_factibilidad;
-        $actividad = $licencia->descripcion_factibilidad;
-        $cajones_estacionamiento="0";
-        $aforo_personas="0";
-        $superficie="16";
-        $horario="";
-        $fecha_sesion="";
-        $calle = $licencia->st3_domicilio_establecimiento;
-        $no_ext = $licencia->st3_num_ext_establecimiento;
-        $col = $licencia->st3_colonia_establecimiento;
-        $clave_catastral = $licencia->clave_catastral;
-        $no_int = $licencia->st3_num_int_establecimiento;
-        $zona="4-4";
-        $nombre = $licencia->st2_nombre_solicitante;
-        $rfc = $licencia->st2_rfc_solicitante;
-        $curp = $licencia->st2_curp_solicitante;
-        $concepto="IMPRESOS 2017-2017 FORMA DE SOLICITUD";
-        $importe="392.00";
-        $pago="EFECTIVO";
-        $total="427.00";
-        $fechaTitle = date("d/m/Y H:i");
+       extract($_GET);
+       $idTramite = $this->utils->decode($lic);
+       $idUsuario = $this->utils->decode($usu);
+       $licencia = $this->LicenciasGiroModel->getLicencia($idUsuario, $idTramite);
+       $no_licencia=$licencia->clave_factibilidad;
+       $actividad = $licencia->descripcion_factibilidad;
+       $cajones_estacionamiento="0";
+       $aforo_personas="0";
+       $superficie="16";
+       $horario="";
+       $fecha_sesion="";
+       $calle = $licencia->st3_domicilio_establecimiento;
+       $no_ext = $licencia->st3_num_ext_establecimiento;
+       $col = $licencia->st3_colonia_establecimiento;
+       $clave_catastral = $licencia->clave_catastral;
+       $no_int = $licencia->st3_num_int_establecimiento;
+       $zona="4-4";
+       $nombre = $licencia->st2_nombre_solicitante;
+       $rfc = $licencia->st2_rfc_solicitante;
+       $curp = $licencia->st2_curp_solicitante;
+       $concepto="IMPRESOS 2017-2017 FORMA DE SOLICITUD";
+       $importe="392.00";
+       $pago="EFECTIVO";
+       $total="427.00";
+       $fechaTitle = date("d/m/Y H:i");
 
-        $html ='<html>
-        <head>
-            <style>
-                .titulo{
-                    text-align: center;
-                    color:#919191;
-                    font-size: 30px;
-                    font-family: DejaVuSansCondensed-Bold;
-                }
-                .subrayado{
-                    border-bottom: solid 1px #919191;
-                }
-                .subtitulos{
-                    text-align: center;
-                    background: #969696;
-                    color: #fff;
-                    font-weight: bold;
-                    border-radius: 5px;
-                }
-                .subtitulos_sub{
-                    text-align: center;
-                    background: #969696;
-                    color:#fff;
-                    font-weight: bold;
-                    border-radius: 4px;
-                    font-size: 12px;
-                }
-                .margen_principal{
-                    margin-top: 50px;
-                }
-                .margen_titulo{
-                    margin-top: 100px;
-                }
-                .margen_30{
-                    margin-top: 30px;
-                }
-                .margen_15{
-                    margin-top: 15px;
-                }
-                .margen_20{
-                    margin-top: 20px;
-                }
-                .separador_20{
-                    margin-left:40px;
-                }
-                .tamano_14{
-                    font-size: 14px;
-                }
-                .tamano_12{
-                    font-size: 12px;
-                }
-                .tamana_10{
-                    font-size: 8px;
-                }
-
-            </style>
-        </head>
-        <body>
-            <div style="position:absolute; left:35px; top:25px; width:15%;">
-                <img src="assets/escudo.jpg" alt="">
-            </div>
-            <div  style="position:absolute; left:150px; text-align:center; width:60%;  color:#919191; font-size: 30px; font-family: DejaVuSansCondensed-Bold;">
-                <span class="subrayado">LICENCIA MUNICIPAL</span>
-            </div>
-            <div style="position:absolute; right:5%; top:25px; width: 15%">
-                <img src="assets/escudo.jpg" alt="">
-            </div>
-            <div style="position:absolute; top:100px; width:85%; height:100%;  background-image: url(assets/escudo.png); background-size:50%; background-repeat: no-repeat;  background-position: 50% 30%;">
-                <div>
-                    <div class="margen_principal" style="width:30%;">
-                        <span style="font-weight: 500; float: right; font-size: 12px">NUEVA LICENCIA <span class="separador_20" style="font-weight: bold; font-size: 15px; margin-top:10px;">'.$no_licencia.'</span></span>
-                    </div>
-                    <br>
-                    <div class="subtitulos" style="width:30%; font-size: 12px;">
-                        <span>DATOS DEL GIRO</span>
-                    </div>
-                </div>
-                <div class="margen_30">
-                    <div class="tamano_14" style="width:80%; font-weight:bold;">
-                        <div style="width:15%; float:left;">
-                            Actividad: &nbsp;
-                        </div>
-                        <div style="width:85%; float:left;">
-                            '.$actividad.'
-                        </div>
-                    </div>
-
-                    <div class="tamano_12">
-                        <span>Cajones de estacimiento: '.$cajones_estacionamiento.'</span>
-                        <span class="separador_20">Aforo de personas: '.$aforo_personas.' </span>
-                        <span class="separador_20">Superficie Autorizadas: '.$superficie.' </span>
-                        <span class="separador_20">Horario: '.$horario.'</span>
-                    </div>
-                    <div class="tamano_12">
-                        <span>Fecha Sesión: '.$fecha_sesion.'</span>
-                    </div>
-                    <div class="tamano_12 margen_20">
-                        OBLIGATORIO CONTAR CON CONTRATO DE RECOLECCIÓN DE RESIDUOS O DICTAMEN DE MICROGENERADOR
-                        EMITIDO POR LA DIR DE MEDIO AMBIENTE Y CONTENEDORES CLASIFICADOS PARA LOS RESIDUOS
-                    </div>
-                    <div>
-                        <div class="subtitulos_sub margen_15" style="width: 30%; float:left; margin-top: 20px;">
-                            UBICACIÓN
-                        </div>
-                        <div class="subtitulos_sub" style="width: 30%; float:right;" >
-                            CONTRIBUYENTE
-                        </div>
-                    </div>
-                    <div class="tamano_12 margen_15">
-                        <div style="width: 40%; float: left;">
-                            Calle: '.$calle.'<br>
-                            No Ext: '.$no_ext.'<br>
-                            Colonia: '.$col.'<br>
-                            Cve Catastral: '.$clave_catastral.'
-                        </div>
-                        <div style="width: 20%; float: left;">
-                           No. Int: '.$no_int.'<br>
-                           Zona: '.$zona.'
-                        </div>
-                        <div style="width: 30%; float: right; margin-left: 10%;">
-                            Nombre: '.$nombre.'<br>
-                            RFC: '.$rfc.'<br>
-                            CURP: '.$curp.'
-                        </div>
-                    </div>
-
-                    <div class="margen_15">
-                        <div class="subtitulos_sub" style="width: 30%; float: left;">
-                            LICENCIA
-                        </div>
-                        <div  style="width: 5%; float: left;">
-                            &nbsp;
-                        </div>
-                        <div class="subtitulos_sub" style="width: 30%; float:left;">
-                           CONCEPTO
-                        </div>
-                        <div class="subtitulos_sub" style="width: 30%; float:right;">
-                           IMPORTE
-                        </div>
-                    </div>
-
-                    <div class="tamano_12 margen_15">
-                        <div style="width: 30%; float: left;">
-                           '.$no_licencia.'
-                        </div>
-                        <div  style="width: 5%; float: left;">
-                           &nbsp;
-                        </div>
-                        <div style="width: 30%; float: left;">
-                            '.$concepto.'
-                        </div>
-                        <div style="width: 30%; float: right; text-align: right;">
-                            '.$importe.' <br>
-                            35.00
-                        </div>
-                    </div>
-
-                    <div class="tamano_12 margen_15">
-                        <div style="width: 30%; float: left;">
-                           (Cuatrocientos Veintisiete Pesos 00/100 M.N.)
-                        </div>
-                        <div  style="width: 5%; float: left;">
-                           &nbsp;
-                        </div>
-                        <div style="width: 30%; float: left;">
-                            <b>PAGO EN: '.$pago.'</b>
-                        </div>
-                        <div style="width: 30%; float: right; text-align: right;">
-                            <b>'.$total.'</b>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div style="position:absolute; top: 140px; right:9%; text-align: right;">
-                <barcode code="'.$no_licencia.'" type="QR" class="barcode" size="1.0"  style="border:none;"/><br>
-            </div>
-            <div class="tamana_10" style="position:absolute; top: 240px; right:8%; text-align: center;">
-                <span>2 ch 20501 20/10/2017 13:59 <br> 4413188 425872 427.00 6062617</span><br>
-                <span>Adriana Robles Bustos</span>
-            </div>
-            <div style="position:absolute; bottom:22%; text-align: center; font-size: 12px;">
-                <b>
-                    LIC. DAGOBERTO CALDERÓN LEAL<br>
-                    Director de Padrón y Licencias <br>
-                    CURP: <br>
-                    E-MAIL: <br>
-                    Periodo de vigencia de la firma elctrónica:
-                </b>
-            </div>
-            <div style="position:absolute; bottom:13%; text-align: left; font-size: 10px; width: 45%; border-right: solid #000000 1px">
-               <div>
-                    <b>
-                        EXPEDIDO EN: <br>
-                        DATOS DEL PRESTADOR DE SERVICIOS DE CERTIFICACIÓN: <br>
-                        TECNOLOGÍA IMPLEMENTADA PARA LA CRECIÓN DE LAS FIRMAS: <br>
-                        NÚMERO DE SERIE: <br>
-                        AUTORIDAD CERTIFICADORA QUE LO EMITIÓ: <br>
-                    </b>
-                </div>
-            </div>
-            <div style="position:absolute; bottom:12%; right:7%; text-align: left; font-size: 10px;">
-               <div style="border-left: #0d1318 solid 1px;">
-                   <div style="margin-left: 10px;">Guadalajara, Jalisco, el día '.$fechaTitle.'</div><br><br><br><br>
-                   <div style="margin-left: 10px;">SECRETARIA GENERAL DE GOBIERNO DEL ESTADO DE JALISCO</div>
-               </div>
-            </div>
-            <div style="position:absolute; bottom:7%; text-align: left; font-size: 10px; width: 85%">
-                <b>EL PRESENTE ACTO ADMINISTRATIVO CUENTA CON PLENA VALIDEZ, EFICACIA JURÍDICA Y OBLIGATORIEDAD DESDE LA FECHA DE SU EMISIÓN Y/O NOTIFICACIÓN TANTO PARA LOS PARTICULARES
-                COMO PARA LAS AUTORIDADES</b>
-            </div>
-        </body>
-        </html>';
-        $this->pdf->WriteHTML($html);
-        $this->pdf->AddPage();
-        $html2 = '<html>
-        <head>
-            <style>
-                body{
-                    font-size: 11px;
-                    color: #969696;
-                }
-               .cuadro_principal{
-                    border:solid 1px #b1b1b1;
-                    text-align: justify;
+       $html ='<html>
+       <head>
+           <style>
+               body{
+                 font-family: exo;
                }
-               .margen_2_p{
-                    margin:2%;
+               .titulo{
+                   text-align: center;
+                   color:#919191;
+                   font-size: 30px;
+               }
+               .subtitulos{
+                   text-align: center;
+                   background: #969696;
+                   color: #fff;
+                   font-weight: bold;
+                   border-radius: 5px;
+               }
+               .subtitulos_sub{
+                   text-align: center;
+                   background: #969696;
+                   color:#fff;
+                   font-weight: bold;
+                   border-radius: 4px;
+                   font-size: 12px;
+               }
+               .margen_principal{
+                   margin-top: 50px;
+               }
+               .margen_titulo{
+                   margin-top: 100px;
+               }
+               .margen_30{
+                   margin-top: 30px;
+               }
+               .margen_15{
+                   margin-top: 15px;
+               }
+               .margen_20{
+                   margin-top: 20px;
+               }
+               .separador_20{
+                   margin-left:40px;
+               }
+               .tamano_14{
+                   font-size: 14px;
                }
                .tamano_12{
-                    font-size: 12px;
+                   font-size: 12px;
                }
-               .margen_10_top{
-                  margin-top: 5%;
+               .tamana_10{
+                   font-size: 8px;
                }
-            </style>
-        </head>
-        <body>
-           <div class="cuadro_principal">
-                <div class="margen_2_p">
-                    Hoy, más que nunca <b> Guadalajara necesita de tu participación y compromiso.</b> Te invitamos a respetar y
-                    cumplir los reglamentos, el respeto a los mismos es el respeto a la ciudadania. Recuerda que el
-                    desconocimiento de los mismos no nos exime de responsabilidad. A continuación hacemos mención de
-                    algunos de los aspectos que debes tener muy presentes para el buen funcionamiento de tu giro.
-                </div>
+
+           </style>
+       </head>
+       <body>
+           <div style="position:absolute; left:60px; top:4%; width:20%;">
+               <img src="assets/logo-padron.png" alt="">
            </div>
-           <div>
-               <table class="margen_10_top">
-                    <tr>
-                        <td style="width: 35%">
-                            <br>
-                            <b>SON MOTIVOS DE CLAUSURA:</b>
-                        </td>
-                        <td style="width: 65%; padding-left: 15px">
-                            <br>
-                            <b>EL REFRENDO, BAJA, MODIFICACIONES Y TRASPASOS DE LICENCIAS.</b>
-                        </td>
-                    </tr>
-                    <tr >
-                        <td valign="top">
-                            <br><br>
-                            <b>A. </b>CARECER DE LA LICENCIA MUNICIPAL. <br>
-                            <b>B. </b>OPERAR UNA ACTIVIDAD DISTINTA A LA MANIFESTADA EN LA LICENCIA. <br>
-                            <b>C. </b>FUNCIONAR FUERA DEL HORARIO PERMITIDO. <br>
-                            <b>D. </b>LA VENTA Y/O CONSUMO DE BEBIDAS ALCOHÓLICAS FUERA DE LO ESTABLECIDO EN LA LEY. <br>
-                            <b>E. </b>QUE SE COMETAN DELITO CONTRA LA SALUD, LA VIDA O LA INTEGRIDAD FÍSICA DE LAS PERSONAS DENTRO DEL ESTABLECIMIENTO.<br>
-                            <b>F. </b>COLOCAR ANUNCIOS SOBRE LA VÍA PÚBLICA. <br>
-                            <b>G. </b>OBSTRUIR EL PASO PEATONAL. HACIENDO USO DE LA VÍA PÚBLICA SIN AUTORIZACIÓN.<br>
-                            <b>H. </b>EXCEDER EL AFORO AUTORIZADO. <br>
-                            <b>I. </b>EXCEDER CON EMISIONES DE RUIDO. NORMA AMBIENTAL NOM-081-SEMARNAT-94 DE DECIBELES. <br>
-                            <b>J. </b>DESCARGA DE RESIDUOS NOCIVOS A LA RED MUNICIPAL. <br>
-                            <b>K. </b>OPERAR MÁQUINAS DE JUEGOS DE AZAR. <br>
-                            <b>L. </b>QUE LOS DOCUMENTOS Y DATOS PROPORCIONADOS EN LA PLATAFORMA SEAN FALSOS. <br>
-                            <br><br><br><br>
-                            <div>
-                                DENUNCIA LAS ACTUACIONES <br>
-                                IRREGULARES DE LOS FUNCIONARIOS <br>
-                                MUNICIPALES A LA DIRECCIÓN DE <br>
-                                RESPONSABILIDADES <br>
-                                5 DE FEBRERO 248, UNIDAD <br>
-                                ADMINISTRATIVA REFORMA <br>
-                                TELÉFONOS: 15931569 Y 33348676 <br>
-                                HORARIO: 09:00 A 17:00
-                            </div>
-                        </td>
-                        <td valign="top" style="padding-left: 15px">
-                            <br><br>
-                            La licecia municipal deberá estar en un sitio visible. <br><br>
-                            El <b>refrendo</b> de la licencia municipal es anual y deberá ser realizado durante los primeros dos meses del año fiscal correspondiente. <br><br>
-                            En caso de que el negocio deje de operar, el titular de la licencia deberá <b>presentar aviso de baja </b>
-                            ante de la Dirección de Padrón y licencias. <br><br>
-                            Para realizar <b>traspaso y/o modificaciones en la licencia, </b>se deberá acudir a las oficinas de Padrón y Licencias para su debida autorización. <br><br>
-                            <b>EL ESTABLECIMIENTO: MEDIO AMBIENTE, IMAGEN, ORDEN Y SEGURIDAD</b>. <br><br>
-                            <li>Mantener una imagen <b>ordenada</b> y limpia en el exterior del establecimiento.</li> <br><br>
-                            <li>Contar con las medidas en materia de <b>seguridad</b> y protección civil.</li> <br><br>
-                            <li>Permitir el ingreso al personal autorizado por el Ayuntamiento, asi como proporcionarles la documentación requerida para el desarrollo de sus funciones.</li> <br><br>
-                            <li>Acatar las disposiciones establecidas en el reglamento de <b>anuncios</b>.</li> <br><br>
-                            <li>Queda prohibida la instalación de los <b>anuncios eventuales tipo pendón</b> en todo el Municipio de Guadalajara, de acuerdo al Articulo 39, del Reglamento de Anuncios para el Municipio de Guadalajara.</li><br><br><br><br>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td style="text-align: center;">
-                            <b>ADOPTA UN ESPACIO VERDE, RESPETA EL ESPACIO PÚBLICO</b>
-                        </td>
-                    </tr>
-               </table>
+           <div  style="position:absolute; left:160px; top:7%; text-align:center; width:60%;  color:#C40E91; font-size: 25px;">
+               <span class="subrayado">LICENCIA MUNICIPAL</span>
            </div>
-        </body>
-        </html>';
+           <div style="position:absolute; right:10%; top:3%; width: 8%">
+               <img src="assets/gdl-logo.png" alt="">
+           </div>
+           <div style="position:absolute; top:100px; width:85%; height:100%;  background-image: url(assets/logo-GDL-licencia.png); background-size:80%; background-repeat: no-repeat;  background-position: 50% 30%;">
+               <div>
+                   <div class="margen_principal" style="width:30%;">
+                       <span style="font-weight: 500; float: right; font-size: 12px">NUEVA LICENCIA <span class="separador_20" style="font-weight: bold; font-size: 18px; margin-top:10px;">'.$no_licencia.'</span></span>
+                   </div>
+                   <br>
+                   <div class="subtitulos" style="width:30%; font-size: 12px;">
+                       <span>DATOS DEL GIRO</span>
+                   </div>
+               </div>
+               <div class="margen_30">
+                   <div class="tamano_14" style="width:100%; font-weight:bold;">
+                         Actividad: &nbsp;'.$actividad.'
+                   </div>
 
-        $this->pdf->WriteHTML($html2);
-        $this->pdf->Output('Licencia_Municipal.pdf', 'I');
-    }
+                   <div class="tamano_12">
+                       <span>Cajones de estacimiento: '.$cajones_estacionamiento.'</span>
+                       <span class="separador_20">Aforo de personas: '.$aforo_personas.' </span>
+                       <span class="separador_20">Superficie Autorizadas: '.$superficie.' </span>
+                       <span class="separador_20">Horario: '.$horario.'</span>
+                   </div>
+                   <div class="tamano_12">
+                       <span>Fecha Sesión: '.$fecha_sesion.'</span>
+                   </div>
+                   <div class="tamano_12 margen_20">
+                       OBLIGATORIO CONTAR CON CONTRATO DE RECOLECCIÓN DE RESIDUOS O DICTAMEN DE MICROGENERADOR
+                       EMITIDO POR LA DIR DE MEDIO AMBIENTE Y CONTENEDORES CLASIFICADOS PARA LOS RESIDUOS
+                   </div>
+                   <div>
+                       <div class="subtitulos_sub margen_15" style="width: 30%; float:left; margin-top: 20px;">
+                           UBICACIÓN
+                       </div>
+                       <div class="subtitulos_sub" style="width: 30%; float:right;" >
+                           CONTRIBUYENTE
+                       </div>
+                   </div>
+                   <div class="tamano_12 margen_15">
+                       <div style="width: 40%; float: left;">
+                           Calle: '.$calle.'<br>
+                           No Ext: '.$no_ext.'<br>
+                           Colonia: '.$col.'<br>
+                           Cve Catastral: '.$clave_catastral.'
+                       </div>
+                       <div style="width: 20%; float: left;">
+                          No. Int: '.$no_int.'<br>
+                          Zona: '.$zona.'
+                       </div>
+                       <div style="width: 30%; float: right; margin-left: 10%;">
+                           Nombre: '.$nombre.'<br>
+                           RFC: '.$rfc.'<br>
+                           CURP: '.$curp.'
+                       </div>
+                   </div>
 
-    public function acuse_envio(){
-        $dependencia="xxxxxx";
-        $folio="xxxx";
-        $tipo_asunto="xxxxxxxxx";
-        $rfc="xxxxxxxxxx";
-        $curp="xxxxxxxxxxxxx";
-        $fecha_envio="xxxx-xx-xx";
-        $hora_envio="xx:xx";
-        $observaciones="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx";
+                   <div class="margen_15">
+                       <div class="subtitulos_sub" style="width: 30%; float: left;">
+                           LICENCIA
+                       </div>
+                       <div  style="width: 5%; float: left;">
+                           &nbsp;
+                       </div>
+                       <div class="subtitulos_sub" style="width: 30%; float:left;">
+                          CONCEPTO
+                       </div>
+                       <div class="subtitulos_sub" style="width: 30%; float:right;">
+                          IMPORTE
+                       </div>
+                   </div>
 
-        $html='<html>
-        <head>
-            <style>
-                body{
-                    font-size: 12px;
-                }
-                .margen_top_20{
-                    margin-top: 20px;
-                }
-                .cuadro{
-                    margin: 15px;
-                    margin-bottom: 10px;
-                }
-            </style>
-        </head>
-        <body>
-            <div style="position:absolute; top:20px; left:55px; width:10%;">
-                <img src="assets/escudo-gdl.png" alt="">
-            </div>
-            <div style="position:absolute; top:8%; left:20px; width:90%;">
-                <div style="text-align:center;  font-weight:bold; font-family: DejaVuSansCondensed-Bold;">
-                    <span class="subrayado">Plataforma Visor Urbano del Municipio de Guadalajara, Jalisco</span><br><br>
-                    <span>Acuse de Envío de Documentos.</span>
-                </div>
-            </div>
-            <div style="position:absolute; top:30px; right:45px; width: 18%">
-                <img src="assets/logo.png" alt="">
-            </div>
-            <div style="position:absolute; top:15%;">
-                <div class="margen_top_20">
-                    Dependencia receptora: '.$dependencia.'
-                </div>
-                <div class="margen_top_20">
-                    Folio de recepción: '.$folio.'
-                </div>
-                <div class="margen_top_20">
-                    Tipo de Asunto: '.$tipo_asunto.'
-                </div>
-                <div class="margen_top_20">
-                    Registro Federal de Contribuyentes: '.$rfc.'
-                </div>
-                <div class="margen_top_20">
-                    CURP: '.$curp.'
-                </div>
-                <div class="margen_top_20">
-                    Fecha de envío: '.$fecha_envio.'
-                </div>
-                <div class="margen_top_20">
-                    Hora de envío: '.$hora_envio.'
-                </div>
-                <div class="margen_top_20">
-                    Observaciones: '.$observaciones.'
-                </div>
-                <div class="margen_top_20" style="border:solid 1px #000000; width:98%;">
-                    <div class="cuadro">
-                        <div class="margen_top_20">
-                            Con evidencia criptográfica de firma electrónica de (nombre de la persona que firma).
-                        </div>
-                        <div class="margen_top_20">
-                            (Puede tener alguna otra anotación de la plataforma);
-                        </div>
-                        <div class="margen_top_20" style="margin-bottom:20px;">
-                            <b>El documento debe de contener caracteres de autenticidad del acuse.</b>
-                        </div>
-                        <div class="margen_top_20" style="margin-bottom:20px;">
-                             &nbsp;
-                        </div>
-                    </div>
-                </div>
-                <div class="margen_top_20">
-                    Nombre de los archivos enviados:
-                </div>
-                <div class="margen_top_20" style="border:solid 1px #000000; width:98%;">
-                    <div class="cuadro">
-                        <ul>
-                            <li>(Nombre y tamaño de los archivos que se acompañen al formato electrónico del trámite y caracteres de autenticidad que garanticen la fiabilidad de los mismos;)</li>
-                            <li>a</li>
-                            <li>a</li>
-                        </ul>
-                        <div class="margen_top_20" style="margin-bottom:20px;">
-                             &nbsp;
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div style="position:absolute; bottom: 10px; font-size: 10px;">
-                <div style="text-align: center; margin-left:30%; border:solid 1px #000000; width:40%;">
-                    <div class="cuadro">
-                        <div class="margen_top_20" style="margin-bottom:20px;">
-                            Portal Visor Urbano del Ayuntamiento de <br>
-                            Guadalajara, Jalisco.
-                        </div>
-                        <div class="margen_top_20" style="margin-bottom:20px;">
-                            <h1>Recibido</h1>
-                        </div>
-                        <div class="margen_top_20" style="margin-bottom:20px;">
-                            Fecha y Hora
-                        </div>
-                        <div class="margen_top_20" style="margin-bottom:20px;">
-                             &nbsp;
-                        </div>
-                    </div>
-                </div>
-                <div style="text-align: justify; width: 95%; margin-top:15px;">
-                    El presente acuse se emite con fundamento en los artículos 20 fracción IV del Reglamento del
-                    Acto y del Procedimiento Administrativo del Municipio de Guadalajara, Jalisco, 13 del
-                    Reglamento del Uso de Medios Electrónicos del Ayuntamiento de Guadalajara, octavo fracción
-                    X de las Disposiciones Administrativas que contienen las Reglas para la Realización de Trámites
-                    Electrónicos en Materia de Desarrollo Urbano del Municipio de Guadalajara
-                </div>
-            </div>
-        </body>
-        </html>';
-        $this->pdf->WriteHTML($html);
-        $this->pdf->Output('Acuse_envio.pdf', 'I');
-    }
+                   <div class="tamano_12 margen_15">
+                       <div style="width: 30%; float: left;">
+                          '.$no_licencia.'
+                       </div>
+                       <div  style="width: 5%; float: left;">
+                          &nbsp;
+                       </div>
+                       <div style="width: 30%; float: left;">
+                           '.$concepto.'
+                       </div>
+                       <div style="width: 30%; float: right; text-align: right;">
+                           '.$importe.' <br>
+                           35.00
+                       </div>
+                   </div>
+
+                   <div class="tamano_12 margen_15">
+                       <div style="width: 30%; float: left;">
+                          (Cuatrocientos Veintisiete Pesos 00/100 M.N.)
+                       </div>
+                       <div  style="width: 5%; float: left;">
+                          &nbsp;
+                       </div>
+                       <div style="width: 30%; float: left;">
+                           <b>PAGO EN: '.$pago.'</b>
+                       </div>
+                       <div style="width: 30%; float: right; text-align: right;">
+                           <b>'.$total.'</b>
+                       </div>
+                   </div>
+                   <div>
+                       <div style="width: 30%; float: left;">
+                          &nbsp;
+                       </div>
+                       <div  style="width: 5%; float: left;">
+                          &nbsp;
+                       </div>
+                       <div style="width: 30%; float: left;">
+                         &nbsp;
+                       </div>
+                       <div style="width: 30%; float: right; text-align: right;">
+                           <br>
+                           <barcode code="'.$no_licencia.'" type="QR" class="barcode" size="1.5"  style="border:none;"/><br>
+                       </div>
+                   </div>
+                   <!--div>
+                       <div style="width: 30%; float: left;">
+                          &nbsp;
+                       </div>
+                       <div  style="width: 5%; float: left;">
+                          &nbsp;
+                       </div>
+                       <div style="width: 30%; float: left;">
+                         &nbsp;
+                       </div>
+                       <div class="tamana_10" style="width: 30%; text-align: center; margin-left:80%;">
+                           <span>2 ch 20501 20/10/2017 13:59 <br> 4413188 425872 427.00 6062617</span><br>
+                           <span>Adriana Robles Bustos</span>
+                       </div>
+                   </div-->
+               </div>
+           </div>
+
+
+           <div style="position:absolute; bottom:22%; text-align: center; font-size: 12px;">
+               <b>
+                   LIC. DAGOBERTO CALDERÓN LEAL<br>
+                   Director de Padrón y Licencias <br>
+                   CURP: <br>
+                   E-MAIL: <br>
+                   Periodo de vigencia de la firma elctrónica:
+               </b>
+           </div>
+           <div style="position:absolute; bottom:13%; text-align: left; font-size: 10px; width: 45%; border-right: solid #000000 1px">
+              <div>
+                   <b>
+                       EXPEDIDO EN: <br>
+                       DATOS DEL PRESTADOR DE SERVICIOS DE CERTIFICACIÓN: <br>
+                       TECNOLOGÍA IMPLEMENTADA PARA LA CRECIÓN DE LAS FIRMAS: <br>
+                       NÚMERO DE SERIE: <br>
+                       AUTORIDAD CERTIFICADORA QUE LO EMITIÓ: <br>
+                   </b>
+               </div>
+           </div>
+           <div style="position:absolute; bottom:12%; right:7%; text-align: left; font-size: 10px;">
+              <div style="border-left: #0d1318 solid 1px;">
+                  <div style="margin-left: 10px;">Guadalajara, Jalisco, el día '.$fechaTitle.'</div><br><br><br><br>
+                  <div style="margin-left: 10px;">SECRETARIA GENERAL DE GOBIERNO DEL ESTADO DE JALISCO</div>
+              </div>
+           </div>
+           <div style="position:absolute; bottom:7%; text-align: left; font-size: 10px; width: 85%">
+               <b>EL PRESENTE ACTO ADMINISTRATIVO CUENTA CON PLENA VALIDEZ, EFICACIA JURÍDICA Y OBLIGATORIEDAD DESDE LA FECHA DE SU EMISIÓN Y/O NOTIFICACIÓN TANTO PARA LOS PARTICULARES
+               COMO PARA LAS AUTORIDADES</b>
+           </div>
+       </body>
+       </html>';
+       $this->pdf->WriteHTML($html);
+       $this->pdf->AddPage();
+       $html2 = '<html>
+       <head>
+           <style>
+               body{
+                   font-size: 11px;
+               }
+              .cuadro_principal{
+                   border:solid 1px #b1b1b1;
+                   text-align: justify;
+              }
+              .margen_2_p{
+                   margin:2%;
+              }
+              .tamano_12{
+                   font-size: 12px;
+              }
+              .margen_10_top{
+                 margin-top: 5%;
+              }
+           </style>
+       </head>
+       <body>
+          <div class="cuadro_principal">
+               <div class="margen_2_p">
+                   Hoy, más que nunca <b> Guadalajara necesita de tu participación y compromiso.</b> Te invitamos a respetar y
+                   cumplir los reglamentos, el respeto a los mismos es el respeto a la ciudadania. Recuerda que el
+                   desconocimiento de los mismos no nos exime de responsabilidad. A continuación hacemos mención de
+                   algunos de los aspectos que debes tener muy presentes para el buen funcionamiento de tu giro.
+               </div>
+          </div>
+          <div>
+              <table class="margen_10_top">
+                   <tr>
+                       <td style="width: 35%">
+                           <br>
+                           <b>SON MOTIVOS DE CLAUSURA:</b>
+                       </td>
+                       <td style="width: 65%; padding-left: 15px">
+                           <br>
+                           <b>EL REFRENDO, BAJA, MODIFICACIONES Y TRASPASOS DE LICENCIAS.</b>
+                       </td>
+                   </tr>
+                   <tr >
+                       <td valign="top">
+                           <br><br>
+                           <b>A. </b>CARECER DE LA LICENCIA MUNICIPAL. <br>
+                           <b>B. </b>OPERAR UNA ACTIVIDAD DISTINTA A LA MANIFESTADA EN LA LICENCIA. <br>
+                           <b>C. </b>FUNCIONAR FUERA DEL HORARIO PERMITIDO. <br>
+                           <b>D. </b>LA VENTA Y/O CONSUMO DE BEBIDAS ALCOHÓLICAS FUERA DE LO ESTABLECIDO EN LA LEY. <br>
+                           <b>E. </b>QUE SE COMETAN DELITO CONTRA LA SALUD, LA VIDA O LA INTEGRIDAD FÍSICA DE LAS PERSONAS DENTRO DEL ESTABLECIMIENTO.<br>
+                           <b>F. </b>COLOCAR ANUNCIOS SOBRE LA VÍA PÚBLICA. <br>
+                           <b>G. </b>OBSTRUIR EL PASO PEATONAL. HACIENDO USO DE LA VÍA PÚBLICA SIN AUTORIZACIÓN.<br>
+                           <b>H. </b>EXCEDER EL AFORO AUTORIZADO. <br>
+                           <b>I. </b>EXCEDER CON EMISIONES DE RUIDO. NORMA AMBIENTAL NOM-081-SEMARNAT-94 DE DECIBELES. <br>
+                           <b>J. </b>DESCARGA DE RESIDUOS NOCIVOS A LA RED MUNICIPAL. <br>
+                           <b>K. </b>OPERAR MÁQUINAS DE JUEGOS DE AZAR. <br>
+                           <b>L. </b>QUE LOS DOCUMENTOS Y DATOS PROPORCIONADOS EN LA PLATAFORMA SEAN FALSOS. <br>
+                           <br><br><br><br>
+                           <div>
+                               DENUNCIA LAS ACTUACIONES <br>
+                               IRREGULARES DE LOS FUNCIONARIOS <br>
+                               MUNICIPALES A LA DIRECCIÓN DE <br>
+                               RESPONSABILIDADES <br>
+                               5 DE FEBRERO 248, UNIDAD <br>
+                               ADMINISTRATIVA REFORMA <br>
+                               TELÉFONOS: 15931569 Y 33348676 <br>
+                               HORARIO: 09:00 A 17:00
+                           </div>
+                       </td>
+                       <td valign="top" style="padding-left: 15px">
+                           <br><br>
+                           La licecia municipal deberá estar en un sitio visible. <br><br>
+                           El <b>refrendo</b> de la licencia municipal es anual y deberá ser realizado durante los primeros dos meses del año fiscal correspondiente. <br><br>
+                           En caso de que el negocio deje de operar, el titular de la licencia deberá <b>presentar aviso de baja </b>
+                           ante de la Dirección de Padrón y licencias. <br><br>
+                           Para realizar <b>traspaso y/o modificaciones en la licencia, </b>se deberá acudir a las oficinas de Padrón y Licencias para su debida autorización. <br><br>
+                           <b>EL ESTABLECIMIENTO: MEDIO AMBIENTE, IMAGEN, ORDEN Y SEGURIDAD</b>. <br><br>
+                           <li>Mantener una imagen <b>ordenada</b> y limpia en el exterior del establecimiento.</li> <br><br>
+                           <li>Contar con las medidas en materia de <b>seguridad</b> y protección civil.</li> <br><br>
+                           <li>Permitir el ingreso al personal autorizado por el Ayuntamiento, asi como proporcionarles la documentación requerida para el desarrollo de sus funciones.</li> <br><br>
+                           <li>Acatar las disposiciones establecidas en el reglamento de <b>anuncios</b>.</li> <br><br>
+                           <li>Queda prohibida la instalación de los <b>anuncios eventuales tipo pendón</b> en todo el Municipio de Guadalajara, de acuerdo al Articulo 39, del Reglamento de Anuncios para el Municipio de Guadalajara.</li><br><br><br><br>
+                       </td>
+                   </tr>
+                   <tr>
+                       <td></td>
+                       <td style="text-align: center;">
+                           <b>ADOPTA UN ESPACIO VERDE, RESPETA EL ESPACIO PÚBLICO</b>
+                       </td>
+                   </tr>
+              </table>
+          </div>
+       </body>
+       </html>';
+
+       $this->pdf->WriteHTML($html2);
+       $this->pdf->Output('Licencia_Municipal.pdf', 'I');
+   }
+
+   public function acuse_envio(){
+       $dependencia="xxxxxx";
+       $folio="xxxx";
+       $tipo_asunto="xxxxxxxxx";
+       $rfc="xxxxxxxxxx";
+       $curp="xxxxxxxxxxxxx";
+       $fecha_envio="xxxx-xx-xx";
+       $hora_envio="xx:xx";
+       $observaciones="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx";
+
+       $html='<html>
+       <head>
+           <style>
+               body{
+                   font-size: 12px;
+               }
+               .margen_top_20{
+                   margin-top: 20px;
+               }
+               .cuadro{
+                   margin: 15px;
+                   margin-bottom: 10px;
+               }
+           </style>
+       </head>
+       <body>
+           <div style="position:absolute; top:20px; left:55px; width:10%;">
+               <img src="assets/escudo-gdl.png" alt="">
+           </div>
+           <div style="position:absolute; top:8%; left:20px; width:90%;">
+               <div style="text-align:center;  font-weight:bold; font-family: DejaVuSansCondensed-Bold;">
+                   <span class="subrayado">Plataforma Visor Urbano del Municipio de Guadalajara, Jalisco</span><br><br>
+                   <span>Acuse de Envío de Documentos.</span>
+               </div>
+           </div>
+           <div style="position:absolute; top:30px; right:45px; width: 18%">
+               <img src="assets/logo.png" alt="">
+           </div>
+           <div style="position:absolute; top:15%;">
+               <div class="margen_top_20">
+                   Dependencia receptora: '.$dependencia.'
+               </div>
+               <div class="margen_top_20">
+                   Folio de recepción: '.$folio.'
+               </div>
+               <div class="margen_top_20">
+                   Tipo de Asunto: '.$tipo_asunto.'
+               </div>
+               <div class="margen_top_20">
+                   Registro Federal de Contribuyentes: '.$rfc.'
+               </div>
+               <div class="margen_top_20">
+                   CURP: '.$curp.'
+               </div>
+               <div class="margen_top_20">
+                   Fecha de envío: '.$fecha_envio.'
+               </div>
+               <div class="margen_top_20">
+                   Hora de envío: '.$hora_envio.'
+               </div>
+               <div class="margen_top_20">
+                   Observaciones: '.$observaciones.'
+               </div>
+               <div class="margen_top_20" style="border:solid 1px #000000; width:98%;">
+                   <div class="cuadro">
+                       <div class="margen_top_20">
+                           Con evidencia criptográfica de firma electrónica de (nombre de la persona que firma).
+                       </div>
+                       <div class="margen_top_20">
+                           (Puede tener alguna otra anotación de la plataforma);
+                       </div>
+                       <div class="margen_top_20" style="margin-bottom:20px;">
+                           <b>El documento debe de contener caracteres de autenticidad del acuse.</b>
+                       </div>
+                       <div class="margen_top_20" style="margin-bottom:20px;">
+                            &nbsp;
+                       </div>
+                   </div>
+               </div>
+               <div class="margen_top_20">
+                   Nombre de los archivos enviados:
+               </div>
+               <div class="margen_top_20" style="border:solid 1px #000000; width:98%;">
+                   <div class="cuadro">
+                       <ul>
+                           <li>(Nombre y tamaño de los archivos que se acompañen al formato electrónico del trámite y caracteres de autenticidad que garanticen la fiabilidad de los mismos;)</li>
+                           <li>a</li>
+                           <li>a</li>
+                       </ul>
+                       <div class="margen_top_20" style="margin-bottom:20px;">
+                            &nbsp;
+                       </div>
+                   </div>
+               </div>
+           </div>
+           <div style="position:absolute; bottom: 10px; font-size: 10px;">
+               <div style="text-align: center; margin-left:30%; border:solid 1px #000000; width:40%;">
+                   <div class="cuadro">
+                       <div class="margen_top_20" style="margin-bottom:20px;">
+                           Portal Visor Urbano del Ayuntamiento de <br>
+                           Guadalajara, Jalisco.
+                       </div>
+                       <div class="margen_top_20" style="margin-bottom:20px;">
+                           <h1>Recibido</h1>
+                       </div>
+                       <div class="margen_top_20" style="margin-bottom:20px;">
+                           Fecha y Hora
+                       </div>
+                       <div class="margen_top_20" style="margin-bottom:20px;">
+                            &nbsp;
+                       </div>
+                   </div>
+               </div>
+               <div style="text-align: justify; width: 95%; margin-top:15px;">
+                   El presente acuse se emite con fundamento en los artículos 20 fracción IV del Reglamento del
+                   Acto y del Procedimiento Administrativo del Municipio de Guadalajara, Jalisco, 13 del
+                   Reglamento del Uso de Medios Electrónicos del Ayuntamiento de Guadalajara, octavo fracción
+                   X de las Disposiciones Administrativas que contienen las Reglas para la Realización de Trámites
+                   Electrónicos en Materia de Desarrollo Urbano del Municipio de Guadalajara
+               </div>
+           </div>
+       </body>
+       </html>';
+       $this->pdf->WriteHTML($html);
+       $this->pdf->Output('Acuse_envio.pdf', 'I');
+   }
+
+   public function orden_pago(){
+       $html='<html>
+       <head>
+           <style>
+               body{
+                 font-family: exo;
+               }
+               .cuadro{
+                 border-style: solid;
+                 border-color: coral;
+               }
+           </style>
+       </head>
+       <body>
+           <div style="position:absolute; left:60px; top:3%; width:8%;">
+               <img src="assets/gdl-logo.png" alt="">
+           </div>
+           <div  style="position:absolute; left:17%; top:4%; text-align:left; font-weight:bold; width:40%;  color:#C40E91; font-size: 15px;">
+               <span>MUNICIPIO DE GUADALAJARA</span> <br>
+               <span style="font-size:10px;">TESORERÍA MUNICIPAL</span> <br><br>
+               <span>LICENCIA DE MUNICIPAL</span>
+           </div>
+           <div  style="position:absolute; right:12%; top:4%; text-align:center; font-weight:bold; width:40%;  color:#C40E91; font-size: 15px;">
+               <span>ORDEN DE PAGO TOTAL</span>
+           </div>
+           <div style="position:absolute; right:10%; top:3%; width: 8%">
+               <img src="assets/gdl-logo.png" alt="">
+           </div>
+           <div style="position:absolute; top:12%; text-align:center;">
+                 <div style="float:right; width:25%; border:solid 1px #000; border-radius:5px;">
+                     <b>FOLIO</b><br>
+                     01122017
+                 </div>
+                 <div style="float:right; width:25%; border:solid 1px #000; border-radius:5px;">
+                     <b>FECHA DE RECEPCIÓN</b><br>
+                     01/12/2017
+                 </div>
+                 <div style="float:right; width:30%; border:solid 1px #000; border-radius:5px;">
+                     <b>FECHA LIMITE DE PAGO</b><br>
+                     01/12/2017
+                 </div>
+           </div>
+       </body>
+       </html>';
+       $this->pdf->WriteHTML($html);
+       $this->pdf->Output('Acuse_envio.pdf', 'I');
+   }
 
 }

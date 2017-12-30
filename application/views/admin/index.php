@@ -28,7 +28,8 @@
                                     <?php endif; ?>
                                     <?php if($licencia->status =='FP'): ?>
                                         <a href="<?=base_url()?>nueva-licencia/<?= $this->utils->encode($licencia->id_licencia);?>/<?= $this->utils->encode($licencia->id_usuario);?>" class="mui-btn mui-btn--primary"><i class="fa fa-eye" aria-hidden="true"></i> Ver Trámite</a>
-                                        &nbsp;&nbsp;&nbsp;<a href="<?=base_url()?>orden-pago/licencia-giro/<?= $this->utils->encode($licencia->id_licencia);?>/<?= $this->utils->encode($licencia->id_usuario);?>" target="_blank" class="mui-btn mui-btn--primary"><i class="fa fa-print" aria-hidden="true"></i> Imprimir orden de pago</a>
+                                        &nbsp;&nbsp;&nbsp;<!--a href="<?=base_url()?>orden-pago/licencia-giro/<?= $this->utils->encode($licencia->id_licencia);?>/<?= $this->utils->encode($licencia->id_usuario);?>" target="_blank" class="mui-btn mui-btn--primary"><i class="fa fa-print" aria-hidden="true"></i> Imprimir orden de pago</a-->
+                                        <a href="<?=base_url()?>formatos/orden_pago?lic=<?= $this->utils->encode($licencia->id_licencia);?>&usu=<?= $this->utils->encode($licencia->id_usuario);?>" target="_blank" class="mui-btn mui-btn--primary"><i class="fa fa-print" aria-hidden="true"></i> Imprimir Orden de Pago</a>
                                     <?php endif; ?>
                                 </div>
                             </div>

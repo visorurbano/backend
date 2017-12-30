@@ -546,7 +546,9 @@
                                <div class="col-md-12">
                                    <center>
                                        <!--<a href="<?=base_url()?>orden-pago/licencia-giro/<?= $this->utils->encode($licencia->id_licencia);?>/<?= $this->utils->encode($licencia->id_usuario);?>" target="_blank" class="btn btn-lg btn-secondary"><i class="fa fa-print" aria-hidden="true"></i> Imprimir Orden de Pago</a>-->
-                                       <a href="<?=base_url()?>/formatos/op.pdf" target="_blank" class="btn btn-lg btn-secondary"><i class="fa fa-print" aria-hidden="true"></i> Imprimir Orden de Pago</a>
+                                       <!--a href="<?=base_url()?>/formatos/op.pdf" target="_blank" class="btn btn-lg btn-secondary"><i class="fa fa-print" aria-hidden="true"></i> Imprimir Orden de Pago</a-->
+                                       <a href="<?=base_url()?>formatos/orden_pago?lic=<?= $this->utils->encode($licencia->id_licencia);?>&usu=<?= $this->utils->encode($licencia->id_usuario);?>" target="_blank" class="btn btn-lg btn-secondary"><i class="fa fa-print" aria-hidden="true"></i> Imprimir Orden de Pago</a>
+
                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                        <a href="#" id="btnPagoLinea" class="btn btn-lg btn-secondary"><i class="fa fa-credit-card-alt" aria-hidden="true"></i> Pagar en  linea</a>
                                    </center>

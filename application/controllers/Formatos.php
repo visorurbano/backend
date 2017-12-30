@@ -865,51 +865,289 @@ class Formatos extends CI_Controller {
    }
 
    public function orden_pago(){
+       extract($_GET);
+       $idTramite = $this->utils->decode($lic);
+       $idUsuario = $this->utils->decode($usu);
+       $licencia = $this->LicenciasGiroModel->getLicencia($idUsuario, $idTramite);
+       $no_licencia=$licencia->clave_factibilidad;
+       $actividad = $licencia->descripcion_factibilidad;
+       $cajones_estacionamiento="0";
+       $superficie="16";
+       $calle = $licencia->st3_domicilio_establecimiento;
+       $no_ext = $licencia->st3_num_ext_establecimiento;
+       $col = $licencia->st3_colonia_establecimiento;
+       $no_int = $licencia->st3_num_int_establecimiento;
+       $nombre = $licencia->st2_nombre_solicitante;
+       $rfc = $licencia->st2_rfc_solicitante;
+       $curp = $licencia->st2_curp_solicitante;
+       $fechaTitle = date("d/m/Y H:i");
+       $vacio="&nbsp;";
        $html='<html>
        <head>
            <style>
-               body{
-                 font-family: exo;
-               }
-               .cuadro{
-                 border-style: solid;
-                 border-color: coral;
-               }
+                body{
+                    font-family: exo;
+                    font-size:12px;
+                }
+                table {
+                    border-collapse: collapse;
+                }
+
+                table, th, td {
+                    border: 1px solid black;
+                }
            </style>
        </head>
        <body>
            <div style="position:absolute; left:60px; top:3%; width:8%;">
                <img src="assets/gdl-logo.png" alt="">
            </div>
-           <div  style="position:absolute; left:17%; top:4%; text-align:left; font-weight:bold; width:40%;  color:#C40E91; font-size: 15px;">
+           <div  style="position:absolute; left:17%; top:4%; text-align:left; font-weight:bold; width:40%;  color:#AC58FA; font-size: 15px;">
                <span>MUNICIPIO DE GUADALAJARA</span> <br>
                <span style="font-size:10px;">TESORERÍA MUNICIPAL</span> <br><br>
-               <span>LICENCIA DE MUNICIPAL</span>
+               <span>LICENCIA MUNICIPAL</span>
            </div>
-           <div  style="position:absolute; right:12%; top:4%; text-align:center; font-weight:bold; width:40%;  color:#C40E91; font-size: 15px;">
+           <div  style="position:absolute; right:12%; top:4%; text-align:center; font-weight:bold; width:40%;  color:gray; font-size: 15px;">
                <span>ORDEN DE PAGO TOTAL</span>
            </div>
            <div style="position:absolute; right:10%; top:3%; width: 8%">
                <img src="assets/gdl-logo.png" alt="">
            </div>
-           <div style="position:absolute; top:12%; text-align:center;">
-                 <div style="float:right; width:25%; border:solid 1px #000; border-radius:5px;">
-                     <b>FOLIO</b><br>
-                     01122017
+           <div style="position:absolute; top:12%; text-align:center; width:84%;">
+                 <div>
+                    <div style="float:right; width:25%; border:solid 1px #000; border-radius:5px;">
+                        <b>FOLIO</b><br>
+                        01122017
+                     </div>
+                     <div style="float:right; width:25%; border:solid 1px #000; border-radius:5px;">
+                         <b>FECHA DE RECEPCIÓN</b><br>
+                         01/12/2017
+                     </div>
+                     <div style="float:right; width:30%; border:solid 1px #000; border-radius:5px;">
+                         <b>FECHA LIMITE DE PAGO</b><br>
+                         01/12/2017
+                     </div>
                  </div>
-                 <div style="float:right; width:25%; border:solid 1px #000; border-radius:5px;">
-                     <b>FECHA DE RECEPCIÓN</b><br>
-                     01/12/2017
+                 <div>
+                    <div style="text-align:left; float:right; width:99.8%; border:solid 1px #000; border-radius:5px;">
+                        <div style="margin-left:10px;">
+                            <b>NOMBRE DEL CONTRIBUYENTE</b><br>
+                            '.(empty($nombre)?$vacio:$nombre).'
+                         </div>
+                     </div>
                  </div>
-                 <div style="float:right; width:30%; border:solid 1px #000; border-radius:5px;">
-                     <b>FECHA LIMITE DE PAGO</b><br>
-                     01/12/2017
+                 <div>
+                     <div style="text-align:left; float:left; width:60%; border:solid 1px #000; border-radius:5px;">
+                        <div style="margin-left:10px;">
+                            <b>DOMICILIO</b><br>
+                            '.(empty($calle)?$vacio:$calle).' '.(empty($col)?$vacio:$col).'
+                        </div>
+                     </div>
+                     <div style="text-align:center; float:left; width:20%; border:solid 1px #000; border-radius:5px;">
+                        <b>NO. EXT.</b><br>
+                        '.(empty($no_ext)?$vacio:$no_ext).'
+                     </div>
+                     <div style="text-align:center; float:right; width:19%; border:solid 1px #000; border-radius:5px;">
+                        <b>NO. INT.</b><br>
+                        '.(empty($no_int)?$vacio:$no_int).'
+                     </div>
+                 </div>
+                 <div>
+                    <div style="text-align:left; float:right; width:99.8%; border:solid 1px #000; border-radius:5px;">
+                        <div style="margin-left:10px;">
+                            <b>ACTIVIDAD</b><br>
+                            '.(empty($actividad)?$vacio:$actividad).'
+                        </div>
+                     </div>
+                 </div>
+                 <div>
+                     <div style="text-align:center; float:left; width:33%; border:solid 1px #000; border-radius:5px;">
+                        <b>NO. CAJONES</b><br>
+                        '.(empty($cajones_estacionamiento)? $vacio : $cajones_estacionamiento).'
+                     </div>
+                     <div style="text-align:center; float:left; width:33%; border:solid 1px #000; border-radius:5px;">
+                        <b>SUPERFICIE AUTORIZADA</b><br>
+                        '.(empty($superficie)?$vacio:$superficie).'
+                     </div>
+                     <div style="text-align:center; float:right; width:33%; border:solid 1px #000; border-radius:5px;">
+                        <b>FOLIO FICHA</b><br>
+                        263982
+                     </div>
+                 </div>
+                 <div>
+                    <div style="text-align:left; float:right; width:99.8%; border:solid 1px #000; border-radius:5px;">
+                        <div style="margin-left:10px;">
+                            <b>LICENCIA QUE SE AUTORIZA</b><br>
+                            '.(empty($no_licencia)?$vacio:$no_licencia).'
+                        </div>
+                     </div>
+                 </div>
+                 <div style="text-align:justify; font-size:10px;">
+                    <p style="color:#AC58FA;">*La presente Orden de Pago únicamente avala la aplicación de tarifas establecidas en la Ley de Ingresos, no implica la autorización
+                        de la Licencia de Construcción, sólo el cumplimiento de uno de los requisitos para la expedición de la misma, la cual quedará sujeta
+                        al cumplimiento de toda la Normatividad establecida en las Leyes, Reglamentos, Programas Municipales y Estatales que sobre el
+                        Desarrollo Urbano rigen al Municipio, así como al pago referido.
+                    </p>
+                    <p>
+                        ** Estimado usuario, al recibir la orden de pago es su obligación verificar que los datos asentados en ella sean los correctos y antes
+                        de realizar el pago deberá solicitar la aclaración de las tarifas aplicadas si existieran dudas de su parte.
+                    </p><br>
+                 </div>
+                 <div>
+                    <table cellpadding="10">
+                        <tr>
+                            <td>
+                                <b>Detalle de la obra</b>
+                            </td>
+                            <td style="text-align:center; color:#fff; background:#b6b6b6;">
+                                <b>Superficie / Cantidad</b>
+                            </td>
+                            <td style="text-align:center; color:#fff; background:#b6b6b6;">
+                                <b>Tarifa</b>
+                            </td>
+                            <td style="text-align:center; color:#fff; background:#b6b6b6;">
+                                <b>%</b>
+                            </td>
+                            <td style="text-align:center; color:#fff; background:#b6b6b6;">
+                                <b>Importe Derechos</b>
+                            </td>
+                            <td style="text-align:center; color:#fff;  background:gray;">
+                                <b>Valor Construcción</b>
+                            </td>
+                            <td style="text-align:center; color:#fff;  background:gray;">
+                                <b>%</b>
+                            </td>
+                            <td style="text-align:center; color:#fff;  background:gray;">
+                                <b>Importe Impuestos</b>
+                            </td>
+                            <td style="text-align:center; color:#fff; background:#000;">
+                                <b>Importe Total</b>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                RAMPA\BANQUETA\COMERCIO Y
+                                SERVICIOS\COMERCIO Y SERVICIO BARRIAL
+                            </td>
+                            <td style="text-align:center;">
+                                0 M2
+                            </td>
+                            <td style="text-align:center;">
+                                120
+                            </td>
+                            <td style="text-align:center;">
+                                20
+                            </td>
+                            <td style="text-align:center;">
+                                0
+                            </td>
+                            <td style="text-align:center;">
+                                5690
+                            </td>
+                            <td style="text-align:center;">
+                                1.25
+                            </td>
+                            <td style="text-align:center;">
+                                0
+                            </td>
+                            <td style="text-align:center;">
+                                0
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                TEJABAN\EMPEDRADO\HABITACIONAL\UNIFAMILIAR
+                            </td>
+                            <td style="text-align:center;">
+                                0 M2
+                            </td>
+                            <td style="text-align:center;">
+                                24
+                            </td>
+                            <td style="text-align:center;">
+                                30
+                            </td>
+                            <td style="text-align:center;">
+                                0
+                            </td>
+                            <td style="text-align:center;">
+                                900
+                            </td>
+                            <td style="text-align:center;">
+                                1.25
+                            </td>
+                            <td style="text-align:center;">
+                                0
+                            </td>
+                            <td style="text-align:center;">
+                                0
+                            </td>
+                        </tr>
+                    </table>
+                    <div style="font-size:10px; text-align:justify; float:left; width:60%;">
+                        ART. 101 DEL REGLAMENTO DE GESTIÓN DEL DESARROLLO PARA EL MUNICIPIO DE GUADALAJARA.<br>
+                        1. El otorgamiento de las licencias causa los derechos a que se refieren la Ley de Ingresos. En caso de
+                        que habiéndose solicitado el otorgamiento hubiere quedado pendiente de expedirse la licencia por falta
+                        de pago de tales derechos por un término mayor de treinta días hábiles, se entiende, por parte de la
+                        Secretaría de Obras Publicas, por desistido el interesado de la solicitud de construcción para todos los
+                        efectos legales.
+                    </div>
+                    <div style="font-size:10px; border: 1px solid black; float:left; width:38.7%; margin-left:1%; text-align:normal;">
+                        <table style="border:none;">
+                            <tr>
+                                <td style="width:50%; border:none;">
+                                    <b>IMPORTE SOLICITUD:</b>
+                                </td>
+                                <td style="text-align:right; width:50%; border:none;">
+                                    $35.00
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="border:none;">
+                                    <b>IMPORTE LICENCIA:</b>
+                                </td>
+                                <td style="text-align:right; border:none;">
+                                    $473.00
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="border:none;">
+                                    <b>CONS. Y MEJ. MEDIO AMB.:</b>
+                                </td>
+                                <td style="text-align:right; border:none;">
+                                    $8.10
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="border:none;">
+                                    <b>IMPORTE A PAGAR:</b>
+                                </td>
+                                <td style="text-align:right; border:none;">
+                                    $516.10
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div style="text-align:center; color:#AC58FA; font-weight:bold; font-size:15px; margin-top:10px;">
+                        <span>Esta orden de pago sólo serán válidas hasta la fecha Límite señalada a continuación:</span>
+                    </div>
+                    <div>
+                        <div style="text-align:left; width:50%; float:left; margin-top:10%;">
+                            <span><b>Fecha de impresión: '.$fechaTitle.'</b></span><br><br>
+                            <barcode code="'.$fechaTitle.'" type="C128A" class="barcode" size="0.5" style="margin-left:10px;"/>
+                        </div>
+                        <div style="text-align:right; float:right; width:50%;">
+                            <span><b>Fecha límite de pago: </b></span>
+                        </div>
+                    </div>
                  </div>
            </div>
        </body>
        </html>';
+
+
        $this->pdf->WriteHTML($html);
-       $this->pdf->Output('Acuse_envio.pdf', 'I');
+       $this->pdf->Output('orden_pago.pdf', 'I');
    }
 
 }

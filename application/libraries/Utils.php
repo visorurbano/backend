@@ -17,6 +17,7 @@ class Utils {
         return ($result);
     }
     public function conec_soap($metodo,$params){
+        ini_set("soap.wsdl_cache_enabled", 0);
         $wsdl = 'https://modulos.guadalajara.gob.mx:443/wsWebLic/wsWebLic.php?wsdl';
         $options = array(
                 'login'=>'wspadron',
@@ -29,9 +30,7 @@ class Utils {
         catch(Exception $e) {
         	die($e->getMessage());
         }
-        print_r($data);
-        //return $data;
-        die();
+        return $data;
     }
     public  function safe_b64encode($string) {
         $data = base64_encode($string);

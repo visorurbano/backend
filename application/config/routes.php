@@ -72,6 +72,8 @@ $route['nueva-licencia/(:any)'] = 'LicenciasGiro/requisitos';
 
 $route['licencia/a/update'] = 'LicenciasGiro/updateForma';
 
+$route['revision'] = 'RevisionController';
+$route['revision/(:any)'] = 'RevisionController';
 //utils
 $route['validacuentapredial'] = 'UtilsController/validateCuentaPredial';
 $route['validaclavecatastral'] = 'UtilsController/validateClaveCatastral';

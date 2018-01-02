@@ -27,7 +27,7 @@ class UtilsController extends CI_Controller {
             if (empty($params['factibilidad'])){
                 throw new Exception('El folio del trámite de factibilidad es requerido', 404);
             }
-            $factibilidad = json_decode($this->utils->getJson('http://192.168.66.94:3030/api/vinculoDictamen?axo=2017&folio='.$params['factibilidad']));
+            $factibilidad = json_decode($this->utils->getJson('http://192.168.66.94:3030/api/vinculoDictamen?axo='.date('Y').'&folio='.$params['factibilidad']));
             if ($factibilidad->status != 200){
                 throw new Exception('Folio de factibilidad no valido', 401);
             }

@@ -95,17 +95,23 @@
                                        <div class="col-md-6">
                                            <div class="form-group">
                                                <label for="exampleInputFile"><b>* Identificación Testigo 1</b></label>
-                                               <input type="file" class="form-control-file" id="fleTestigo1" onchange="loadFile(this);" name="fleTestigo1" aria-describedby="fileHelp" data-type="carta_poder_identificacion_testigo1" data-elastic="fleTestigo1Elastic" data-text="Identificación del testigo 1">
+                                               <input type="file" class="form-control-file <?php if(!empty($st1_identificacion_testigo1)){echo 'valid';}?>" id="fleTestigo1" onchange="loadFile(this);" name="fleTestigo1" aria-describedby="fileHelp" data-type="st1_identificacion_testigo1" data-elastic="fleTestigo1Elastic" data-text="Identificación del testigo 1">
                                                <div id="fleTestigo1Elastic" class="progress-bar-custom"></div>
                                                <small id="fileHelp" class="form-text text-muted">puede ser (INE, IFE, Pasaporte); la identicficacón debe estar vigente.<br>El formato requerido del archivo es: .pdf</small>
+                                               <?php if(!empty($st1_identificacion_testigo1)):?>
+                                                   <a href="<?=$st1_identificacion_testigo1?>" target="_blank" class="link-to-file"><i class="fa fa-file-text-o" aria-hidden="true"></i> Identificación del testigo 1</a>
+                                               <?php endif;?>
                                            </div>
                                        </div>
                                        <div class="col-md-6">
                                            <div class="form-group">
                                                <label for="exampleInputFile"><b>* Identificación Testigo 2</b></label>
-                                               <input type="file" class="form-control-file" id="fleTestigo2" onchange="loadFile(this);" name="fleTestigo2" aria-describedby="fileHelp" data-type="carta_poder_identificacion_testigo2" data-elastic="fleTestigo2Elastic" data-text="Identificación del testigo 2">
+                                               <input type="file" class="form-control-file <?php if(!empty($st1_identificacion_testigo2)){echo 'valid';}?>" id="fleTestigo2" onchange="loadFile(this);" name="fleTestigo2" aria-describedby="fileHelp" data-type="st1_identificacion_testigo2" data-elastic="fleTestigo2Elastic" data-text="Identificación del testigo 2">
                                                <div id="fleTestigo2Elastic" class="progress-bar-custom"></div>
                                                <small id="fileHelp" class="form-text text-muted">puede ser (INE, IFE, Pasaporte); la identicficacón debe estar vigente.<br>El formato requerido del archivo es: .pdf</small>
+                                               <?php if(!empty($st1_identificacion_testigo2)):?>
+                                                   <a href="<?=$st1_identificacion_testigo2?>" target="_blank" class="link-to-file"><i class="fa fa-file-text-o" aria-hidden="true"></i> Identificación del testigo 2</a>
+                                               <?php endif;?>
                                            </div>
                                        </div>
                                    </div>
@@ -114,9 +120,12 @@
                                <div id="seccionArrendatario">
                                    <div class="form-group">
                                        <label for="exampleInputFile"><b>* Adjuntar Contrato de arrendamiento</b></label>
-                                       <input type="file" class="form-control-file" onchange="loadFile(this);" id="fleContratoArrendamiento" name="fleContratoArrendamiento" aria-describedby="fileHelp" data-type="contrato_arrendamiento" data-elastic="fleContratoArrendamientoElastic" data-text="Contrato arrendamiento">
+                                       <input type="file" class="form-control-file <?php if(!empty($st1_contrato_arrendamiento)){echo 'valid';}?>" onchange="loadFile(this);" id="fleContratoArrendamiento" name="fleContratoArrendamiento" aria-describedby="fileHelp" data-type="st1_contrato_arrendamiento" data-elastic="fleContratoArrendamientoElastic" data-text="Contrato arrendamiento">
                                        <div id="fleContratoArrendamientoElastic" class="progress-bar-custom"></div>
                                        <small id="fileHelp" class="form-text text-muted">El formato requerido del archivo es: .pdf</small>
+                                       <?php if(!empty($st1_contrato_arrendamiento)):?>
+                                           <a href="<?=$st1_contrato_arrendamiento?>" target="_blank" class="link-to-file"><i class="fa fa-file-text-o" aria-hidden="true"></i> Contrato de arrendamiento</a>
+                                       <?php endif;?>
                                    </div>
 
                                    <div class="form-group">
@@ -142,9 +151,12 @@
                                    <div id="seccionCartaAnuencia">
                                        <div class="form-group">
                                            <label for="exampleInputFile"><b>* Adjuntar Carta de Anuencia</b>&nbsp;&nbsp;&nbsp;<small><a href="<?=base_url()?>formatos/carta_anuencia.docx"><i class="fa fa-download" aria-hidden="true"></i> Descarga aquí el formato</a></small></label>
-                                           <input type="file" class="form-control-file" onchange="loadFile(this);" id="fleAnuencia" name="fleAnuencia" aria-describedby="fileHelp" data-type="carta_anuencia" data-elastic="fleAnuenciaElastic" data-text="Carta anuencia">
+                                           <input type="file" class="form-control-file <?php if(!empty($st1_carta_anuencia)){echo 'valid';}?>" onchange="loadFile(this);" id="fleAnuencia" name="fleAnuencia" aria-describedby="fileHelp" data-type="st1_carta_anuencia" data-elastic="fleAnuenciaElastic" data-text="Carta anuencia">
                                            <div id="fleAnuenciaElastic" class="progress-bar-custom"></div>
                                            <small id="fileHelp" class="form-text text-muted">El formato requerido del archivo es: .pdf</small>
+                                           <?php if(!empty($st1_carta_anuencia)):?>
+                                               <a href="<?=$st1_carta_anuencia?>" target="_blank" class="link-to-file"><i class="fa fa-file-text-o" aria-hidden="true"></i> Carta de anuencia</a>
+                                           <?php endif;?>
                                        </div>
                                    </div>
 
@@ -158,9 +170,25 @@
                        <section>
                            <div id="secRepresentante">
                                <h3>Datos del Representante</h3>
-                               <div class="mui-textfield mui-textfield--float-label nerror">
-                                   <input id="txtNombreRep" type="text" name="st2_nombre_representante" class="input-material" value="<?=$st2_nombre_representante;?>" required>
-                                   <label for="txtNombreRep">* Nombre del Representante</label>
+                               <div class="row">
+                                   <div class="col-md-4">
+                                       <div class="mui-textfield mui-textfield--float-label nerror">
+                                           <input id="txtNombreRep" type="text" name="st2_nombre_representante" class="input-material" value="<?=$st2_nombre_representante;?>" required>
+                                           <label for="txtNombreRep">* Nombre(s) del Representante</label>
+                                       </div>
+                                   </div>
+                                   <div class="col-md-4">
+                                       <div class="mui-textfield mui-textfield--float-label nerror">
+                                           <input id="txtPApellido" type="text" name="st2_priper_apellido_representante" class="input-material" value="<?=$st2_priper_apellido_representante;?>" required>
+                                           <label for="txtPApellido">* Primer Apellido del Representante</label>
+                                       </div>
+                                   </div>
+                                   <div class="col-md-4">
+                                       <div class="mui-textfield mui-textfield--float-label nerror">
+                                           <input id="txtSApellido" type="text" name="st2_segundo_apellido_representante" class="input-material" value="<?=$st2_segundo_apellido_representante;?>" required>
+                                           <label for="txtSApellido">* Segundo apellido del Representante</label>
+                                       </div>
+                                   </div>
                                </div>
                                <div class="row">
                                    <div class="col-md-4">
@@ -234,18 +262,37 @@
                                <div class="row">
                                    <div class="form-group">
                                        <label for="fleIFESolicitante"><b>* Adjuntar Identificación Oficial Vigente del representante, puede ser (INE, IFE, Pasaporte) </b></label>
-                                       <input type="file" class="form-control-file" id="fleIFERepresentante" onchange="loadFile(this);" aria-describedby="fileHelp" name="st2_identificacion_representante" data-type="identificacion_representante" data-elastic="fleIFERepresentanteElastic" data-text="Identificación del representante">
+                                       <input type="file" class="form-control-file <?php if(!empty($st2_identificacion_representante)){echo 'valid';}?>" id="fleIFERepresentante" onchange="loadFile(this);" aria-describedby="fileHelp" name="st2_identificacion_representante" data-type="st2_identificacion_representante" data-elastic="fleIFERepresentanteElastic" data-text="Identificación del representante">
                                        <div id="fleIFERepresentanteElastic" class="progress-bar-custom"></div>
                                        <small id="fileHelp" class="form-text text-muted">La imagen debera contener frente y reverso ademas debe ser escaneada del documento original en formato .pdf.</small>
+                                       <?php if(!empty($st2_identificacion_representante)):?>
+                                           <a href="<?=$st2_identificacion_representante?>" target="_blank" class="link-to-file"><i class="fa fa-file-text-o" aria-hidden="true"></i> Identificacón del representante</a>
+                                       <?php endif;?>
                                    </div>
                                </div>
                            </div>
                                <br><br>
                                <h3>Datos del Propietario/Arrendatario</h3>
-                               <div class="mui-textfield mui-textfield--float-label nerror">
-                               <input id="txtNombre" type="text" name="st2_nombre_solicitante" class="input-material" value="<?=$st2_nombre_solicitante;?>" required>
-                               <label for="txtNombre">* Nombre del Contribuyente o Razón Social</label>
-                           </div>
+                               <div class="row">
+                                   <div class="col-md-4">
+                                       <div class="mui-textfield mui-textfield--float-label nerror">
+                                           <input id="txtNombre" type="text" name="st2_nombre_solicitante" class="input-material" value="<?=$st2_nombre_solicitante;?>" required>
+                                           <label for="txtNombre">* Nombre del Propietario/Arrendatario</label>
+                                       </div>
+                                   </div>
+                                   <div class="col-md-4">
+                                       <div class="mui-textfield mui-textfield--float-label nerror">
+                                           <input id="txtPApellidoSolicitante" type="text" name="st2_primer_apellido_solicitante" class="input-material" value="<?=$st2_primer_apellido_solicitante;?>" required>
+                                           <label for="txtPApellidoSolicitante">* Primer Apellido del Propietario/Arrendatario</label>
+                                       </div>
+                                   </div>
+                                   <div class="col-md-4">
+                                       <div class="mui-textfield mui-textfield--float-label nerror">
+                                           <input id="txtSApellidoSolicitante" type="text" name="st2_segundo_apellido_solicitante" class="input-material" value="<?=$st2_segundo_apellido_solicitante;?>" required>
+                                           <label for="txtSApellidoSolicitante">* Segundo Apellido del Propietario/Arrendatario</label>
+                                       </div>
+                                   </div>
+                               </div>
                            <div class="row">
                                <div class="col-md-4">
                                    <div class="mui-textfield mui-textfield--float-label nerror">
@@ -316,9 +363,12 @@
                           <div class="row cont-identificacion-solicitante">
                               <div class="form-group">
                                   <label for="fleIFESolicitante"><b>* Adjuntar Identificación Oficial Vigente del propietario/Arrendatario, puede ser (INE, IFE, Pasaporte) </b></label>
-                                  <input type="file" class="form-control-file" onchange="loadFile(this);" id="fleIFESolicitante" name="st2_identidficacion_solicitante" aria-describedby="fileHelp" data-type="identificacion_solicitante" data-elastic="fleIFESolicitanteElastic" data-text="Identificación del solicitante">
+                                  <input type="file" class="form-control-file <?php if(!empty($st2_identidficacion_solicitante)){echo 'valid';}?>" onchange="loadFile(this);" id="fleIFESolicitante" name="st2_identidficacion_solicitante" aria-describedby="fileHelp" data-type="st2_identidficacion_solicitante" data-elastic="fleIFESolicitanteElastic" data-text="Identificación del solicitante">
                                   <div id="fleIFESolicitanteElastic" class="progress-bar-custom"></div>
                                   <small id="fileHelp" class="form-text text-muted">La imagen debera contener frente y reverso ademas debe ser escaneada del documento original en formato .pdf.</small>
+                                  <?php if(!empty($st2_identidficacion_solicitante)):?>
+                                      <a href="<?=$st2_identidficacion_solicitante?>" target="_blank" class="link-to-file"><i class="fa fa-file-text-o" aria-hidden="true"></i> Identificacón del solicitante</a>
+                                  <?php endif;?>
                               </div>
                           </div>
                        </section>
@@ -474,7 +524,7 @@
                                <div class="col-md-4">
                                    <div class="form-group fto-st3">
                                        <label for="exampleInputFile"><b>* Adjuntar Fotografía del Interior del Establecimiento</b></label>
-                                       <input type="file" class="form-control-file" id="fleFotoLocal3" onchange="loadFile(this);" name="st3_img3_establecimiento" aria-describedby="fileHelp" data-type="foto_3_establecimiento" data-elastic="fleFotoLocal3Elastic" data-text="Fotografía del interior del establecimiento">
+                                       <input type="file" class="form-control-file " id="fleFotoLocal3" onchange="loadFile(this);" name="st3_img3_establecimiento" aria-describedby="fileHelp" data-type="foto_3_establecimiento" data-elastic="fleFotoLocal3Elastic" data-text="Fotografía del interior del establecimiento">
                                        <div id="fleFotoLocal3Elastic" class="progress-bar-custom"></div>
                                        <small id="fileHelp" class="form-text text-muted">La fotografía debe ser tomada desde el ingreso al establecimiento porcurando que se aprecie el área a utilizar.<br><b>No fotos de buscadores de internet</b><br>Formatos permitidos: .png, .jpg, .jpeg, .gif, .pdf<b></b></small>
                                    </div>

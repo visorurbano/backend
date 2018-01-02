@@ -69,8 +69,12 @@ class LicenciasGiro extends CI_Controller {
                 $data['st1_carta_anuencia'] = $licencia->st1_carta_anuencia;
                 //Step 2
                 $data['st2_nombre_representante'] = $licencia->st2_nombre_representante;
+                $data['st2_primer_apellido_solicitante'] = $licencia->st2_primer_apellido_solicitante;
+                $data['st2_segundo_apellido_solicitante'] = $licencia->st2_segundo_apellido_solicitante;
                 $data['st2_curp_representante'] = $licencia->st2_curp_representante;
                 $data['st2_rfc_representante'] = $licencia->st2_rfc_representante;
+                $data['st2_priper_apellido_representante'] = $licencia->st2_priper_apellido_representante;
+                $data['st2_segundo_apellido_representante'] = $licencia->st2_segundo_apellido_representante;
                 if (!empty($licencia->st2_email_representante)){
                     $data['st2_email_representante'] = $licencia->st2_email_representante;
                 }else{

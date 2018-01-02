@@ -762,7 +762,6 @@ function unsetError(){
 }
 
 function updateForma(campos, step, id){
-    //console.log(campos);
     var data = {};
     $.each(campos, function(index, val){
         data[val.name] = val.value;

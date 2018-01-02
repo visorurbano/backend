@@ -16,7 +16,23 @@ class Utils {
 
         return ($result);
     }
-
+    public function conec_soap($metodo,$params){
+        $wsdl = 'https://modulos.guadalajara.gob.mx:443/wsWebLic/wsWebLic.php?wsdl';
+        $options = array(
+                'login'=>'wspadron',
+                'password'=>'p4dr0nl1c'
+        	);
+        try {
+        	$soap = new SoapClient($wsdl, $options);
+        	$data = $soap->$metodo($params);
+        }
+        catch(Exception $e) {
+        	die($e->getMessage());
+        }
+        print_r($data);
+        //return $data;
+        die();
+    }
     public  function safe_b64encode($string) {
         $data = base64_encode($string);
         $data = str_replace(array('+','/','='),array('-','_',''),$data);

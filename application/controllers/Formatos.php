@@ -385,9 +385,9 @@ class Formatos extends CI_Controller {
        $licencia = $this->LicenciasGiroModel->getLicencia($idUsuario, $idTramite);
        $no_licencia=$licencia->clave_factibilidad;
        $actividad = $licencia->descripcion_factibilidad;
-       $cajones_estacionamiento="0";
+       $cajones_estacionamiento=$licencia->st3_cajones_estacionamiento_establecimiento;
        $aforo_personas="0";
-       $superficie="16";
+       $superficie=$licencia->st3_area_utilizar_establecimiento;
        $horario="";
        $fecha_sesion="";
        $calle = $licencia->st3_domicilio_establecimiento;
@@ -397,15 +397,50 @@ class Formatos extends CI_Controller {
        $no_int = $licencia->st3_num_int_establecimiento;
        $zona="4-4";
        $nombre = $licencia->st2_nombre_solicitante;
+       $apellido_primer = $licencia->st2_primer_apellido_solicitante;
+       $apellido_segundo = $licencia->st2_segundo_apellido_solicitante;
        $rfc = $licencia->st2_rfc_solicitante;
        $curp = $licencia->st2_curp_solicitante;
-       $concepto="IMPRESOS 2017-2017 FORMA DE SOLICITUD";
-       $importe="392.00";
-       $pago="EFECTIVO";
-       $total="427.00";
-       $fechaTitle = date("d/m/Y H:i");
 
-       $html ='<html>
+       $fechaTitle = date("d/m/Y H:i");
+       $params = array(
+          'tipo_tramite'=>'13',
+          'scian'=>$actividad,
+          'x'=>'0',
+          'y'=>'0',
+          'zona'=>'0',
+          'subzona'=>'0',
+          'actividad'=> $actividad,
+          'cvecuenta'=>$licencia->cuenta_predial,
+          'propietario'=> $nombre,
+          'primer_ap'=> $apellido_primer,
+          'segundo_ap'=> $apellido_segundo,
+          'rfc'=>$rfc,
+          'curp'=>$curp,
+          'telefono_prop'=>$licencia->st2_telefono_solicitante,
+          'email'=>$licencia->st2_email_solicitante,
+          'cvecalle'=>'0',
+          'calle'=>$calle,
+          'num_ext'=>$no_ext,
+          'let_ext'=>$licencia->st3_letra_ext_establecimiento,
+          'num_int'=>$no_int,
+          'let_int'=>$licencia->st3_letra_int_establecimiento,
+          'colonia'=>$col,
+          'cp'=>$licencia->st3_cp_establecimiento,
+          'espubic'=>'',
+          'sup_autorizada'=>$superficie,
+          'num_cajones'=>$cajones_estacionamiento,
+          'num_empleados'=>$licencia->st3_empleados_establecimiento,
+          'aforo'=>$aforo_personas,
+          'inversion'=> $licencia->st3_inversion_establecimiento,
+        );
+        $data_soap=$this->utils->conec_soap('licTramite',$params);
+        $concepto="IMPRESOS 2017-2017 FORMA DE SOLICITUD";
+        $importe=$data_soap->imp_solicitud;
+        $pago=$licencia->metodo_pago;
+        $total=$data_soap->imp_total;
+        echo json_encode(array('datos'=>$data_soap));
+       /*$html ='<html>
        <head>
            <style>
                body{
@@ -734,7 +769,7 @@ class Formatos extends CI_Controller {
        </html>';
 
        $this->pdf->WriteHTML($html2);
-       $this->pdf->Output('Licencia_Municipal.pdf', 'I');
+       $this->pdf->Output('Licencia_Municipal.pdf', 'I');*/
    }
 
    public function acuse_envio(){

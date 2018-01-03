@@ -400,7 +400,6 @@ class Formatos extends CI_Controller {
        $apellido_segundo = $licencia->st2_segundo_apellido_solicitante;
        $rfc = $licencia->st2_rfc_solicitante;
        $curp = $licencia->st2_curp_solicitante;
-
        $fechaTitle = date("d/m/Y H:i");
        $params = array(
           'tipo_tramite'=>'13',
@@ -528,7 +527,7 @@ class Formatos extends CI_Controller {
                    <div class="tamano_12">
                        <span>Cajones de estacimiento: '.$cajones_estacionamiento.'</span>
                        <span class="separador_20">Aforo de personas: '.$aforo_personas.' </span>
-                       <span class="separador_20">Superficie Autorizadas: '.$superficie.' </span>
+                       <span class="separador_20">Superficie Autorizadas: '.$superficie.' mts</span>
                        <span class="separador_20">Horario: '.$horario.'</span>
                    </div>
                    <div class="tamano_12">
@@ -601,17 +600,22 @@ class Formatos extends CI_Controller {
                    </div>
 
                    <div class="tamano_12 margen_15">
-                       <div style="width: 30%; float: left;">
-                          (Cuatrocientos Veintisiete Pesos 00/100 M.N.)
+                       <div style="width: 80%; float: left;">
+                          ('.$this->denominacion_moneda($this->to_word($total,null)).' 00/100 M.N.)
                        </div>
-                       <div  style="width: 5%; float: left;">
+                       <!--div  style="width: 5%; float: left;">
                           &nbsp;
                        </div>
                        <div style="width: 30%; float: left;">
                            <b>PAGO EN: '.$pago.'</b>
+                       </div-->
+                       <div style="width: 20%; float: right; text-align: right;">
+                           <b>$'.$total.'</b>
                        </div>
-                       <div style="width: 30%; float: right; text-align: right;">
-                           <b>'.$total.'</b>
+                   </div>
+                   <div class="tamano_12" style="marin-top:5px;">
+                       <div style="width: 30%; float: left;">
+                          <b>PAGO EN: '.$pago.'</b>
                        </div>
                    </div>
                    <div>
@@ -626,7 +630,7 @@ class Formatos extends CI_Controller {
                        </div>
                        <div style="width: 30%; float: right; text-align: right;">
                            <br>
-                           <barcode code="'.$no_licencia.'" type="QR" class="barcode" size="1.5"  style="border:none;"/><br>
+                           <barcode code="'.$this->utils->encode($no_licencia).'" type="QR" class="barcode" size="1.5"  style="border:none;"/><br>
                        </div>
                    </div>
                    <!--div>
@@ -984,13 +988,6 @@ class Formatos extends CI_Controller {
                     font-family: exo;
                     font-size:12px;
                 }
-                table {
-                    border-collapse: collapse;
-                }
-
-                table, th, td {
-                    border: 1px solid black;
-                }
            </style>
        </head>
        <body>
@@ -1077,7 +1074,7 @@ class Formatos extends CI_Controller {
                       </div>
                      <div style="text-align:center; float:left; width:32%; border:solid 1px #000; border-radius:5px;">
                         <b>SUPERFICIE AUTORIZADA</b><br>
-                        '.(empty($superficie)?$vacio:$superficie).'
+                        '.(empty($superficie)?$vacio:$superficie).' mts
                      </div>
                      <div style="float:left; width:1%;">
                          &nbsp;
@@ -1088,7 +1085,7 @@ class Formatos extends CI_Controller {
                      </div>
                  </div>
                  <div style="text-align:justify; font-size:10px;">
-                    <p style="color:#AC58FA;">*La presente Orden de Pago únicamente avala la aplicación de tarifas establecidas en la Ley de Ingresos, no implica la autorización
+                    <p>*La presente Orden de Pago únicamente avala la aplicación de tarifas establecidas en la Ley de Ingresos, no implica la autorización
                         de la Licencia de Construcción, sólo el cumplimiento de uno de los requisitos para la expedición de la misma, la cual quedará sujeta
                         al cumplimiento de toda la Normatividad establecida en las Leyes, Reglamentos, Programas Municipales y Estatales que sobre el
                         Desarrollo Urbano rigen al Municipio, así como al pago referido.
@@ -1099,100 +1096,7 @@ class Formatos extends CI_Controller {
                     </p><br>
                  </div>
                  <div>
-                    <!--table cellpadding="10">
-                        <tr>
-                            <td>
-                                <b>Detalle de la obra</b>
-                            </td>
-                            <td style="text-align:center; color:#fff; background:#b6b6b6;">
-                                <b>Superficie / Cantidad</b>
-                            </td>
-                            <td style="text-align:center; color:#fff; background:#b6b6b6;">
-                                <b>Tarifa</b>
-                            </td>
-                            <td style="text-align:center; color:#fff; background:#b6b6b6;">
-                                <b>%</b>
-                            </td>
-                            <td style="text-align:center; color:#fff; background:#b6b6b6;">
-                                <b>Importe Derechos</b>
-                            </td>
-                            <td style="text-align:center; color:#fff;  background:gray;">
-                                <b>Valor Construcción</b>
-                            </td>
-                            <td style="text-align:center; color:#fff;  background:gray;">
-                                <b>%</b>
-                            </td>
-                            <td style="text-align:center; color:#fff;  background:gray;">
-                                <b>Importe Impuestos</b>
-                            </td>
-                            <td style="text-align:center; color:#fff; background:#000;">
-                                <b>Importe Total</b>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                RAMPA\BANQUETA\COMERCIO Y
-                                SERVICIOS\COMERCIO Y SERVICIO BARRIAL
-                            </td>
-                            <td style="text-align:center;">
-                                0 M2
-                            </td>
-                            <td style="text-align:center;">
-                                120
-                            </td>
-                            <td style="text-align:center;">
-                                20
-                            </td>
-                            <td style="text-align:center;">
-                                0
-                            </td>
-                            <td style="text-align:center;">
-                                5690
-                            </td>
-                            <td style="text-align:center;">
-                                1.25
-                            </td>
-                            <td style="text-align:center;">
-                                0
-                            </td>
-                            <td style="text-align:center;">
-                                0
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                TEJABAN\EMPEDRADO\HABITACIONAL\UNIFAMILIAR
-                            </td>
-                            <td style="text-align:center;">
-                                0 M2
-                            </td>
-                            <td style="text-align:center;">
-                                24
-                            </td>
-                            <td style="text-align:center;">
-                                30
-                            </td>
-                            <td style="text-align:center;">
-                                0
-                            </td>
-                            <td style="text-align:center;">
-                                900
-                            </td>
-                            <td style="text-align:center;">
-                                1.25
-                            </td>
-                            <td style="text-align:center;">
-                                0
-                            </td>
-                            <td style="text-align:center;">
-                                0
-                            </td>
-                        </tr>
-                    </table-->
-                    <div style="font-size:10px; text-align:justify; float:left; width:60%;">
-                      &nbsp;
-                    </div>
-                    <div style="font-size:10px; float:left; width:100%; margin-left:1%; text-align:normal;">
+                    <div style="font-size:10px; float:left; width:100%; text-align:normal; border: 1px solid black; border-radius: 5px;">
                         <table style="width:100%;" cellpadding="4">
                             <tr>
                                 <td style="border:none;">
@@ -1259,6 +1163,14 @@ class Formatos extends CI_Controller {
        $this->pdf->WriteHTML($html);
        $this->pdf->Output('orden_pago.pdf', 'I');
    }
+    public function denominacion_moneda($val){
+      $centavos = strpos($val,'CON');
+      if($centavos != ""){
+        $tipo_moneda=explode('CON',$val);
+        return $tipo_moneda[0]." PESOS CON ".$tipo_moneda[1]." CENTAVOS";
+      }
+      return $val. " PESOS ";
+    }
 
     public function getDiasHabiles($fechainicio, $fechafin, $diasferiados = array()) {
         // Convirtiendo en timestamp las fechas
@@ -1349,17 +1261,10 @@ class Formatos extends CI_Controller {
         'NOVECIENTOS '
   );
   private $MONEDAS = array(
-    array('country' => 'Colombia', 'currency' => 'COP', 'singular' => 'PESO COLOMBIANO', 'plural' => 'PESOS COLOMBIANOS', 'symbol', '$'),
-    array('country' => 'Estados Unidos', 'currency' => 'USD', 'singular' => 'DÓLAR', 'plural' => 'DÓLARES', 'symbol', 'US$'),
-    array('country' => 'El Salvador', 'currency' => 'USD', 'singular' => 'DÓLAR', 'plural' => 'DÓLARES', 'symbol', 'US$'),
-    array('country' => 'Europa', 'currency' => 'EUR', 'singular' => 'EURO', 'plural' => 'EUROS', 'symbol', '€'),
     array('country' => 'México', 'currency' => 'MXN', 'singular' => 'PESO MEXICANO', 'plural' => 'PESOS MEXICANOS', 'symbol', '$'),
-    array('country' => 'Perú', 'currency' => 'PEN', 'singular' => 'NUEVO SOL', 'plural' => 'NUEVOS SOLES', 'symbol', 'S/'),
-    array('country' => 'Reino Unido', 'currency' => 'GBP', 'singular' => 'LIBRA', 'plural' => 'LIBRAS', 'symbol', '£'),
-    array('country' => 'Argentina', 'currency' => 'ARS', 'singular' => 'PESO', 'plural' => 'PESOS', 'symbol', '$')
   );
-    private $separator = '.';
-    private $decimal_mark = ',';
+    private $separator = ',';
+    private $decimal_mark = '.';
     private $glue = ' CON ';
     /**
      * Evalua si el número contiene separadores o decimales
@@ -1369,7 +1274,7 @@ class Formatos extends CI_Controller {
      * @return string completo
      */
     public function to_word($number, $miMoneda = null) {
-        if (strpos($number, $this->decimal_mark) === FALSE) {
+        if (strpos($number, $this->decimal_mark) == "") {
           $convertedNumber = array(
             $this->convertNumber($number, $miMoneda, 'entero')
           );

@@ -1085,11 +1085,6 @@ class Formatos extends CI_Controller {
                      </div>
                  </div>
                  <div style="text-align:justify; font-size:10px;">
-                    <p>*La presente Orden de Pago únicamente avala la aplicación de tarifas establecidas en la Ley de Ingresos, no implica la autorización
-                        de la Licencia de Construcción, sólo el cumplimiento de uno de los requisitos para la expedición de la misma, la cual quedará sujeta
-                        al cumplimiento de toda la Normatividad establecida en las Leyes, Reglamentos, Programas Municipales y Estatales que sobre el
-                        Desarrollo Urbano rigen al Municipio, así como al pago referido.
-                    </p>
                     <p>
                         ** Estimado usuario, al recibir la orden de pago es su obligación verificar que los datos asentados en ella sean los correctos y antes
                         de realizar el pago deberá solicitar la aclaración de las tarifas aplicadas si existieran dudas de su parte.

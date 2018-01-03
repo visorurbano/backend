@@ -381,7 +381,7 @@
                            </div>
                            <div class="row">
                                <div class="col-md-12">
-                                   <h3>Actividad Especifica: <?=$descripcion_factibilidad?></h3>
+                                   <h3>Actividad Especifica: <span id="descActividad"><?=$descripcion_factibilidad?></span></h3>
                                </div>
                            </div>
                            <br>
@@ -508,25 +508,34 @@
                                <div class="col-md-4">
                                    <div class="form-group fto-st3">
                                        <label for="exampleInputFile"><b>* Adjuntar Fotografía Panorámica de la fachada completa</b></label>
-                                       <input type="file" class="form-control-file" id="fleFotoLocal1" onchange="loadFile(this);" name="st3_img1_establecimiento" aria-describedby="fileHelp" data-type="foto_1_establecimiento" data-elastic="fleFotoLocal1Elastic" data-text="Fotografía fachada">
+                                       <input type="file" class="form-control-file <?php if(!empty($st3_img1_establecimiento)){echo 'valid';}?>" id="fleFotoLocal1" onchange="loadFile(this);" name="st3_img1_establecimiento" aria-describedby="fileHelp" data-type="st3_img1_establecimiento" data-elastic="fleFotoLocal1Elastic" data-text="Fotografía fachada">
                                        <div id="fleFotoLocal1Elastic" class="progress-bar-custom"></div>
                                        <small id="fileHelp" class="form-text text-muted">Debe abarcar las construcciones de la derecha, izquierda y la banqueta.<br><b>No fotos de buscadores de internet</b><br>Formatos permitidos: .png, .jpg, .jpeg, .gif, .pdf<b></b></small>
+                                       <?php if(!empty($st3_img1_establecimiento)):?>
+                                           <a href="<?=$st3_img1_establecimiento?>" target="_blank" class="link-to-file"><i class="fa fa-file-text-o" aria-hidden="true"></i> Fotografía fachada</a>
+                                       <?php endif;?>
                                    </div>
                                </div>
                                <div class="col-md-4">
                                    <div class="form-group fto-st3">
                                        <label for="exampleInputFile"><b>* Adjuntar Fotografía Panorámica de la fachada con la puerta o cortina abierta</b></label>
-                                       <input type="file" class="form-control-file" id="fleFotoLocal2" onchange="loadFile(this);" name="st3_img2_establecimiento" aria-describedby="fileHelp" data-type="foto_2_establecimiento" data-elastic="fleFotoLocal2Elastic" data-text="Fotografía fachada puerta abierta">
+                                       <input type="file" class="form-control-file <?php if(!empty($st3_img2_establecimiento)){echo 'valid';}?>" id="fleFotoLocal2" onchange="loadFile(this);" name="st3_img2_establecimiento" aria-describedby="fileHelp" data-type="st3_img2_establecimiento" data-elastic="fleFotoLocal2Elastic" data-text="Fotografía fachada puerta abierta">
                                        <div id="fleFotoLocal2Elastic" class="progress-bar-custom"></div>
                                        <small id="fileHelp" class="form-text text-muted">En la fotografía se deberá apreciar el número oficial.<br><b>No fotos de buscadores de internet</b><br>Formatos permitidos: .png, .jpg, .jpeg, .gif, .pdf<b></b></small>
+                                       <?php if(!empty($st3_img2_establecimiento)):?>
+                                           <a href="<?=$st3_img2_establecimiento?>" target="_blank" class="link-to-file"><i class="fa fa-file-text-o" aria-hidden="true"></i> Fotografía fachada puerta abierta</a>
+                                       <?php endif;?>
                                    </div>
                                </div>
                                <div class="col-md-4">
                                    <div class="form-group fto-st3">
                                        <label for="exampleInputFile"><b>* Adjuntar Fotografía del Interior del Establecimiento</b></label>
-                                       <input type="file" class="form-control-file " id="fleFotoLocal3" onchange="loadFile(this);" name="st3_img3_establecimiento" aria-describedby="fileHelp" data-type="foto_3_establecimiento" data-elastic="fleFotoLocal3Elastic" data-text="Fotografía del interior del establecimiento">
+                                       <input type="file" class="form-control-file <?php if(!empty($st3_img3_establecimiento)){echo 'valid';}?>" id="fleFotoLocal3" onchange="loadFile(this);" name="st3_img3_establecimiento" aria-describedby="fileHelp" data-type="st3_img3_establecimiento" data-elastic="fleFotoLocal3Elastic" data-text="Fotografía del interior del establecimiento">
                                        <div id="fleFotoLocal3Elastic" class="progress-bar-custom"></div>
                                        <small id="fileHelp" class="form-text text-muted">La fotografía debe ser tomada desde el ingreso al establecimiento porcurando que se aprecie el área a utilizar.<br><b>No fotos de buscadores de internet</b><br>Formatos permitidos: .png, .jpg, .jpeg, .gif, .pdf<b></b></small>
+                                       <?php if(!empty($st3_img3_establecimiento)):?>
+                                           <a href="<?=$st3_img3_establecimiento?>" target="_blank" class="link-to-file"><i class="fa fa-file-text-o" aria-hidden="true"></i> Fotografía del interior del establecimiento</a>
+                                       <?php endif;?>
                                    </div>
                                </div>
                            </div>
@@ -563,29 +572,35 @@
                            </div>
                            <div class="row">
                                <div class="col-md-3">
-                                   <div class="form-group">
+                                   <div class="mui-textfield mui-textfield--float-label nerror">
                                        <input id="txtPassFIEL" type="password" class="input-material">
                                        <label for="txtPassFIEL" class="label-material">Contraseña SAT</label>
                                    </div>
                                </div>
+                               <div class="col-md-5">
+                                   <button type="button" class="mui-btn mui-btn--primary"><i class="fa fa-lock" aria-hidden="true"></i> Firmar</button>
+                               </div>
                            </div>
+
                            <div class="card card-body bg-light">
                              <h2>Cadena Firmada</h2>
                              <span id="firma_electronica"><?=$firma?></span>
-                            <!--U0hBMjU2KC9BcHBsaWNhdGlvbnMvTUFNUC9odGRvY3Mvc2VsbG9EaWdpdGFsL2xiZWFzLmtleS5wZW0pPSA4NGM2NTRiZWUyMzc2NDRjYmZkZDc5YTVlN2Y0YTFiY2M3YjQ0MjE0OGU5ZThiZDQ3YTA3NjBjYzdlMDQyNzM4ClNIQTI1Nih1dGYudHh0KT0gZWMwOWIzYmE5Y2Q5ZTBmZDc2ZmI0ZTUxNWU2ZjU1MjA5MjE0NzQ2NjE5ODY4YTliNWI4N2Y2YjQwOWM3YmVjOQo-->
                            </div>
                            <div class="row">
-                               <div class="form-group aviso-privacidad">
+                               <div class="col-md-12 aviso-privacidad">
                                    <label>
-                                       <input  type="checkbox" name="agreeAvisoPrivacidad" value="agree" required="" aria-required="true">
+                                       <input  type="checkbox" name="st4_declaratoria" value="1" required="" aria-required="true" <?php if ($st4_declaratoria == 1) echo "checked"; ?>>
                                        Bajo protesta de decir verdad manifiesto que todos los datos mencionados y documentos anexos al presente procedimiento administrativo son verdaderos y cotejables con documentación legal.
                                    </label>
                                </div>
                            </div>
+                           <br>
                            <div class="row">
-                               <p>
-                                   <b>Nota. El municipio de Guadalajara por cualquiera de sus dependencia cuenta con la facultad de realizar cuantas inspecciones considere necesarias para verificar la autenticidad de los datos y documentos que fueron entregados por el solicitante, teniendo la potestad de revocar la licencia en caso de que los instrumentos fundatorios del trámite hayan sido falsificados y/o apócrifos, independientemente de las sanciones administrativas y penales que pudieran incurrir.</b>
-                               </p>
+                               <div class="col-md-12">
+                                   <p style="color: #F35B53; text-align: justify;">
+                                       <b><i class="fa fa-exclamation-circle" aria-hidden="true"></i> Nota: </b>El municipio de Guadalajara por cualquiera de sus dependencias cuenta con la facultad de realizar cuantas inspecciones considere necesarias para verificar la autenticidad de los datos y documentos que fueron entregados por el solicitante, teniendo la potestad de revocar la licencia en caso de que los instrumentos fundatorios del trámite hayan sido falsificados y/o apócrifos, independientemente de las sanciones administrativas y penales que pudieran incurrir.
+                                   </p>
+                               </div>
                            </div>
                        </section>
                        <h3>Pago</h3>

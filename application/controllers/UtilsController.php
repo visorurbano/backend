@@ -16,23 +16,27 @@ class UtilsController extends CI_Controller {
             }
             $params = $_REQUEST;
             if (empty($params['original'])){
-                throw new Exception('la cadena original es requerida', 404);
+                throw new Exception('la cadena original es requerida.', 404);
             }
             if (empty($params['compare'])){
-                throw new Exception('la cadena a comparar es requerida', 404);
+                throw new Exception('la cadena a comparar es requerida.', 404);
             }
             if (empty($params['cuenta_catastro'])){
-                throw new Exception('la cuenta catastral es requerida', 404);
+                throw new Exception('la cuenta catastral es requerida.', 404);
             }
             if (empty($params['factibilidad'])){
-                throw new Exception('El folio del trámite de factibilidad es requerido', 404);
+                throw new Exception('El folio del trámite de factibilidad es requerido.', 404);
             }
             $factibilidad = json_decode($this->utils->getJson('http://192.168.66.94:3030/api/vinculoDictamen?axo='.date('Y').'&folio='.$params['factibilidad']));
             if ($factibilidad->status != 200){
-                throw new Exception('Folio de factibilidad no valido', 401);
+                throw new Exception('Folio de factibilidad no valido.', 401);
             }
             if ($factibilidad->data[0]->clave != $params['cuenta_catastro']){
-                throw new Exception('El folio de factibilidad no es valido para este predio', 401);
+                throw new Exception('El folio de factibilidad no es valido para este predio.', 401);
+            }
+
+            if ($factibilidad->data[0]->resultado == 'PROHIBIDO'){
+                throw new Exception('El giro solicitado se encuentra prohibido conforme a la zonificación del predio.', 401);
             }
 
             if ($this->utils->compareDecript($params['original'], $params['compare'])){

@@ -89,4 +89,10 @@ class LicenciasGiroModel extends CI_Model {
         $mercado =  $this->db->select('*')->from('tbl_predios_mercado')->where('clave_catastral', $clave)->get()->row();
         return $mercado;
     }
+
+    public function postPdf($idU, $idLicencia, $idFolioSoap){
+        $query=$this->db->query('Update tbl_licencias_giro set folio_soap='.$idFolioSoap.' where id_licencia='.$idLicencia.' and id_usuario='.$idU);
+        $resultado=array("status"=>true);
+        return $resultado;
+    }
 }

@@ -7,6 +7,7 @@ class Formatos extends CI_Controller {
         $this->load->library("Pdf");
         $this->load->helper('url');
         $this->load->model('LicenciasGiroModel');
+        $this->load->model('FormatosModel');
         //$this->load->library('utils');
     }
 
@@ -401,48 +402,50 @@ class Formatos extends CI_Controller {
        $rfc = $licencia->st2_rfc_solicitante;
        $curp = $licencia->st2_curp_solicitante;
        $fechaTitle = date("d/m/Y H:i");
-       $params = array(
-          'tipo_tramite'=>'13',
-          'scian'=>$actividad,
-          'x'=>'0',
-          'y'=>'0',
-          'zona'=>'0',
-          'subzona'=>'0',
-          'actividad'=> $actividad,
-          'cvecuenta'=>$licencia->cuenta_predial,
-          'propietario'=> $nombre,
-          'primer_ap'=> $apellido_primer,
-          'segundo_ap'=> $apellido_segundo,
-          'rfc'=>$rfc,
-          'curp'=>$curp,
-          'telefono_prop'=>$licencia->st2_telefono_solicitante,
-          'email'=>$licencia->st2_email_solicitante,
-          'cvecalle'=>'0',
-          'calle'=>$calle,
-          'num_ext'=>$no_ext,
-          'let_ext'=>$licencia->st3_letra_ext_establecimiento,
-          'num_int'=>$no_int,
-          'let_int'=>$licencia->st3_letra_int_establecimiento,
-          'colonia'=>$col,
-          'cp'=>$licencia->st3_cp_establecimiento,
-          'espubic'=>'',
-          'sup_autorizada'=>$superficie,
-          'num_cajones'=>$cajones_estacionamiento,
-          'num_empleados'=>$licencia->st3_empleados_establecimiento,
-          'aforo'=>$aforo_personas,
-          'inversion'=> $licencia->st3_inversion_establecimiento,
-        );
-        $data_soap=$this->utils->conec_soap('licTramite',$params);
-        $concepto1=$data_soap->des_solicitud;
-        $concepto2=$data_soap->des_forma;
-        $concepto3=$data_soap->des_derechos;
-        $concepto4=$data_soap->des_medioambiente;
-        $importe1=$data_soap->imp_solicitud;
-        $importe2=$data_soap->imp_forma;
-        $importe3=$data_soap->imp_derechos;
-        $importe4=$data_soap->imp_medioambiente;
         $pago=$licencia->metodo_pago;
-        $total=$data_soap->imp_total;
+        if($licencia->folio_soap == 0){
+            $params = array(
+               'tipo_tramite'=>'13',
+               'scian'=>$actividad,
+               'x'=>'0',
+               'y'=>'0',
+               'zona'=>'0',
+               'subzona'=>'0',
+               'actividad'=> $actividad,
+               'cvecuenta'=>$licencia->cuenta_predial,
+               'propietario'=> $nombre,
+               'primer_ap'=> $apellido_primer,
+               'segundo_ap'=> $apellido_segundo,
+               'rfc'=>$rfc,
+               'curp'=>$curp,
+               'telefono_prop'=>$licencia->st2_telefono_solicitante,
+               'email'=>$licencia->st2_email_solicitante,
+               'cvecalle'=>'0',
+               'calle'=>$calle,
+               'num_ext'=>$no_ext,
+               'let_ext'=>$licencia->st3_letra_ext_establecimiento,
+               'num_int'=>$no_int,
+               'let_int'=>$licencia->st3_letra_int_establecimiento,
+               'colonia'=>$col,
+               'cp'=>$licencia->st3_cp_establecimiento,
+               'espubic'=>'',
+               'sup_autorizada'=>$superficie,
+               'num_cajones'=>$cajones_estacionamiento,
+               'num_empleados'=>$licencia->st3_empleados_establecimiento,
+               'aforo'=>$aforo_personas,
+               'inversion'=> $licencia->st3_inversion_establecimiento,
+           );
+           $data_soap=$this->utils->conec_soap('licTramite',$params);
+           $folio_soap=$data_soap->licencia;
+           $this->LicenciasGiroModel->postPdf($idUsuario, $idTramite, $data_soap->licencia);
+        }else{
+           $folio_soap=$licencia->folio_soap;
+        }
+        $params = array(
+           'licencia'=>$folio_soap,
+        );
+        $data_soap=$this->utils->conec_soap('licAdeudo',$params);
+        $total=$data_soap[(count($data_soap)-1)]->acumulado;
        $html ='<html>
        <head>
            <style>
@@ -511,27 +514,39 @@ class Formatos extends CI_Controller {
            </div>
            <div style="position:absolute; top:100px; width:85%; height:100%;  background-image: url(assets/logo-GDL-licencia.png); background-size:80%; background-repeat: no-repeat;  background-position: 50% 30%;">
                <div>
-                   <div class="margen_principal" style="width:30%;">
-                       <span style="font-weight: 500; float: right; font-size: 12px">NUEVA LICENCIA <span class="separador_20" style="font-weight: bold; font-size: 18px; margin-top:10px;">'.$no_licencia.'</span></span>
+                   <div class="subtitulos margen_principal" style="width:30%; font-size: 12px;">
+                       <span>MOVIMIENTO</span>
                    </div>
-                   <br>
-                   <div class="subtitulos" style="width:30%; font-size: 12px;">
-                       <span>DATOS DEL GIRO</span>
+                   <div style="width:30%; margin-top:10px;">
+                       <span style="font-weight: 500; float: right; font-size: 12px">NUEVA LICENCIA <span class="separador_20" style="font-weight: bold; font-size: 18px; margin-top:10px;">'.$folio_soap.'</span></span>
                    </div>
                </div>
-               <div class="margen_30">
-                   <div class="tamano_14" style="width:100%; font-weight:bold;">
+               <div>
+                   <div style="width: 35%; float: left;">
+                       &nbsp;
+                   </div>
+                   <div class="subtitulos" style="width:30%; float: left; font-size: 12px;">
+                        <span>DATOS DEL GIRO</span>
+                   </div>
+                   <div style="width: 30%; float: right; margin-left: 10%;">
+                        &nbsp;
+                   </div>
+               </div>
+               <div class="margen_15">
+                   <div class="tamano_14" style="width:100%; font-weight:bold; text-align:center;">
                          Actividad: &nbsp;'.$actividad.'
                    </div>
 
-                   <div class="tamano_12">
-                       <span>Cajones de estacimiento: '.$cajones_estacionamiento.'</span>
-                       <span class="separador_20">Aforo de personas: '.$aforo_personas.' </span>
-                       <span class="separador_20">Superficie Autorizadas: '.$superficie.' mts</span>
-                       <span class="separador_20">Horario: '.$horario.'</span>
-                   </div>
-                   <div class="tamano_12">
-                       <span>Fecha Sesión: '.$fecha_sesion.'</span>
+                   <div class="tamano_12 margen_15">
+                       <div style="width: 35%; float: left;">
+                           <span>Cajones de estacimiento: '.$cajones_estacionamiento.'</span>
+                       </div>
+                       <div style="width: 30%; float: left;">
+                           <span class="separador_20">Superficie Autorizadas: '.$superficie.' mts</span>
+                       </div>
+                       <div style="width: 30%; float: right; margin-left: 10%;">
+                          <span class="separador_20">Horario: '.$horario.'</span>
+                       </div>
                    </div>
                    <div class="tamano_12 margen_20">
                        OBLIGATORIO CONTAR CON CONTRATO DE RECOLECCIÓN DE RESIDUOS O DICTAMEN DE MICROGENERADOR
@@ -580,28 +595,28 @@ class Formatos extends CI_Controller {
 
                    <div class="tamano_12 margen_15">
                        <div style="width: 30%; float: left;">
-                          '.$no_licencia.'
+                          '.$folio_soap.'
                        </div>
                        <div  style="width: 5%; float: left;">
                           &nbsp;
                        </div>
-                       <div style="width: 30%; float: left;">
-                           '.$concepto1.'<br>
-                           '.$concepto2.'<br>
-                           '.$concepto3.'<br>
-                           '.$concepto4.'<br>
-                       </div>
-                       <div style="width: 30%; float: right; text-align: right;">
-                           $'.$importe1.' <br>
-                           $'.$importe2.' <br>
-                           $'.$importe3.' <br>
-                           $'.$importe4.' <br>
-                       </div>
+                       <div style="width: 30%; float: left;">';
+                for ($i=0; $i < count($data_soap) ; $i++) {
+                    $html .= $data_soap[$i]->descripcion.'<br>';
+                }
+
+                $html .='</div>
+                       <div style="width: 30%; float: right; text-align: right;">';
+                for ($i=0; $i < count($data_soap) ; $i++) {
+                    $html .= '$'.$data_soap[$i]->importe.'<br>';
+                }
+
+                $html .='</div>
                    </div>
 
                    <div class="tamano_12 margen_15">
                        <div style="width: 80%; float: left;">
-                          ('.$this->denominacion_moneda($this->to_word($total,null)).' 00/100 M.N.)
+                          ('.$this->FormatosModel->denominacion_moneda($this->FormatosModel->to_word($total,null)).' 00/100 M.N.)
                        </div>
                        <!--div  style="width: 5%; float: left;">
                           &nbsp;
@@ -630,7 +645,7 @@ class Formatos extends CI_Controller {
                        </div>
                        <div style="width: 30%; float: right; text-align: right;">
                            <br>
-                           <barcode code="'.$this->utils->encode($no_licencia).'" type="QR" class="barcode" size="1.5"  style="border:none;"/><br>
+                           <barcode code="'.$this->utils->encode($folio_soap).'" type="QR" class="barcode" size="1.5"  style="border:none;"/><br>
                        </div>
                    </div>
                    <!--div>
@@ -739,7 +754,7 @@ class Formatos extends CI_Controller {
                            <b>F. </b>COLOCAR ANUNCIOS SOBRE LA VÍA PÚBLICA. <br>
                            <b>G. </b>OBSTRUIR EL PASO PEATONAL. HACIENDO USO DE LA VÍA PÚBLICA SIN AUTORIZACIÓN.<br>
                            <b>H. </b>EXCEDER EL AFORO AUTORIZADO. <br>
-                           <b>I. </b>EXCEDER CON EMISIONES DE RUIDO. NORMA AMBIENTAL NOM-081-SEMARNAT-94 DE DECIBELES. <br>
+                           <b>I. </b>EXCEDER CON EMISIONES DE RUIDO. NORMA AMBIENTAL NOM-081-SEMARNAT-94 DE DECIBELES (RELATIVA A LOS DECIBELES PERMITIDOS). <br>
                            <b>J. </b>DESCARGA DE RESIDUOS NOCIVOS A LA RED MUNICIPAL. <br>
                            <b>K. </b>OPERAR MÁQUINAS DE JUEGOS DE AZAR. <br>
                            <b>L. </b>QUE LOS DOCUMENTOS Y DATOS PROPORCIONADOS EN LA PLATAFORMA SEAN FALSOS. <br>
@@ -914,7 +929,8 @@ class Formatos extends CI_Controller {
 
    public function orden_pago(){
        extract($_GET);
-       $fecha_limite=$this->getDiasHabiles(date("Y/m/d"), $this->_data_last_month_day() , [ '' ]);
+
+       $fecha_limite=$this->FormatosModel->getDiasHabiles(date("Y/m/d"), $this->FormatosModel->_data_last_month_day() , [ '' ]);
        $idTramite = $this->utils->decode($lic);
        $idUsuario = $this->utils->decode($usu);
        $licencia = $this->LicenciasGiroModel->getLicencia($idUsuario, $idTramite);
@@ -937,50 +953,51 @@ class Formatos extends CI_Controller {
        $rfc = strtoupper($licencia->st2_rfc_solicitante);
        $curp = strtoupper($licencia->st2_curp_solicitante);
        $fecha_recepcion = explode(' ',$licencia->fecha);
-       $fechaTitle = date("Y/m/d H:i");
+       $fechaTitle = date("Y/m/d");
        $vacio="&nbsp;";
-       $params = array(
-          'tipo_tramite'=>'13',
-          'scian'=>$actividad,
-          'x'=>'0',
-          'y'=>'0',
-          'zona'=>'0',
-          'subzona'=>'0',
-          'actividad'=> $actividad,
-          'cvecuenta'=>$licencia->cuenta_predial,
-          'propietario'=> $nombre,
-          'primer_ap'=> $apellido_primer,
-          'segundo_ap'=> $apellido_segundo,
-          'rfc'=>$rfc,
-          'curp'=>$curp,
-          'telefono_prop'=>$licencia->st2_telefono_solicitante,
-          'email'=>$licencia->st2_email_solicitante,
-          'cvecalle'=>'0',
-          'calle'=>$calle,
-          'num_ext'=>$no_ext,
-          'let_ext'=>$licencia->st3_letra_ext_establecimiento,
-          'num_int'=>$no_int,
-          'let_int'=>$licencia->st3_letra_int_establecimiento,
-          'colonia'=>$col,
-          'cp'=>$licencia->st3_cp_establecimiento,
-          'espubic'=>'',
-          'sup_autorizada'=>$superficie,
-          'num_cajones'=>$cajones_estacionamiento,
-          'num_empleados'=>$licencia->st3_empleados_establecimiento,
-          'aforo'=>$aforo_personas,
-          'inversion'=> $licencia->st3_inversion_establecimiento,
+       if($licencia->folio_soap == 0){
+            $params = array(
+               'tipo_tramite'=>'13',
+               'scian'=>$actividad,
+               'x'=>'0',
+               'y'=>'0',
+               'zona'=>'0',
+               'subzona'=>'0',
+               'actividad'=> $actividad,
+               'cvecuenta'=>$licencia->cuenta_predial,
+               'propietario'=> $nombre,
+               'primer_ap'=> $apellido_primer,
+               'segundo_ap'=> $apellido_segundo,
+               'rfc'=>$rfc,
+               'curp'=>$curp,
+               'telefono_prop'=>$licencia->st2_telefono_solicitante,
+               'email'=>$licencia->st2_email_solicitante,
+               'cvecalle'=>'0',
+               'calle'=>$calle,
+               'num_ext'=>$no_ext,
+               'let_ext'=>$licencia->st3_letra_ext_establecimiento,
+               'num_int'=>$no_int,
+               'let_int'=>$licencia->st3_letra_int_establecimiento,
+               'colonia'=>$col,
+               'cp'=>$licencia->st3_cp_establecimiento,
+               'espubic'=>'',
+               'sup_autorizada'=>$superficie,
+               'num_cajones'=>$cajones_estacionamiento,
+               'num_empleados'=>$licencia->st3_empleados_establecimiento,
+               'aforo'=>$aforo_personas,
+               'inversion'=> $licencia->st3_inversion_establecimiento,
+           );
+           $data_soap=$this->utils->conec_soap('licTramite',$params);
+           $folio_soap=$data_soap->licencia;
+           $this->LicenciasGiroModel->postPdf($idUsuario, $idTramite, $data_soap->licencia);
+        }else{
+           $folio_soap=$licencia->folio_soap;
+        }
+        $params = array(
+           'licencia'=>$folio_soap,
         );
-        $data_soap=$this->utils->conec_soap('licTramite',$params);
-        $concepto1=$data_soap->des_solicitud;
-        $concepto2=$data_soap->des_forma;
-        $concepto3=$data_soap->des_derechos;
-        $concepto4=$data_soap->des_medioambiente;
-        $importe1=$data_soap->imp_solicitud;
-        $importe2=$data_soap->imp_forma;
-        $importe3=$data_soap->imp_derechos;
-        $importe4=$data_soap->imp_medioambiente;
-        $pago=$licencia->metodo_pago;
-        $total=$data_soap->imp_total;
+        $data_soap=$this->utils->conec_soap('licAdeudo',$params);
+
        $html='<html>
        <head>
            <style>
@@ -991,16 +1008,11 @@ class Formatos extends CI_Controller {
            </style>
        </head>
        <body>
-           <div style="position:absolute; left:60px; top:4%; width:8%;">
-               <img src="assets/tesoreria.png" alt="">
-           </div>
-           <div  style="position:absolute; left:17%; top:4%; text-align:left; font-weight:bold; width:40%;  color:#AC58FA; font-size: 15px;">
-               <span>MUNICIPIO DE GUADALAJARA</span> <br>
-               <span style="font-size:10px;">TESORERÍA MUNICIPAL</span> <br><br>
-               <span>LICENCIA MUNICIPAL</span>
+           <div style="position:absolute; left:60px; top:4%; width:20%;">
+               <img src="assets/logo-padron.png" alt="">
            </div>
            <div  style="position:absolute; left:2%; top:13%; text-align:center; font-weight:bold; width:100%;  color:gray; font-size: 15px;">
-               <span>ORDEN DE PAGO TOTAL</span>
+               <span>PROPUESTA DE COBRO</span>
            </div>
            <div style="position:absolute; right:10%; top:3%; width: 8%">
                <img src="assets/gdl-logo.png" alt="">
@@ -1009,21 +1021,21 @@ class Formatos extends CI_Controller {
                  <div style="padding:2px;">
                     <div style="float:right; width:32%; border:solid 1px #000; border-radius:5px;">
                         <b>FOLIO</b><br>
-                        '.(empty($id_licencia)?$vacio:$this->convertir_folio($id_licencia)).'
+                        '.(empty($id_licencia)?$vacio:$this->FormatosModel->convertir_folio($id_licencia)).'
                      </div>
                      <div style="float:right; width:1%;">
                          &nbsp;
                       </div>
                      <div style="float:right; width:32%; border:solid 1px #000; border-radius:5px;">
                          <b>FECHA DE RECEPCIÓN</b><br>
-                         '.str_replace('-','/',$fecha_recepcion[0]).'
+                         '.$this->FormatosModel->fechasFormat(str_replace('-','/',$fecha_recepcion[0])).'
                      </div>
                      <div style="float:right; width:1%;">
                          &nbsp;
                       </div>
                      <div style="float:right; width:33%; border:solid 1px #000; border-radius:5px;">
                          <b>FECHA LIMITE DE PAGO</b><br>
-                         '.$fecha_limite[3].'
+                         '.$this->FormatosModel->fechasFormat($fecha_limite[3]).'
                      </div>
                  </div>
                  <div style="padding:2px;">
@@ -1081,292 +1093,61 @@ class Formatos extends CI_Controller {
                       </div>
                      <div style="text-align:center; float:right; width:33%; border:solid 1px #000; border-radius:5px;">
                      <b>LICENCIA QUE SE AUTORIZA</b><br>
-                     '.(empty($no_licencia)?$vacio:$no_licencia).'
+                     '.(empty($folio_soap)?$vacio:$folio_soap).'
                      </div>
                  </div>
                  <div style="text-align:justify; font-size:10px;">
                     <p>
-                        ** Estimado usuario, al recibir la orden de pago es su obligación verificar que los datos asentados en ella sean los correctos y antes
+                        ** Estimado usuario, al recibir la propuesta de cobro es su obligación verificar que los datos asentados en ella sean los correctos y antes
                         de realizar el pago deberá solicitar la aclaración de las tarifas aplicadas si existieran dudas de su parte.
                     </p><br>
                  </div>
                  <div>
                     <div style="font-size:10px; float:left; width:100%; text-align:normal; border: 1px solid black; border-radius: 5px;">
-                        <table style="width:100%;" cellpadding="4">
-                            <tr>
-                                <td style="border:none;">
-                                    '.$concepto1.':
-                                </td>
-                                <td style="text-align:right; border:none;">
-                                    $'.$importe1.'
-                                </td>
-                            </tr>
-                            <tr>
-                                <td style="border:none;">
-                                    '.$concepto2.':
-                                </td>
-                                <td style="text-align:right; border:none;">
-                                    $'.$importe2.'
-                                </td>
-                            </tr>
-                            <tr>
-                                <td style="border:none;">
-                                    '.$concepto3.':
-                                </td>
-                                <td style="text-align:right; border:none;">
-                                    $'.$importe3.'
-                                </td>
-                            </tr>
-                            <tr>
-                                <td style="border:none;">
-                                    '.$concepto4.':
-                                </td>
-                                <td style="text-align:right; border:none;">
-                                    $'.$importe4.'
-                                </td>
-                            </tr>
-                            <tr>
-                                <td style="border:none;">
-                                    <br>
-                                    <b>IMPORTE TOTAL A PAGAR:</b>
-                                </td>
-                                <td style="text-align:right; border:none;">
-                                    <br>
-                                    <b>$'.$total.'</b>
-                                </td>
-                            </tr>
-                        </table>
-                    </div>
-                    <div style="text-align:left; color:#AC58FA; font-weight:bold; font-size:15px; margin-top:10px; margin-left:5px;">
-                        <span>Esta orden de pago sólo serán válidas hasta la fecha Límite señalada a continuación:</span>
-                    </div>
-                    <div>
-                        <div style="text-align:left; width:50%; float:left; margin-top:10%;">
-                            <span><b>Fecha de impresión: '.$fechaTitle.'</b></span><br><br>
-                            <barcode code="'.$this->utils->encode($no_licencia).'" type="C128A" class="barcode" size="0.5" style="margin-left:-5px";/>
-                        </div>
-                        <div style="text-align:right; float:right; width:50%;">
-                            <span><b>Fecha límite de pago: '.$fecha_limite[3].'</b></span>
-                        </div>
-                    </div>
-                 </div>
-           </div>
-       </body>
-       </html>';
+                        <table style="width:100%;" cellpadding="4">';
+
+        for ($i=0; $i < count($data_soap); $i++) {
+            $html .='<tr><td style="border:none;">
+                        '.$data_soap[$i]->descripcion.':
+                    </td>
+                    <td style="text-align:right; border:none;">
+                        $'.$data_soap[$i]->importe.'
+                    </td>
+                </tr>';
+        }
+
+
+            $html .= '<tr>
+                        <td style="border:none;">
+                            <br>
+                            <b>IMPORTE TOTAL A PAGAR:</b>
+                        </td>
+                        <td style="text-align:right; border:none;">
+                            <br>
+                            <b>$'.$data_soap[(count($data_soap)-1)]->acumulado.'</b>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div style="text-align:left; color:#C40E91; font-weight:bold; font-size:15px; margin-top:10px; margin-left:5px;">
+                <span>Esta propuesta de cobro sólo serán válidas hasta la fecha límite señalada a continuación:</span>
+            </div>
+            <div>
+                <div style="text-align:left; width:50%; float:left; margin-top:10%;">
+                    <span><b>Fecha de impresión: '.$this->FormatosModel->fechasFormat($fechaTitle).'</b></span><br><br>
+                    <barcode code="'.$this->utils->encode($folio_soap).'" type="C128A" class="barcode" size="0.5" style="margin-left:-5px";/>
+                </div>
+                <div style="text-align:right; float:right; width:50%;">
+                    <span><b>Fecha límite de pago: '.$this->FormatosModel->fechasFormat($fecha_limite[3]).'</b></span>
+                </div>
+            </div>
+        </div>
+        </div>
+        </body>
+        </html>';
 
 
        $this->pdf->WriteHTML($html);
-       $this->pdf->Output('orden_pago.pdf', 'I');
-   }
-    public function denominacion_moneda($val){
-      $centavos = strpos($val,'CON');
-      if($centavos != ""){
-        $tipo_moneda=explode('CON',$val);
-        return $tipo_moneda[0]." PESOS CON ".$tipo_moneda[1]." CENTAVOS";
-      }
-      return $val. " PESOS ";
+       $this->pdf->Output('propuesta_cobro.pdf', 'I');
     }
-
-    public function getDiasHabiles($fechainicio, $fechafin, $diasferiados = array()) {
-        // Convirtiendo en timestamp las fechas
-        $fechainicio = strtotime($fechainicio);
-        $fechafin = strtotime($fechafin);
-
-        // Incremento en 1 dia
-        $diainc = 24*60*60;
-
-        // Arreglo de dias habiles, inicianlizacion
-        $diashabiles = array();
-
-        // Se recorre desde la fecha de inicio a la fecha fin, incrementando en 1 dia
-        for ($midia = $fechainicio; $midia <= $fechafin; $midia += $diainc) {
-                // Si el dia indicado, no es sabado o domingo es habil
-                if (!in_array(date('N', $midia), array(6,7))) { // DOC: http://www.php.net/manual/es/function.date.php
-                        // Si no es un dia feriado entonces es habil
-                        if (!in_array(date('Y/m/d', $midia), $diasferiados)) {
-                                array_push($diashabiles, date('Y/m/d', $midia));
-                        }
-                }
-        }
-        return $diashabiles;
-    }
-
-    function _data_last_month_day() {
-      $month = date('m');
-      $year = date('Y');
-      $day = date("d", mktime(0,0,0, $month+1, 0, $year));
-
-      return date('Y/m/d', mktime(0,0,0, $month, $day, $year));
-    }
-
-   public function convertir_folio($folio){
-     $count = strlen($folio);
-     if($count < 5){
-       $faltantes = 5-$count;
-       for($i=0;$i < $faltantes; $i++){
-         $folio="0".$folio;
-       }
-     }
-     return $folio;
-   }
-
-  private $UNIDADES = array(
-        '',
-        'UN ',
-        'DOS ',
-        'TRES ',
-        'CUATRO ',
-        'CINCO ',
-        'SEIS ',
-        'SIETE ',
-        'OCHO ',
-        'NUEVE ',
-        'DIEZ ',
-        'ONCE ',
-        'DOCE ',
-        'TRECE ',
-        'CATORCE ',
-        'QUINCE ',
-        'DIECISEIS ',
-        'DIECISIETE ',
-        'DIECIOCHO ',
-        'DIECINUEVE ',
-        'VEINTE '
-  );
-  private $DECENAS = array(
-        'VEINTI',
-        'TREINTA ',
-        'CUARENTA ',
-        'CINCUENTA ',
-        'SESENTA ',
-        'SETENTA ',
-        'OCHENTA ',
-        'NOVENTA ',
-        'CIEN '
-  );
-  private $CENTENAS = array(
-        'CIENTO ',
-        'DOSCIENTOS ',
-        'TRESCIENTOS ',
-        'CUATROCIENTOS ',
-        'QUINIENTOS ',
-        'SEISCIENTOS ',
-        'SETECIENTOS ',
-        'OCHOCIENTOS ',
-        'NOVECIENTOS '
-  );
-  private $MONEDAS = array(
-    array('country' => 'México', 'currency' => 'MXN', 'singular' => 'PESO MEXICANO', 'plural' => 'PESOS MEXICANOS', 'symbol', '$'),
-  );
-    private $separator = ',';
-    private $decimal_mark = '.';
-    private $glue = ' CON ';
-    /**
-     * Evalua si el número contiene separadores o decimales
-     * formatea y ejecuta la función conversora
-     * @param $number número a convertir
-     * @param $miMoneda clave de la moneda
-     * @return string completo
-     */
-    public function to_word($number, $miMoneda = null) {
-        if (strpos($number, $this->decimal_mark) == "") {
-          $convertedNumber = array(
-            $this->convertNumber($number, $miMoneda, 'entero')
-          );
-        } else {
-          $number = explode($this->decimal_mark, str_replace($this->separator, '', trim($number)));
-          $convertedNumber = array(
-            $this->convertNumber($number[0], $miMoneda, 'entero'),
-            $this->convertNumber($number[1], $miMoneda, 'decimal'),
-          );
-        }
-        return implode($this->glue, array_filter($convertedNumber));
-    }
-    /**
-     * Convierte número a letras
-     * @param $number
-     * @param $miMoneda
-     * @param $type tipo de dígito (entero/decimal)
-     * @return $converted string convertido
-     */
-    private function convertNumber($number, $miMoneda = null, $type) {
-
-        $converted = '';
-        if ($miMoneda !== null) {
-            try {
-
-                $moneda = array_filter($this->MONEDAS, function($m) use ($miMoneda) {
-                    return ($m['currency'] == $miMoneda);
-                });
-                $moneda = array_values($moneda);
-                if (count($moneda) <= 0) {
-                    throw new Exception("Tipo de moneda inválido");
-                    return;
-                }
-                ($number < 2 ? $moneda = $moneda[0]['singular'] : $moneda = $moneda[0]['plural']);
-            } catch (Exception $e) {
-                echo $e->getMessage();
-                return;
-            }
-        }else{
-            $moneda = '';
-        }
-        if (($number < 0) || ($number > 999999999)) {
-            return false;
-        }
-        $numberStr = (string) $number;
-        $numberStrFill = str_pad($numberStr, 9, '0', STR_PAD_LEFT);
-        $millones = substr($numberStrFill, 0, 3);
-        $miles = substr($numberStrFill, 3, 3);
-        $cientos = substr($numberStrFill, 6);
-        if (intval($millones) > 0) {
-            if ($millones == '001') {
-                $converted .= 'UN MILLON ';
-            } else if (intval($millones) > 0) {
-                $converted .= sprintf('%sMILLONES ', $this->convertGroup($millones));
-            }
-        }
-
-        if (intval($miles) > 0) {
-            if ($miles == '001') {
-                $converted .= 'MIL ';
-            } else if (intval($miles) > 0) {
-                $converted .= sprintf('%sMIL ', $this->convertGroup($miles));
-            }
-        }
-        if (intval($cientos) > 0) {
-            if ($cientos == '001') {
-                $converted .= 'UN ';
-            } else if (intval($cientos) > 0) {
-                $converted .= sprintf('%s ', $this->convertGroup($cientos));
-            }
-        }
-        $converted .= $moneda;
-        return $converted;
-    }
-    /**
-     * Define el tipo de representación decimal (centenas/millares/millones)
-     * @param $n
-     * @return $output
-     */
-    private function convertGroup($n) {
-        $output = '';
-        if ($n == '100') {
-            $output = "CIEN ";
-        } else if ($n[0] !== '0') {
-            $output = $this->CENTENAS[$n[0] - 1];
-        }
-        $k = intval(substr($n,1));
-        if ($k <= 20) {
-            $output .= $this->UNIDADES[$k];
-        } else {
-            if(($k > 30) && ($n[2] !== '0')) {
-                $output .= sprintf('%sY %s', $this->DECENAS[intval($n[1]) - 2], $this->UNIDADES[intval($n[2])]);
-            } else {
-                $output .= sprintf('%s%s', $this->DECENAS[intval($n[1]) - 2], $this->UNIDADES[intval($n[2])]);
-            }
-        }
-        return $output;
-    }
-
 }

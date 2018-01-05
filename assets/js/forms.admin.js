@@ -21,13 +21,6 @@ $(document).ready(function () {
     });
 
     // ------------------------------------------------------- //
-    // input files
-    // ------------------------------------------------------ //
-    $('.form-control-file').change(function () {
-        alert("hola");
-    });
-
-    // ------------------------------------------------------- //
     // Change pass Form
     // ------------------------------------------------------ //
     if ($('#frmContrasena').length){
@@ -157,12 +150,15 @@ $(document).ready(function () {
                     window.location.href = baseURL + 'nueva-licencia/'+data.data.sec+'/'+data.data.sec2;
                    setFolder(data.data.id).done(function(dataFolder){
                         if (dataFolder.status == 200){
-                            window.location.href = baseURL + 'nueva-licencia/'+data.data.sec+'/'+data.data.sec2;
+                            unsetLoading();
+                            //window.location.href = baseURL + 'nueva-licencia/'+data.data.sec+'/'+data.data.sec2;
                         }else{
-                            window.location.href = baseURL + 'nueva-licencia/'+data.data.sec+'/'+data.data.sec2;
+                            unsetLoading();
+                            //window.location.href = baseURL + 'nueva-licencia/'+data.data.sec+'/'+data.data.sec2;
                         }
                     });
                 }else{
+                    unsetLoading();
                     setMessage1(data.message, true);
                 }
             });
@@ -178,6 +174,38 @@ $(document).ready(function () {
         param = typeof param === "string" ? param.replace( /,/g, "|" ) : "png|jpe?g|gif";
         return this.optional( element ) || value.match( new RegExp( "\\.(" + param + ")$", "i" ) );
     }, $.validator.format( 'Este documento debe ser en formato ".pdf"' ) );
+
+
+    if ($('#frmFirmar').length){
+        $('#frmFirmar').validate({
+            rules:{
+                firmaCER:{
+                    required: true,
+                    extension: "cer"
+                },
+                firmaKEY:{
+                  required: true,
+                  extension: 'key'
+                },
+                firmaPass:{
+                    required: true
+                }
+            },
+            messages:{
+                firmaCER:{
+                    required: 'Ingresa el archivo .cer para continuar',
+                    extension: 'Formato incorrecto, se espera un archivo con formato .cer'
+                },
+                firmaKEY:{
+                    required: 'Ingresa el archivo .key para continuar',
+                    extension: 'Formato incorrecto, se espera un archivo con formato .key'
+                },
+                firmaPass:{
+                    required: 'Ingresa la contraseña de la firma electrónica para continuar'
+                }
+            }
+        });
+    }
 
     if ($('#frmSolicitudLicenciaGiro').length){
         var form = $("#frmSolicitudLicenciaGiro");
@@ -291,7 +319,7 @@ $(document).ready(function () {
                     required: true,
                     number: true
                 },
-                /*st3_img1_establecimiento:{
+                st3_img1_establecimiento:{
                     required: true
                 },
                 st3_img2_establecimiento:{
@@ -299,8 +327,7 @@ $(document).ready(function () {
                 },
                 st3_img3_establecimiento:{
                     required: true
-                }*/
-
+                }
             },
             messages:{
                 st1_tipo_solicitante: {
@@ -418,7 +445,7 @@ $(document).ready(function () {
             startIndex: parseInt(currentStep),
             onStepChanging: function (event, currentIndex, newIndex)
             {
-                var validado = false;
+                /*var validado = false;
                 if(currentIndex == 3 && data_cer != "" && $('#firma_electronica').text() != "" &&  newIndex > 3){
                     validado = validar_cer();
                 }else if(currentIndex == 3 && data_cer == "" &&  newIndex > 3){
@@ -429,7 +456,7 @@ $(document).ready(function () {
                     var errores=[];
                     errores[0] = 'Falta subir archivo .key';
                     setError(errores);
-                }
+                }*/
 
                 if(currentIndex != 3){
                   form.validate().settings.ignore = ":disabled,:hidden,.valid";
@@ -443,7 +470,7 @@ $(document).ready(function () {
                   return form.valid();
                 }
 
-                if((currentIndex == 3 && validado) || newIndex < 3){
+                /*if((currentIndex == 3 && validado) || newIndex < 3){
                   form.validate().settings.ignore = ":disabled,:hidden,.valid";
                   if (form.valid()){
                     var frm  = form.find(":input:not(:hidden)").serializeArray();
@@ -454,7 +481,8 @@ $(document).ready(function () {
                   }
                   unsetError();
                   return form.valid();
-                }
+                }*/
+                return form.valid();
 
             },
             onInit: function(event, currentIndex){
@@ -590,6 +618,16 @@ $(document).ready(function () {
         });
 
     });
+
+    // ------------------------------------------------------- //
+    // Firmar
+    // ------------------------------------------------------ //
+    $('#btnFirmar').on('click', function(e){
+        e.preventDefault();
+        validateFirma();
+    });
+
+
 });
 
 function setPass(npass, pass, email) {
@@ -660,7 +698,10 @@ function validaNCP(original, comparar, catastral, factibilidad){
         url: baseURL + "validacuentapredial",
         type: "get",
         dataType: 'json',
-        data: params
+        data: params,
+        beforeSend:function(){
+            setLoading();
+        }
     });
 }
 
@@ -767,7 +808,6 @@ function updateForma(campos, step, id){
         data[val.name] = val.value;
     });
     data['step'] = step;
-    console.log(data);
     return $.ajax({
         url: baseURL + "licencia/a/update",
         type: "post",
@@ -989,7 +1029,11 @@ function resumenLicenciaGiro(){
 
     $('.cadenaFirmar').empty();
     var nombreFirmar = ($('input:radio[name=st1_tipo_solicitante]:checked').val() == 'promotor')?$('input:text[name=st2_nombre_representante]').val():$('input:text[name=st2_nombre_solicitante]').val();
-    $('.cadenaFirmar').html('Nombre|=|'+nombreFirmar+'|+|Tramite|=|'+$('#tramite').val()+'|+|Licencia|=|00000001|+|Fecha|=|'+new Date());
+    var primerApellidFirmar = ($('input:radio[name=st1_tipo_solicitante]:checked').val() == 'promotor')?$('input:text[name=st2_priper_apellido_representante]').val():$('input:text[name=st2_primer_apellido_solicitante]').val();
+    var segundoApellidFirmar = ($('input:radio[name=st1_tipo_solicitante]:checked').val() == 'promotor')?$('input:text[name=st2_segundo_apellido_representante]').val():$('input:text[name=st2_segundo_apellido_solicitante]').val();
+    var d = new Date();
+    $('.cadenaFirmar').html('Nombre|=|'+nombreFirmar+'|+|Primer Apellido|=|'+primerApellidFirmar+'|+|Segundo Apellido|=|'+primerApellidFirmar+'|+|Tramite|=|'+$('#tramite').val()+'|+|Actividad|=|'+$('#descActividad').text()+'|+|Fecha|=|'+ d.getDate()  + "/" + (d.getMonth()+1) + "/" + d.getFullYear());
+    //$('#firamarCadenaOriginal').html('Nombre|=|'+nombreFirmar+'|+|Primer Apellido|=|'+primerApellidFirmar+'|+|Segundo Apellido|=|'+primerApellidFirmar+'|+|Tramite|=|'+$('#tramite').val()+'|+|Actividad|=|'+$('#descActividad').text()+'|+|Fecha|=|'+ d.getDate()  + "/" + (d.getMonth()+1) + "/" + d.getFullYear());
 
 }
 
@@ -1164,3 +1208,46 @@ function firmar(element){
             }
       }
     }
+
+    function validateFirma(){
+        if ($('#frmFirmar').valid()){
+            var cer = document.getElementById('fleCER').files[0];
+            var key = document.getElementById('fleKEY').files[0];
+            var data = new FormData();
+            data.append('id_tramite', $('#txtFirmaTramite').val());
+            data.append('cadena_original', $('.cadenaFirmar').text());
+            data.append('pass', $('#txtPassFIEL').val());
+            data.append('cer',cer);
+            data.append('key',key);
+            $.ajax({
+                type: 'POST',
+                url: 'http://192.168.66.93/api/vu_firma.php',
+                contentType:false,
+                data:data,
+                processData:false,
+                beforeSend:function(){
+                   /* $('#'+el.data('elastic')).css('margin','15px 0px');
+                    var circle = new ProgressBar.Line('#'+el.data('elastic'), {
+                        color: '#8CBC5F',
+                        easing: 'easeInOut'
+                    });
+
+                    circle.animate(1.0, {
+                        duration: 900
+                    }, function() {
+                        circle.destroy();
+                        $('#'+el.data('elastic')).css('margin','0px');
+                    });*/
+                },
+                success:function(data){
+                    $('#txtFirmaTramite').val('');
+                    var sdata = eval("(" + data + ")");
+
+                },
+                error:function(){
+
+                }
+            });
+        }
+    }
+

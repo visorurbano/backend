@@ -432,7 +432,7 @@
                            <div class="row">
                                <div class="col-md-5">
                                    <div class="mui-textfield mui-textfield--float-label nerror">
-                                       <input id="txtCiudadEstablecimiento" type="text" name="st3_ciudad_establecimiento" class="input-material" value="<?=$st3_ciudad_establecimiento;?>"" required>
+                                       <input id="txtCiudadEstablecimiento" type="text" name="st3_ciudad_establecimiento" class="input-material" value="<?=$st3_ciudad_establecimiento;?>" required>
                                        <label for="txtCiudadEstablecimiento">* Ciudad</label>
                                    </div>
                                </div>
@@ -540,6 +540,7 @@
                                </div>
                            </div>
                        </section>
+
                        <h3>Resumen</h3>
                        <section>
                            <div id="resumen-container"></div>
@@ -553,35 +554,13 @@
                                <h2>Cadena original a firmar</h2>
                                <div class="cadenaFirmar"></div>
                            </div>
-                           <h4>Firma Electrónica</h4>
                            <!--<small>¿Por que se utiliza la FIEL para firmar?</small>-->
-                           <br><br>
                            <div class="row">
-                               <div class="col-md-6">
-                                   <div class="form-group">
-                                       <label for="uploaded_file1"><b>Archivo .cer</b></label>
-                                       <input type="file" class="form-control-file" id="uploaded_file1" aria-describedby="fileHelp" onchange="get_certificado(this)">
-                                   </div>
-                               </div>
-                               <div class="col-md-6">
-                                   <div class="form-group">
-                                       <label for="uploaded_file"><b>Archivo .key</b></label>
-                                       <input type="file" class="form-control-file" id="uploaded_file" aria-describedby="fileHelp" onchange="firmar(this)">
-                                   </div>
+                               <div class="col-md-12">
+                                   <button type="button" class="mui-btn mui-btn--primary" data-toggle="modal" data-target="#firmaModal"><i class="fa fa-lock" aria-hidden="true"></i> Firmar Solicitud</button>
                                </div>
                            </div>
-                           <div class="row">
-                               <div class="col-md-3">
-                                   <div class="mui-textfield mui-textfield--float-label nerror">
-                                       <input id="txtPassFIEL" type="password" class="input-material">
-                                       <label for="txtPassFIEL" class="label-material">Contraseña SAT</label>
-                                   </div>
-                               </div>
-                               <div class="col-md-5">
-                                   <button type="button" class="mui-btn mui-btn--primary"><i class="fa fa-lock" aria-hidden="true"></i> Firmar</button>
-                               </div>
-                           </div>
-
+                           <br>
                            <div class="card card-body bg-light">
                              <h2>Cadena Firmada</h2>
                              <span id="firma_electronica"><?=$firma?></span>
@@ -612,18 +591,16 @@
                                    <center>
                                        <!--<a href="<?=base_url()?>orden-pago/licencia-giro/<?= $this->utils->encode($licencia->id_licencia);?>/<?= $this->utils->encode($licencia->id_usuario);?>" target="_blank" class="btn btn-lg btn-secondary"><i class="fa fa-print" aria-hidden="true"></i> Imprimir Orden de Pago</a>-->
                                        <!--a href="<?=base_url()?>/formatos/op.pdf" target="_blank" class="btn btn-lg btn-secondary"><i class="fa fa-print" aria-hidden="true"></i> Imprimir Orden de Pago</a-->
-                                       <a href="<?=base_url()?>formatos/orden_pago?lic=<?= $this->utils->encode($licencia->id_licencia);?>&usu=<?= $this->utils->encode($licencia->id_usuario);?>" target="_blank" class="btn btn-lg btn-secondary"><i class="fa fa-print" aria-hidden="true"></i> Imprimir Orden de Pago</a>
+                                       <a href="<?=base_url()?>formatos/orden_pago?lic=<?= $this->utils->encode($licencia->id_licencia);?>&usu=<?= $this->utils->encode($licencia->id_usuario);?>" target="_blank" class="btn btn-lg btn-secondary"><i class="fa fa-print" aria-hidden="true"></i> Imprimir Poropuesta de Cobro</a>
 
                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                        <a href="#" id="btnPagoLinea" class="btn btn-lg btn-secondary"><i class="fa fa-credit-card-alt" aria-hidden="true"></i> Pagar en  linea</a>
                                    </center>
                                </div>
                            </div>
+                       </section>
+                    </form>
 
-                       </section>
-                       </section>
-                   </div>
-               </form>
            <?php else: ?>
                <div class="alert alert-danger" role="alert">
                    <?=$msg?>
@@ -646,6 +623,41 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="firmaModal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fa fa-lock" aria-hidden="true"></i> Firmar Solicitud</h3>
+            </div>
+            <div class="modal-body">
+                <form id="frmFirmar">
+                    <input type="hidden" id="txtFirmaTramite" value="<?=$licencia->id_licencia?>">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="uploaded_file1"><b>Archivo .cer</b></label>
+                                <input type="file" name="firmaCER" class="form-control-file" id="fleCER" aria-describedby="fileHelp">
+                            </div>
+                            <div class="form-group">
+                                <label for="uploaded_file"><b>Archivo .key</b></label>
+                                <input type="file" name="firmaKEY" class="form-control-file" id="fleKEY" aria-describedby="fileHelp">
+                            </div>
+                            <div class="mui-textfield mui-textfield--float-label modalFirmar">
+                                <input id="txtPassFIEL" name="firmaPass" type="password" class="input-material" required>
+                                <label for="txtPassFIEL" class="label-material">Contraseña SAT</label>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button id="btnFirmar" type="button" class="mui-btn mui-btn--primary"><i class="fa fa-lock" aria-hidden="true"></i> Firmar Solicitud</button>
+                <button class="mui-btn mui-btn--danger" data-dismiss="modal">Cancelar</button>
             </div>
         </div>
     </div>

@@ -36,6 +36,8 @@ class LicenciasGiro extends CI_Controller {
         $firma = $this->LicenciasGiroModel->getFirma($idUsuario, $idTramite);
         if($firma != ""){
           $data['firma']= $firma->firma_e;
+        }else{
+            $data['firma'] = null;
         }
         //var_dump($licencia);
         if (!empty($licencia)){

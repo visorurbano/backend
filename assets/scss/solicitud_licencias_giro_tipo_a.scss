@@ -98,7 +98,15 @@ form {
   left: -22px;
 }
 
-
+.fto-st3 label.error{
+  position: absolute;
+  bottom: -52px !important;
+  left: -22px;
+}
+.modalFirmar label.error{
+  bottom: -22px !important;
+  font-size: 0.9em !important;
+}
 /*======= Mensajes =========*/
 #tblMensajes tbody tr td{
   padding: 20px 10px;

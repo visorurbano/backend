@@ -403,7 +403,7 @@ class Formatos extends CI_Controller {
        $curp = $licencia->st2_curp_solicitante;
        $fechaTitle = date("d/m/Y H:i");
         $pago=$licencia->metodo_pago;
-        if($licencia->folio_soap == 0){
+        if($licencia->folio_licencia == 0){
             $params = array(
                'tipo_tramite'=>'13',
                'scian'=>$actividad,
@@ -436,13 +436,13 @@ class Formatos extends CI_Controller {
                'inversion'=> $licencia->st3_inversion_establecimiento,
            );
            $data_soap=$this->utils->conec_soap('licTramite',$params);
-           $folio_soap=$data_soap->licencia;
+           $folio_licencia=$data_soap->licencia;
            $this->LicenciasGiroModel->postPdf($idUsuario, $idTramite, $data_soap->licencia);
         }else{
-           $folio_soap=$licencia->folio_soap;
+           $folio_licencia=$licencia->folio_licencia;
         }
         $params = array(
-           'licencia'=>$folio_soap,
+           'licencia'=>$folio_licencia,
         );
         $data_soap=$this->utils->conec_soap('licAdeudo',$params);
         $total=$data_soap[(count($data_soap)-1)]->acumulado;
@@ -504,21 +504,21 @@ class Formatos extends CI_Controller {
        </head>
        <body>
            <div style="position:absolute; left:60px; top:4%; width:20%;">
-               <img src="assets/logo-padron.png" alt="">
+               <img src="assets/img/logo-padron.png" alt="">
            </div>
            <div  style="position:absolute; left:160px; top:7%; text-align:center; width:60%;  color:#C40E91; font-size: 25px;">
                <span class="subrayado">LICENCIA MUNICIPAL</span>
            </div>
            <div style="position:absolute; right:10%; top:3%; width: 8%">
-               <img src="assets/gdl-logo.png" alt="">
+               <img src="assets/img/gdl-logo.png" alt="">
            </div>
-           <div style="position:absolute; top:100px; width:85%; height:100%;  background-image: url(assets/logo-GDL-licencia.png); background-size:80%; background-repeat: no-repeat;  background-position: 50% 30%;">
+           <div style="position:absolute; top:100px; width:85%; height:100%;  background-image: url(assets/img/logo-GDL-licencia.png); background-size:80%; background-repeat: no-repeat;  background-position: 50% 30%;">
                <div>
                    <div class="subtitulos margen_principal" style="width:30%; font-size: 12px;">
                        <span>MOVIMIENTO</span>
                    </div>
                    <div style="width:30%; margin-top:10px;">
-                       <span style="font-weight: 500; float: right; font-size: 12px">NUEVA LICENCIA <span class="separador_20" style="font-weight: bold; font-size: 18px; margin-top:10px;">'.$folio_soap.'</span></span>
+                       <span style="font-weight: 500; float: right; font-size: 12px">NUEVA LICENCIA <span class="separador_20" style="font-weight: bold; font-size: 18px; margin-top:10px;">'.$folio_licencia.'</span></span>
                    </div>
                </div>
                <div>
@@ -595,7 +595,7 @@ class Formatos extends CI_Controller {
 
                    <div class="tamano_12 margen_15">
                        <div style="width: 30%; float: left;">
-                          '.$folio_soap.'
+                          '.$folio_licencia.'
                        </div>
                        <div  style="width: 5%; float: left;">
                           &nbsp;
@@ -645,7 +645,7 @@ class Formatos extends CI_Controller {
                        </div>
                        <div style="width: 30%; float: right; text-align: right;">
                            <br>
-                           <barcode code="'.$this->utils->encode($folio_soap).'" type="QR" class="barcode" size="1.5"  style="border:none;"/><br>
+                           <barcode code="'.$this->utils->encode($folio_licencia).'" type="QR" class="barcode" size="1.5"  style="border:none;"/><br>
                        </div>
                    </div>
                    <!--div>
@@ -827,7 +827,7 @@ class Formatos extends CI_Controller {
        </head>
        <body>
            <div style="position:absolute; top:20px; left:55px; width:10%;">
-               <img src="assets/escudo-gdl.png" alt="">
+               <img src="assets/img/escudo-gdl.png" alt="">
            </div>
            <div style="position:absolute; top:8%; left:20px; width:90%;">
                <div style="text-align:center;  font-weight:bold; font-family: DejaVuSansCondensed-Bold;">
@@ -836,7 +836,7 @@ class Formatos extends CI_Controller {
                </div>
            </div>
            <div style="position:absolute; top:30px; right:45px; width: 18%">
-               <img src="assets/logo.png" alt="">
+               <img src="assets/img/logo.png" alt="">
            </div>
            <div style="position:absolute; top:15%;">
                <div class="margen_top_20">
@@ -955,7 +955,7 @@ class Formatos extends CI_Controller {
        $fecha_recepcion = explode(' ',$licencia->fecha);
        $fechaTitle = date("Y/m/d");
        $vacio="&nbsp;";
-       if($licencia->folio_soap == 0){
+       if($licencia->folio_licencia == 0){
             $params = array(
                'tipo_tramite'=>'13',
                'scian'=>$actividad,
@@ -988,13 +988,13 @@ class Formatos extends CI_Controller {
                'inversion'=> $licencia->st3_inversion_establecimiento,
            );
            $data_soap=$this->utils->conec_soap('licTramite',$params);
-           $folio_soap=$data_soap->licencia;
+           $folio_licencia=$data_soap->licencia;
            $this->LicenciasGiroModel->postPdf($idUsuario, $idTramite, $data_soap->licencia);
         }else{
-           $folio_soap=$licencia->folio_soap;
+           $folio_licencia=$licencia->folio_licencia;
         }
         $params = array(
-           'licencia'=>$folio_soap,
+           'licencia'=>$folio_licencia,
         );
         $data_soap=$this->utils->conec_soap('licAdeudo',$params);
 
@@ -1009,13 +1009,13 @@ class Formatos extends CI_Controller {
        </head>
        <body>
            <div style="position:absolute; left:60px; top:4%; width:20%;">
-               <img src="assets/logo-padron.png" alt="">
+               <img src="assets/img/logo-padron.png" alt="">
            </div>
            <div  style="position:absolute; left:2%; top:13%; text-align:center; font-weight:bold; width:100%;  color:gray; font-size: 15px;">
                <span>PROPUESTA DE COBRO</span>
            </div>
            <div style="position:absolute; right:10%; top:3%; width: 8%">
-               <img src="assets/gdl-logo.png" alt="">
+               <img src="assets/img/gdl-logo.png" alt="">
            </div>
            <div style="position:absolute; top:17%; text-align:center; width:84%;">
                  <div style="padding:2px;">
@@ -1093,7 +1093,7 @@ class Formatos extends CI_Controller {
                       </div>
                      <div style="text-align:center; float:right; width:33%; border:solid 1px #000; border-radius:5px;">
                      <b>LICENCIA QUE SE AUTORIZA</b><br>
-                     '.(empty($folio_soap)?$vacio:$folio_soap).'
+                     '.(empty($folio_licencia)?$vacio:$folio_licencia).'
                      </div>
                  </div>
                  <div style="text-align:justify; font-size:10px;">
@@ -1130,12 +1130,12 @@ class Formatos extends CI_Controller {
                 </table>
             </div>
             <div style="text-align:left; color:#C40E91; font-weight:bold; font-size:15px; margin-top:10px; margin-left:5px;">
-                <span>Esta propuesta de cobro sólo serán válidas hasta la fecha límite señalada a continuación:</span>
+                <span>Esta propuesta de cobro sólo será válida hasta la fecha límite señalada a continuación:</span>
             </div>
             <div>
                 <div style="text-align:left; width:50%; float:left; margin-top:10%;">
                     <span><b>Fecha de impresión: '.$this->FormatosModel->fechasFormat($fechaTitle).'</b></span><br><br>
-                    <barcode code="'.$this->utils->encode($folio_soap).'" type="C128A" class="barcode" size="0.5" style="margin-left:-5px";/>
+                    <barcode code="'.$this->utils->encode($folio_licencia).'" type="C128A" class="barcode" size="0.5" style="margin-left:-5px";/>
                 </div>
                 <div style="text-align:right; float:right; width:50%;">
                     <span><b>Fecha límite de pago: '.$this->FormatosModel->fechasFormat($fecha_limite[3]).'</b></span>

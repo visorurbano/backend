@@ -63,6 +63,7 @@ $route['admin/mis-licencias'] = 'admin/misLicencias';
 $route['admin/usuario'] = 'admin/perfilUsuario';
 $route['admin/mis-mensajes'] = 'admin/mensajes';
 $route['admin/mis-mensajes/(:any)'] = 'admin/mensaje';
+$route['admin/confirmacion_licencia/(:any)'] = 'admin/confirmacion_licencia';
 
 //Licencias de Giro
 $route['nueva-licencia'] = 'LicenciasGiro';

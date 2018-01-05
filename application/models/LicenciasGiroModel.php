@@ -91,8 +91,20 @@ class LicenciasGiroModel extends CI_Model {
     }
 
     public function postPdf($idU, $idLicencia, $idFolioSoap){
-        $query=$this->db->query('Update tbl_licencias_giro set folio_soap='.$idFolioSoap.' where id_licencia='.$idLicencia.' and id_usuario='.$idU);
+        $query=$this->db->query('Update tbl_licencias_giro set folio_licencia='.$idFolioSoap.' where id_licencia='.$idLicencia.' and id_usuario='.$idU);
         $resultado=array("status"=>true);
+        return $resultado;
+    }
+
+    public function licencia_nueva($id_licencia,$folio){
+        $query=$this->db->query('select * from tbl_licencias_giro where status="N" and id_licencia='.$id_licencia.' and folio_licencia='.$folio);
+
+        if($query->num_rows() > 0){
+            $query=$this->db->query('Update tbl_licencias_giro set status="FL" and id_licencia='.$id_licencia.' and folio_licencia='.$folio);
+            $resultado=array("status"=>true);
+        }else{
+            $resultado=array("status"=>false);
+        }
         return $resultado;
     }
 }

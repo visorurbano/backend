@@ -51,4 +51,16 @@ class Admin extends CI_Controller {
         }
         $this->load->view('admin/mensaje', $data);
     }
+
+    public function confirmacion_licencia(){
+        $this->load->js(base_url().'assets/js/confirmacion_licencia.min.js');
+        $this->load->view('admin/confirmacion_licencia');
+    }
+
+    public function confirmacion_lic(){
+        $id_s = $this->utils->decode($this->input->get('id_s'));
+        $id_l = $this->utils->decode($this->input->get('id_l'));
+        $consulta = $this->LicenciasGiroModel->licencia_nueva($id_l,$id_s);
+        echo json_encode($consulta);
+    }
 }

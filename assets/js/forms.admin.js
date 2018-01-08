@@ -490,6 +490,7 @@ $(document).ready(function () {
                 if (currentIndex == 3){
                     resumenLicenciaGiro();
                 }
+                $('#frmSolicitudLicenciaGiro .actions li a').addClass('mui-btn mui-btn--primary');
             },
             onFinished: function (event, currentIndex) {
                 var dataSend = {name:"status", value:"FP"};
@@ -503,8 +504,8 @@ $(document).ready(function () {
                 current: "paso actual:",
                 pagination: "Paginación",
                 finish: "Finalizar",
-                next: "Siguiente",
-                previous: "Anterior",
+                next: "Siguiente  <i class=\"fa fa-chevron-right\" aria-hidden=\"true\"></i>",
+                previous: "<i class=\"fa fa-chevron-left\" aria-hidden=\"true\"></i>  Anterior",
                 loading: "Cargando ..."
             },
 
@@ -597,10 +598,7 @@ $(document).ready(function () {
                 unsetError();
                 $('#seccionCartaAnuencia').show();
             }else{
-                var errores = [];
-                errores[0] = 'El contrato de arrendamiento no te faculta para abrir un negocio.';
-                errores[1] = 'No cuentas con la anuencia del propietario para abrir un negocio.';
-                setError(errores);
+                errorLicenciaGiro(1);
                 $('#seccionCartaAnuencia').hide();
 
             }
@@ -626,6 +624,11 @@ $(document).ready(function () {
         e.preventDefault();
         validateFirma();
     });
+
+    // ------------------------------------------------------- //
+    // Estilos botones steps
+    // ------------------------------------------------------ //
+
 
 
 });
@@ -899,10 +902,8 @@ function ResumeLicenciaGiro(){
     }
 
     if($('input:radio[name=st1_anuencia]:checked').val() == 'n'){
-        var errores = [];
-        errores[0] = 'El contrato de arrendamiento no te faculta para abrir un negocio.';
-        errores[1] = 'No cuentas con la anuencia del propietario para abrir un negocio.';
-        setError(errores);
+        alert ('hoña');
+        errorLicenciaGiro();
         $('#seccionCartaAnuencia').hide();
     }else{
         unsetError();
@@ -1240,9 +1241,19 @@ function firmar(element){
                     });*/
                 },
                 success:function(data){
-                    $('#txtFirmaTramite').val('');
+                    $('#txtPassFIEL').val('');
+                    $('#txtPassFIEL').removeClass('mui--is-dirty mui--is-not-empty valid mui--is-touched');
+                    $('#fleKEY').val('');
+                    $('#fleCER').val('');
+                    $('#firmaModal').modal('hide');
                     var sdata = eval("(" + data + ")");
-
+                    if (sdata.status != 200){
+                        $('#firma_electronica').empty();
+                        $('#contMSGFirmaError').empty().append('<div class="alert alert-danger"><strong>Error: </strong>'+sdata.message+'</div>')
+                    }else{
+                        $('#contMSGFirmaError').empty();
+                        $('#firma_electronica').empty().text(sdata.firma);
+                    }
                 },
                 error:function(){
 

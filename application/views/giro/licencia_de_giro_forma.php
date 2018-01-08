@@ -467,7 +467,7 @@
                                <div class="col-md-3">
                                    <div class="mui-textfield mui-textfield--float-label nerror">
                                        <input id="txtLocal" type="text" name="st3_num_local_establecimiento" class="input-material" value="<?=$st3_num_local_establecimiento;?>" required>
-                                       <label for="txtLocal">* Local</label>
+                                       <label for="txtLocal">* Número del Local</label>
                                    </div>
                                </div>
                                <div class="col-md-3">
@@ -561,6 +561,10 @@
                                </div>
                            </div>
                            <br>
+                           <div class="row">
+                               <div class="col-md-12" id="contMSGFirmaError"></div>
+                           </div>
+                           <br>
                            <div class="card card-body bg-light">
                              <h2>Cadena Firmada</h2>
                              <span id="firma_electronica"><?=$firma?></span>
@@ -609,24 +613,7 @@
         </div>
     </section>
 </div>
-</div>
-</div>
-<div class="modal fade errorModal" id="errorModal">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
-            </div>
-            <div class="modal-body">
-                <h4>El trámite no puede continuar por las siguientes razones:</h4>
-                <ul class="tramiteErrores"></ul>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
-            </div>
-        </div>
-    </div>
-</div>
+
 
 <div class="modal fade" id="firmaModal">
     <div class="modal-dialog" role="document">

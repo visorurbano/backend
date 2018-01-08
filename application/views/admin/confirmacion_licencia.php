@@ -9,7 +9,7 @@
     <section class="projects">
         <div class="container-fluid">
             <div id="mensaje">
-
+                
             </div>
         </div>
     </section>

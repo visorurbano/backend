@@ -383,421 +383,426 @@ class Formatos extends CI_Controller {
        extract($_GET);
        $idTramite = $this->utils->decode($lic);
        $idUsuario = $this->utils->decode($usu);
-       $licencia = $this->LicenciasGiroModel->getLicencia($idUsuario, $idTramite);
-       $no_licencia=$licencia->clave_factibilidad;
-       $actividad = $licencia->descripcion_factibilidad;
-       $cajones_estacionamiento=$licencia->st3_cajones_estacionamiento_establecimiento;
-       $aforo_personas="0";
-       $superficie=$licencia->st3_area_utilizar_establecimiento;
-       $horario="";
-       $fecha_sesion="";
-       $calle = $licencia->st3_domicilio_establecimiento;
-       $no_ext = $licencia->st3_num_ext_establecimiento;
-       $col = $licencia->st3_colonia_establecimiento;
-       $clave_catastral = $licencia->clave_catastral;
-       $no_int = $licencia->st3_num_int_establecimiento;
-       $nombre = $licencia->st2_nombre_solicitante;
-       $apellido_primer = $licencia->st2_primer_apellido_solicitante;
-       $apellido_segundo = $licencia->st2_segundo_apellido_solicitante;
-       $rfc = $licencia->st2_rfc_solicitante;
-       $curp = $licencia->st2_curp_solicitante;
-       $fechaTitle = date("d/m/Y H:i");
-        $pago=$licencia->metodo_pago;
-        if($licencia->folio_licencia == 0){
-            $params = array(
-               'tipo_tramite'=>'13',
-               'scian'=>$actividad,
-               'x'=>'0',
-               'y'=>'0',
-               'zona'=>'0',
-               'subzona'=>'0',
-               'actividad'=> $actividad,
-               'cvecuenta'=>$licencia->cuenta_predial,
-               'propietario'=> $nombre,
-               'primer_ap'=> $apellido_primer,
-               'segundo_ap'=> $apellido_segundo,
-               'rfc'=>$rfc,
-               'curp'=>$curp,
-               'telefono_prop'=>$licencia->st2_telefono_solicitante,
-               'email'=>$licencia->st2_email_solicitante,
-               'cvecalle'=>'0',
-               'calle'=>$calle,
-               'num_ext'=>$no_ext,
-               'let_ext'=>$licencia->st3_letra_ext_establecimiento,
-               'num_int'=>$no_int,
-               'let_int'=>$licencia->st3_letra_int_establecimiento,
-               'colonia'=>$col,
-               'cp'=>$licencia->st3_cp_establecimiento,
-               'espubic'=>'',
-               'sup_autorizada'=>$superficie,
-               'num_cajones'=>$cajones_estacionamiento,
-               'num_empleados'=>$licencia->st3_empleados_establecimiento,
-               'aforo'=>$aforo_personas,
-               'inversion'=> $licencia->st3_inversion_establecimiento,
-           );
-           $data_soap=$this->utils->conec_soap('licTramite',$params);
-           $folio_licencia=$data_soap->licencia;
-           $this->LicenciasGiroModel->postPdf($idUsuario, $idTramite, $data_soap->licencia);
-        }else{
-           $folio_licencia=$licencia->folio_licencia;
-        }
-        $params = array(
-           'licencia'=>$folio_licencia,
-        );
-        $data_soap=$this->utils->conec_soap('licAdeudo',$params);
-        $total=$data_soap[(count($data_soap)-1)]->acumulado;
-       $html ='<html>
-       <head>
-           <style>
-               body{
-                 font-family: exo;
+       $licencia = $this->LicenciasGiroModel->getLicencia_fl($idUsuario, $idTramite);
+       if(!$licencia){
+           echo "<center><h3>Licencia no se puede imprimir</h3></center>";
+       }else{
+           $no_licencia=$licencia->clave_factibilidad;
+           $actividad = $licencia->descripcion_factibilidad;
+           $cajones_estacionamiento=$licencia->st3_cajones_estacionamiento_establecimiento;
+           $aforo_personas="0";
+           $superficie=$licencia->st3_area_utilizar_establecimiento;
+           $horario="";
+           $fecha_sesion="";
+           $calle = $licencia->st3_domicilio_establecimiento;
+           $no_ext = $licencia->st3_num_ext_establecimiento;
+           $col = $licencia->st3_colonia_establecimiento;
+           $clave_catastral = $licencia->clave_catastral;
+           $no_int = $licencia->st3_num_int_establecimiento;
+           $nombre = $licencia->st2_nombre_solicitante;
+           $apellido_primer = $licencia->st2_primer_apellido_solicitante;
+           $apellido_segundo = $licencia->st2_segundo_apellido_solicitante;
+           $rfc = $licencia->st2_rfc_solicitante;
+           $curp = $licencia->st2_curp_solicitante;
+           $fechaTitle = date("d/m/Y H:i");
+           $pago=$licencia->metodo_pago;
+           if($licencia->folio_licencia == 0){
+               $params = array(
+                   'tipo_tramite'=>'13',
+                   'scian'=>$actividad,
+                   'x'=>'0',
+                   'y'=>'0',
+                   'zona'=>'0',
+                   'subzona'=>'0',
+                   'actividad'=> $actividad,
+                   'cvecuenta'=>$licencia->cuenta_predial,
+                   'propietario'=> $nombre,
+                   'primer_ap'=> $apellido_primer,
+                   'segundo_ap'=> $apellido_segundo,
+                   'rfc'=>$rfc,
+                   'curp'=>$curp,
+                   'telefono_prop'=>$licencia->st2_telefono_solicitante,
+                   'email'=>$licencia->st2_email_solicitante,
+                   'cvecalle'=>'0',
+                   'calle'=>$calle,
+                   'num_ext'=>$no_ext,
+                   'let_ext'=>$licencia->st3_letra_ext_establecimiento,
+                   'num_int'=>$no_int,
+                   'let_int'=>$licencia->st3_letra_int_establecimiento,
+                   'colonia'=>$col,
+                   'cp'=>$licencia->st3_cp_establecimiento,
+                   'espubic'=>'',
+                   'sup_autorizada'=>$superficie,
+                   'num_cajones'=>$cajones_estacionamiento,
+                   'num_empleados'=>$licencia->st3_empleados_establecimiento,
+                   'aforo'=>$aforo_personas,
+                   'inversion'=> $licencia->st3_inversion_establecimiento,
+                   );
+                   $data_soap=$this->utils->conec_soap('licTramite',$params);
+                   $folio_licencia=$data_soap->licencia;
+                   $this->LicenciasGiroModel->postPdf($idUsuario, $idTramite, $data_soap->licencia);
+               }else{
+                   $folio_licencia=$licencia->folio_licencia;
                }
-               .titulo{
-                   text-align: center;
-                   color:#919191;
-                   font-size: 30px;
-               }
-               .subtitulos{
-                   text-align: center;
-                   background: #969696;
-                   color: #fff;
-                   font-weight: bold;
-                   border-radius: 5px;
-               }
-               .subtitulos_sub{
-                   text-align: center;
-                   background: #969696;
-                   color:#fff;
-                   font-weight: bold;
-                   border-radius: 4px;
-                   font-size: 12px;
-               }
-               .margen_principal{
-                   margin-top: 50px;
-               }
-               .margen_titulo{
-                   margin-top: 100px;
-               }
-               .margen_30{
-                   margin-top: 30px;
-               }
-               .margen_15{
-                   margin-top: 15px;
-               }
-               .margen_20{
-                   margin-top: 20px;
-               }
-               .separador_20{
-                   margin-left:40px;
-               }
-               .tamano_14{
-                   font-size: 14px;
-               }
-               .tamano_12{
-                   font-size: 12px;
-               }
-               .tamana_10{
-                   font-size: 8px;
-               }
+               $params = array(
+               'licencia'=>$folio_licencia,
+               );
+               $data_soap=$this->utils->conec_soap('licAdeudo',$params);
+               $total=$data_soap[(count($data_soap)-1)]->acumulado;
+               $html ='<html>
+               <head>
+                   <style>
+                       body{
+                           font-family: exo;
+                       }
+                       .titulo{
+                           text-align: center;
+                           color:#919191;
+                           font-size: 30px;
+                       }
+                       .subtitulos{
+                           text-align: center;
+                           background: #969696;
+                           color: #fff;
+                           font-weight: bold;
+                           border-radius: 5px;
+                       }
+                       .subtitulos_sub{
+                           text-align: center;
+                           background: #969696;
+                           color:#fff;
+                           font-weight: bold;
+                           border-radius: 4px;
+                           font-size: 12px;
+                       }
+                       .margen_principal{
+                           margin-top: 50px;
+                       }
+                       .margen_titulo{
+                           margin-top: 100px;
+                       }
+                       .margen_30{
+                           margin-top: 30px;
+                       }
+                       .margen_15{
+                           margin-top: 15px;
+                       }
+                       .margen_20{
+                           margin-top: 20px;
+                       }
+                       .separador_20{
+                           margin-left:40px;
+                       }
+                       .tamano_14{
+                           font-size: 14px;
+                       }
+                       .tamano_12{
+                           font-size: 12px;
+                       }
+                       .tamana_10{
+                           font-size: 8px;
+                       }
 
-           </style>
-       </head>
-       <body>
-           <div style="position:absolute; left:60px; top:4%; width:20%;">
-               <img src="assets/img/logo-padron.png" alt="">
-           </div>
-           <div  style="position:absolute; left:160px; top:7%; text-align:center; width:60%;  color:#C40E91; font-size: 25px;">
-               <span class="subrayado">LICENCIA MUNICIPAL</span>
-           </div>
-           <div style="position:absolute; right:10%; top:3%; width: 8%">
-               <img src="assets/img/gdl-logo.png" alt="">
-           </div>
-           <div style="position:absolute; top:100px; width:85%; height:100%;  background-image: url(assets/img/logo-GDL-licencia.png); background-size:80%; background-repeat: no-repeat;  background-position: 50% 30%;">
-               <div>
-                   <div class="subtitulos margen_principal" style="width:30%; font-size: 12px;">
-                       <span>MOVIMIENTO</span>
+                   </style>
+               </head>
+               <body>
+                   <div style="position:absolute; left:60px; top:4%; width:20%;">
+                       <img src="assets/img/logo-padron.png" alt="">
                    </div>
-                   <div style="width:30%; margin-top:10px;">
-                       <span style="font-weight: 500; float: right; font-size: 12px">NUEVA LICENCIA <span class="separador_20" style="font-weight: bold; font-size: 18px; margin-top:10px;">'.$folio_licencia.'</span></span>
+                   <div  style="position:absolute; left:160px; top:7%; text-align:center; width:60%;  color:#C40E91; font-size: 25px;">
+                       <span class="subrayado">LICENCIA MUNICIPAL</span>
                    </div>
-               </div>
-               <div>
-                   <div style="width: 35%; float: left;">
-                       &nbsp;
+                   <div style="position:absolute; right:10%; top:3%; width: 8%">
+                       <img src="assets/img/gdl-logo.png" alt="">
                    </div>
-                   <div class="subtitulos" style="width:30%; float: left; font-size: 12px;">
-                        <span>DATOS DEL GIRO</span>
-                   </div>
-                   <div style="width: 30%; float: right; margin-left: 10%;">
-                        &nbsp;
-                   </div>
-               </div>
-               <div class="margen_15">
-                   <div class="tamano_14" style="width:100%; font-weight:bold; text-align:center;">
-                         Actividad: &nbsp;'.$actividad.'
-                   </div>
-
-                   <div class="tamano_12 margen_15">
-                       <div style="width: 35%; float: left;">
-                           <span>Cajones de estacimiento: '.$cajones_estacionamiento.'</span>
-                       </div>
-                       <div style="width: 30%; float: left;">
-                           <span class="separador_20">Superficie Autorizadas: '.$superficie.' mts</span>
-                       </div>
-                       <div style="width: 30%; float: right; margin-left: 10%;">
-                          <span class="separador_20">Horario: '.$horario.'</span>
-                       </div>
-                   </div>
-                   <div class="tamano_12 margen_20">
-                       OBLIGATORIO CONTAR CON CONTRATO DE RECOLECCIÓN DE RESIDUOS O DICTAMEN DE MICROGENERADOR
-                       EMITIDO POR LA DIR DE MEDIO AMBIENTE Y CONTENEDORES CLASIFICADOS PARA LOS RESIDUOS
-                   </div>
-                   <div>
-                       <div class="subtitulos_sub margen_15" style="width: 30%; float:left; margin-top: 20px;">
-                           UBICACIÓN
-                       </div>
-                       <div class="subtitulos_sub" style="width: 30%; float:right;" >
-                           CONTRIBUYENTE
-                       </div>
-                   </div>
-                   <div class="tamano_12 margen_15">
-                       <div style="width: 40%; float: left;">
-                           Calle: '.$calle.'<br>
-                           No Ext: '.$no_ext.'<br>
-                           Colonia: '.$col.'<br>
-                           Cve Catastral: '.$clave_catastral.'
-                       </div>
-                       <div style="width: 20%; float: left;">
-                          No. Int: '.$no_int.'<br>
-                          <!--Zona: '.$zona.'-->
-                       </div>
-                       <div style="width: 30%; float: right; margin-left: 10%;">
-                           Nombre: '.$nombre.'<br>
-                           RFC: '.$rfc.'<br>
-                           CURP: '.$curp.'
-                       </div>
-                   </div>
-
-                   <div class="margen_15">
-                       <div class="subtitulos_sub" style="width: 30%; float: left;">
-                           LICENCIA
-                       </div>
-                       <div  style="width: 5%; float: left;">
-                           &nbsp;
-                       </div>
-                       <div class="subtitulos_sub" style="width: 30%; float:left;">
-                          CONCEPTO
-                       </div>
-                       <div class="subtitulos_sub" style="width: 30%; float:right;">
-                          IMPORTE
-                       </div>
-                   </div>
-
-                   <div class="tamano_12 margen_15">
-                       <div style="width: 30%; float: left;">
-                          '.$folio_licencia.'
-                       </div>
-                       <div  style="width: 5%; float: left;">
-                          &nbsp;
-                       </div>
-                       <div style="width: 30%; float: left;">';
-                for ($i=0; $i < count($data_soap) ; $i++) {
-                    $html .= $data_soap[$i]->descripcion.'<br>';
-                }
-
-                $html .='</div>
-                       <div style="width: 30%; float: right; text-align: right;">';
-                for ($i=0; $i < count($data_soap) ; $i++) {
-                    $html .= '$'.$data_soap[$i]->importe.'<br>';
-                }
-
-                $html .='</div>
-                   </div>
-
-                   <div class="tamano_12 margen_15">
-                       <div style="width: 80%; float: left;">
-                          ('.$this->FormatosModel->denominacion_moneda($this->FormatosModel->to_word($total,null)).' 00/100 M.N.)
-                       </div>
-                       <!--div  style="width: 5%; float: left;">
-                          &nbsp;
-                       </div>
-                       <div style="width: 30%; float: left;">
-                           <b>PAGO EN: '.$pago.'</b>
-                       </div-->
-                       <div style="width: 20%; float: right; text-align: right;">
-                           <b>$'.$total.'</b>
-                       </div>
-                   </div>
-                   <div class="tamano_12" style="marin-top:5px;">
-                       <div style="width: 30%; float: left;">
-                          <b>PAGO EN: '.$pago.'</b>
-                       </div>
-                   </div>
-                   <div>
-                       <div style="width: 30%; float: left;">
-                          &nbsp;
-                       </div>
-                       <div  style="width: 5%; float: left;">
-                          &nbsp;
-                       </div>
-                       <div style="width: 30%; float: left;">
-                         &nbsp;
-                       </div>
-                       <div style="width: 30%; float: right; text-align: right;">
-                           <br>
-                           <barcode code="'.$this->utils->encode($folio_licencia).'" type="QR" class="barcode" size="1.5"  style="border:none;"/><br>
-                       </div>
-                   </div>
-                   <!--div>
-                       <div style="width: 30%; float: left;">
-                          &nbsp;
-                       </div>
-                       <div  style="width: 5%; float: left;">
-                          &nbsp;
-                       </div>
-                       <div style="width: 30%; float: left;">
-                         &nbsp;
-                       </div>
-                       <div class="tamana_10" style="width: 30%; text-align: center; margin-left:80%;">
-                           <span>2 ch 20501 20/10/2017 13:59 <br> 4413188 425872 427.00 6062617</span><br>
-                           <span>Adriana Robles Bustos</span>
-                       </div>
-                   </div-->
-               </div>
-           </div>
-
-
-           <div style="position:absolute; bottom:22%; text-align: center; font-size: 12px;">
-               <b>
-                   LIC. DAGOBERTO CALDERÓN LEAL<br>
-                   Director de Padrón y Licencias <br>
-                   CURP: <br>
-                   E-MAIL: <br>
-                   Periodo de vigencia de la firma elctrónica:
-               </b>
-           </div>
-           <div style="position:absolute; bottom:13%; text-align: left; font-size: 10px; width: 45%; border-right: solid #000000 1px">
-              <div>
-                   <b>
-                       EXPEDIDO EN: <br>
-                       DATOS DEL PRESTADOR DE SERVICIOS DE CERTIFICACIÓN: <br>
-                       TECNOLOGÍA IMPLEMENTADA PARA LA CRECIÓN DE LAS FIRMAS: <br>
-                       NÚMERO DE SERIE: <br>
-                       AUTORIDAD CERTIFICADORA QUE LO EMITIÓ: <br>
-                   </b>
-               </div>
-           </div>
-           <div style="position:absolute; bottom:12%; right:7%; text-align: left; font-size: 10px;">
-              <div style="border-left: #0d1318 solid 1px;">
-                  <div style="margin-left: 10px;">Guadalajara, Jalisco, el día '.$fechaTitle.'</div><br><br><br><br>
-                  <div style="margin-left: 10px;">SECRETARIA GENERAL DE GOBIERNO DEL ESTADO DE JALISCO</div>
-              </div>
-           </div>
-           <div style="position:absolute; bottom:7%; text-align: left; font-size: 10px; width: 85%">
-               <b>EL PRESENTE ACTO ADMINISTRATIVO CUENTA CON PLENA VALIDEZ, EFICACIA JURÍDICA Y OBLIGATORIEDAD DESDE LA FECHA DE SU EMISIÓN Y/O NOTIFICACIÓN TANTO PARA LOS PARTICULARES
-               COMO PARA LAS AUTORIDADES</b>
-           </div>
-       </body>
-       </html>';
-       $this->pdf->WriteHTML($html);
-       $this->pdf->AddPage();
-       $html2 = '<html>
-       <head>
-           <style>
-               body{
-                   font-size: 11px;
-               }
-              .cuadro_principal{
-                   border:solid 1px #b1b1b1;
-                   text-align: justify;
-              }
-              .margen_2_p{
-                   margin:2%;
-              }
-              .tamano_12{
-                   font-size: 12px;
-              }
-              .margen_10_top{
-                 margin-top: 5%;
-              }
-           </style>
-       </head>
-       <body>
-          <div class="cuadro_principal">
-               <div class="margen_2_p">
-                   Hoy, más que nunca <b> Guadalajara necesita de tu participación y compromiso.</b> Te invitamos a respetar y
-                   cumplir los reglamentos, el respeto a los mismos es el respeto a la ciudadania. Recuerda que el
-                   desconocimiento de los mismos no nos exime de responsabilidad. A continuación hacemos mención de
-                   algunos de los aspectos que debes tener muy presentes para el buen funcionamiento de tu giro.
-               </div>
-          </div>
-          <div>
-              <table class="margen_10_top">
-                   <tr>
-                       <td style="width: 35%">
-                           <br>
-                           <b>SON MOTIVOS DE CLAUSURA:</b>
-                       </td>
-                       <td style="width: 65%; padding-left: 15px">
-                           <br>
-                           <b>EL REFRENDO, BAJA, MODIFICACIONES Y TRASPASOS DE LICENCIAS.</b>
-                       </td>
-                   </tr>
-                   <tr >
-                       <td valign="top">
-                           <br><br>
-                           <b>A. </b>CARECER DE LA LICENCIA MUNICIPAL. <br>
-                           <b>B. </b>OPERAR UNA ACTIVIDAD DISTINTA A LA MANIFESTADA EN LA LICENCIA. <br>
-                           <b>C. </b>FUNCIONAR FUERA DEL HORARIO PERMITIDO. <br>
-                           <b>D. </b>LA VENTA Y/O CONSUMO DE BEBIDAS ALCOHÓLICAS FUERA DE LO ESTABLECIDO EN LA LEY. <br>
-                           <b>E. </b>QUE SE COMETAN DELITO CONTRA LA SALUD, LA VIDA O LA INTEGRIDAD FÍSICA DE LAS PERSONAS DENTRO DEL ESTABLECIMIENTO.<br>
-                           <b>F. </b>COLOCAR ANUNCIOS SOBRE LA VÍA PÚBLICA. <br>
-                           <b>G. </b>OBSTRUIR EL PASO PEATONAL. HACIENDO USO DE LA VÍA PÚBLICA SIN AUTORIZACIÓN.<br>
-                           <b>H. </b>EXCEDER EL AFORO AUTORIZADO. <br>
-                           <b>I. </b>EXCEDER CON EMISIONES DE RUIDO. NORMA AMBIENTAL NOM-081-SEMARNAT-94 DE DECIBELES (RELATIVA A LOS DECIBELES PERMITIDOS). <br>
-                           <b>J. </b>DESCARGA DE RESIDUOS NOCIVOS A LA RED MUNICIPAL. <br>
-                           <b>K. </b>OPERAR MÁQUINAS DE JUEGOS DE AZAR. <br>
-                           <b>L. </b>QUE LOS DOCUMENTOS Y DATOS PROPORCIONADOS EN LA PLATAFORMA SEAN FALSOS. <br>
-                           <br><br><br><br>
-                           <div>
-                               DENUNCIA LAS ACTUACIONES <br>
-                               IRREGULARES DE LOS FUNCIONARIOS <br>
-                               MUNICIPALES A LA DIRECCIÓN DE <br>
-                               RESPONSABILIDADES <br>
-                               5 DE FEBRERO 248, UNIDAD <br>
-                               ADMINISTRATIVA REFORMA <br>
-                               TELÉFONOS: 15931569 Y 33348676 <br>
-                               HORARIO: 09:00 A 17:00
+                   <div style="position:absolute; top:100px; width:85%; height:100%;  background-image: url(assets/img/logo-GDL-licencia.png); background-size:80%; background-repeat: no-repeat;  background-position: 50% 30%;">
+                       <div>
+                           <div class="subtitulos margen_principal" style="width:30%; font-size: 12px;">
+                               <span>MOVIMIENTO</span>
                            </div>
-                       </td>
-                       <td valign="top" style="padding-left: 15px">
-                           <br><br>
-                           La licecia municipal deberá estar en un sitio visible. <br><br>
-                           El <b>refrendo</b> de la licencia municipal es anual y deberá ser realizado durante los primeros dos meses del año fiscal correspondiente. <br><br>
-                           En caso de que el negocio deje de operar, el titular de la licencia deberá <b>presentar aviso de baja </b>
-                           ante de la Dirección de Padrón y licencias. <br><br>
-                           Para realizar <b>traspaso y/o modificaciones en la licencia, </b>se deberá acudir a las oficinas de Padrón y Licencias para su debida autorización. <br><br>
-                           <b>EL ESTABLECIMIENTO: MEDIO AMBIENTE, IMAGEN, ORDEN Y SEGURIDAD</b>. <br><br>
-                           <li>Mantener una imagen <b>ordenada</b> y limpia en el exterior del establecimiento.</li> <br><br>
-                           <li>Contar con las medidas en materia de <b>seguridad</b> y protección civil.</li> <br><br>
-                           <li>Permitir el ingreso al personal autorizado por el Ayuntamiento, asi como proporcionarles la documentación requerida para el desarrollo de sus funciones.</li> <br><br>
-                           <li>Acatar las disposiciones establecidas en el reglamento de <b>anuncios</b>.</li> <br><br>
-                           <li>Queda prohibida la instalación de los <b>anuncios eventuales tipo pendón</b> en todo el Municipio de Guadalajara, de acuerdo al Articulo 39, del Reglamento de Anuncios para el Municipio de Guadalajara.</li><br><br><br><br>
-                       </td>
-                   </tr>
-                   <tr>
-                       <td></td>
-                       <td style="text-align: center;">
-                           <b>ADOPTA UN ESPACIO VERDE, RESPETA EL ESPACIO PÚBLICO</b>
-                       </td>
-                   </tr>
-              </table>
-          </div>
-       </body>
-       </html>';
+                           <div style="width:30%; margin-top:10px;">
+                               <span style="font-weight: 500; float: right; font-size: 12px">NUEVA LICENCIA <span class="separador_20" style="font-weight: bold; font-size: 18px; margin-top:10px;">'.$folio_licencia.'</span></span>
+                           </div>
+                       </div>
+                       <div>
+                           <div style="width: 35%; float: left;">
+                               &nbsp;
+                           </div>
+                           <div class="subtitulos" style="width:30%; float: left; font-size: 12px;">
+                               <span>DATOS DEL GIRO</span>
+                           </div>
+                           <div style="width: 30%; float: right; margin-left: 10%;">
+                               &nbsp;
+                           </div>
+                       </div>
+                       <div class="margen_15">
+                           <div class="tamano_14" style="width:100%; font-weight:bold; text-align:center;">
+                               Actividad: &nbsp;'.$actividad.'
+                           </div>
 
-       $this->pdf->WriteHTML($html2);
-       $this->pdf->Output('Licencia_Municipal.pdf', 'I');
+                           <div class="tamano_12 margen_15">
+                               <div style="width: 35%; float: left;">
+                                   <span>Cajones de estacimiento: '.$cajones_estacionamiento.'</span>
+                               </div>
+                               <div style="width: 30%; float: left;">
+                                   <span class="separador_20">Superficie Autorizadas: '.$superficie.' mts</span>
+                               </div>
+                               <div style="width: 30%; float: right; margin-left: 10%;">
+                                   <span class="separador_20">Horario: '.$horario.'</span>
+                               </div>
+                           </div>
+                           <div class="tamano_12 margen_20">
+                               OBLIGATORIO CONTAR CON CONTRATO DE RECOLECCIÓN DE RESIDUOS O DICTAMEN DE MICROGENERADOR
+                               EMITIDO POR LA DIR DE MEDIO AMBIENTE Y CONTENEDORES CLASIFICADOS PARA LOS RESIDUOS
+                           </div>
+                           <div>
+                               <div class="subtitulos_sub margen_15" style="width: 30%; float:left; margin-top: 20px;">
+                                   UBICACIÓN
+                               </div>
+                               <div class="subtitulos_sub" style="width: 30%; float:right;" >
+                                   CONTRIBUYENTE
+                               </div>
+                           </div>
+                           <div class="tamano_12 margen_15">
+                               <div style="width: 40%; float: left;">
+                                   Calle: '.$calle.'<br>
+                                   No Ext: '.$no_ext.'<br>
+                                   Colonia: '.$col.'<br>
+                                   Cve Catastral: '.$clave_catastral.'
+                               </div>
+                               <div style="width: 20%; float: left;">
+                                   No. Int: '.$no_int.'<br>
+                                   <!--Zona: '.$zona.'-->
+                               </div>
+                               <div style="width: 30%; float: right; margin-left: 10%;">
+                                   Nombre: '.$nombre.'<br>
+                                   RFC: '.$rfc.'<br>
+                                   CURP: '.$curp.'
+                               </div>
+                           </div>
+
+                           <div class="margen_15">
+                               <div class="subtitulos_sub" style="width: 30%; float: left;">
+                                   LICENCIA
+                               </div>
+                               <div  style="width: 5%; float: left;">
+                                   &nbsp;
+                               </div>
+                               <div class="subtitulos_sub" style="width: 30%; float:left;">
+                                   CONCEPTO
+                               </div>
+                               <div class="subtitulos_sub" style="width: 30%; float:right;">
+                                   IMPORTE
+                               </div>
+                           </div>
+
+                           <div class="tamano_12 margen_15">
+                               <div style="width: 30%; float: left;">
+                                   '.$folio_licencia.'
+                               </div>
+                               <div  style="width: 5%; float: left;">
+                                   &nbsp;
+                               </div>
+                               <div style="width: 30%; float: left;">';
+                                   for ($i=0; $i < count($data_soap) ; $i++) {
+                                       $html .= $data_soap[$i]->descripcion.'<br>';
+                                   }
+
+                                   $html .='</div>
+                                   <div style="width: 30%; float: right; text-align: right;">';
+                                       for ($i=0; $i < count($data_soap) ; $i++) {
+                                           $html .= '$'.$data_soap[$i]->importe.'<br>';
+                                       }
+
+                                       $html .='</div>
+                                   </div>
+
+                                   <div class="tamano_12 margen_15">
+                                       <div style="width: 80%; float: left;">
+                                           ('.$this->FormatosModel->denominacion_moneda($this->FormatosModel->to_word($total,null)).' 00/100 M.N.)
+                                       </div>
+                                       <!--div  style="width: 5%; float: left;">
+                                           &nbsp;
+                                       </div>
+                                       <div style="width: 30%; float: left;">
+                                           <b>PAGO EN: '.$pago.'</b>
+                                       </div-->
+                                       <div style="width: 20%; float: right; text-align: right;">
+                                           <b>$'.$total.'</b>
+                                       </div>
+                                   </div>
+                                   <div class="tamano_12" style="marin-top:5px;">
+                                       <div style="width: 30%; float: left;">
+                                           <b>PAGO EN: '.$pago.'</b>
+                                       </div>
+                                   </div>
+                                   <div>
+                                       <div style="width: 30%; float: left;">
+                                           &nbsp;
+                                       </div>
+                                       <div  style="width: 5%; float: left;">
+                                           &nbsp;
+                                       </div>
+                                       <div style="width: 30%; float: left;">
+                                           &nbsp;
+                                       </div>
+                                       <div style="width: 30%; float: right; text-align: right;">
+                                           <br>
+                                           <barcode code="'.$this->utils->encode($folio_licencia).'" type="QR" class="barcode" size="1.5"  style="border:none;"/><br>
+                                           </div>
+                                       </div>
+                                       <!--div>
+                                           <div style="width: 30%; float: left;">
+                                               &nbsp;
+                                           </div>
+                                           <div  style="width: 5%; float: left;">
+                                               &nbsp;
+                                           </div>
+                                           <div style="width: 30%; float: left;">
+                                               &nbsp;
+                                           </div>
+                                           <div class="tamana_10" style="width: 30%; text-align: center; margin-left:80%;">
+                                               <span>2 ch 20501 20/10/2017 13:59 <br> 4413188 425872 427.00 6062617</span><br>
+                                               <span>Adriana Robles Bustos</span>
+                                           </div>
+                                       </div-->
+                                   </div>
+                               </div>
+
+
+                               <div style="position:absolute; bottom:22%; text-align: left; font-size: 12px;">
+                                   <b>
+                                       LIC. DAGOBERTO CALDERÓN LEAL<br>
+                                       Director de Padrón y Licencias <br>
+                                       CURP: CALD650802HJCLLG00<br>
+                                       E-MAIL: dcalderon@guadalajara.gob.mx<br>
+                                       Periodo de vigencia de la firma elctrónica:
+                                   </b>
+                               </div>
+                               <div style="position:absolute; bottom:13%; text-align: left; font-size: 10px; width: 45%; border-right: solid #000000 1px">
+                                   <div>
+                                       <b>
+                                           EXPEDIDO EN: <br>
+                                           DATOS DEL PRESTADOR DE SERVICIOS DE CERTIFICACIÓN: <br>
+                                           TECNOLOGÍA IMPLEMENTADA PARA LA CRECIÓN DE LAS FIRMAS: <br>
+                                           NÚMERO DE SERIE: <br>
+                                           AUTORIDAD CERTIFICADORA QUE LO EMITIÓ: <br>
+                                       </b>
+                                   </div>
+                               </div>
+                               <div style="position:absolute; bottom:12%; right:7%; text-align: left; font-size: 10px;">
+                                   <div style="border-left: #0d1318 solid 1px;">
+                                       <div style="margin-left: 10px;">Guadalajara, Jalisco, el día '.$fechaTitle.'</div><br><br><br><br>
+                                       <div style="margin-left: 10px;">SECRETARIA GENERAL DE GOBIERNO DEL ESTADO DE JALISCO</div>
+                                   </div>
+                               </div>
+                               <div style="position:absolute; bottom:7%; text-align: left; font-size: 10px; width: 85%">
+                                   <b>EL PRESENTE ACTO ADMINISTRATIVO CUENTA CON PLENA VALIDEZ, EFICACIA JURÍDICA Y OBLIGATORIEDAD DESDE LA FECHA DE SU EMISIÓN Y/O NOTIFICACIÓN TANTO PARA LOS PARTICULARES
+                                       COMO PARA LAS AUTORIDADES</b>
+                                   </div>
+                               </body>
+                               </html>';
+                               $this->pdf->WriteHTML($html);
+                               $this->pdf->AddPage();
+                               $html2 = '<html>
+                               <head>
+                                   <style>
+                                       body{
+                                           font-size: 11px;
+                                       }
+                                       .cuadro_principal{
+                                           border:solid 1px #b1b1b1;
+                                           text-align: justify;
+                                       }
+                                       .margen_2_p{
+                                           margin:2%;
+                                       }
+                                       .tamano_12{
+                                           font-size: 12px;
+                                       }
+                                       .margen_10_top{
+                                           margin-top: 5%;
+                                       }
+                                   </style>
+                               </head>
+                               <body>
+                                   <div class="cuadro_principal">
+                                       <div class="margen_2_p">
+                                           Hoy, más que nunca <b> Guadalajara necesita de tu participación y compromiso.</b> Te invitamos a respetar y
+                                           cumplir los reglamentos, el respeto a los mismos es el respeto a la ciudadania. Recuerda que el
+                                           desconocimiento de los mismos no nos exime de responsabilidad. A continuación hacemos mención de
+                                           algunos de los aspectos que debes tener muy presentes para el buen funcionamiento de tu giro.
+                                       </div>
+                                   </div>
+                                   <div>
+                                       <table class="margen_10_top">
+                                           <tr>
+                                               <td style="width: 35%">
+                                                   <br>
+                                                   <b>SON MOTIVOS DE CLAUSURA:</b>
+                                               </td>
+                                               <td style="width: 65%; padding-left: 15px">
+                                                   <br>
+                                                   <b>EL REFRENDO, BAJA, MODIFICACIONES Y TRASPASOS DE LICENCIAS.</b>
+                                               </td>
+                                           </tr>
+                                           <tr >
+                                               <td valign="top">
+                                                   <br><br>
+                                                   <b>A. </b>CARECER DE LA LICENCIA MUNICIPAL. <br>
+                                                   <b>B. </b>OPERAR UNA ACTIVIDAD DISTINTA A LA MANIFESTADA EN LA LICENCIA. <br>
+                                                   <b>C. </b>FUNCIONAR FUERA DEL HORARIO PERMITIDO. <br>
+                                                   <b>D. </b>LA VENTA Y/O CONSUMO DE BEBIDAS ALCOHÓLICAS FUERA DE LO ESTABLECIDO EN LA LEY. <br>
+                                                   <b>E. </b>QUE SE COMETAN DELITO CONTRA LA SALUD, LA VIDA O LA INTEGRIDAD FÍSICA DE LAS PERSONAS DENTRO DEL ESTABLECIMIENTO.<br>
+                                                   <b>F. </b>COLOCAR ANUNCIOS SOBRE LA VÍA PÚBLICA. <br>
+                                                   <b>G. </b>OBSTRUIR EL PASO PEATONAL. HACIENDO USO DE LA VÍA PÚBLICA SIN AUTORIZACIÓN.<br>
+                                                   <b>H. </b>EXCEDER EL AFORO AUTORIZADO. <br>
+                                                   <b>I. </b>EXCEDER CON EMISIONES DE RUIDO. NORMA AMBIENTAL NOM-081-SEMARNAT-94 DE DECIBELES (RELATIVA A LOS DECIBELES PERMITIDOS). <br>
+                                                   <b>J. </b>DESCARGA DE RESIDUOS NOCIVOS A LA RED MUNICIPAL. <br>
+                                                   <b>K. </b>OPERAR MÁQUINAS DE JUEGOS DE AZAR. <br>
+                                                   <b>L. </b>QUE LOS DOCUMENTOS Y DATOS PROPORCIONADOS EN LA PLATAFORMA SEAN FALSOS. <br>
+                                                   <br><br><br><br>
+                                                   <div>
+                                                       DENUNCIA LAS ACTUACIONES <br>
+                                                       IRREGULARES DE LOS FUNCIONARIOS <br>
+                                                       MUNICIPALES A LA DIRECCIÓN DE <br>
+                                                       RESPONSABILIDADES <br>
+                                                       5 DE FEBRERO 248, UNIDAD <br>
+                                                       ADMINISTRATIVA REFORMA <br>
+                                                       TELÉFONOS: 15931569 Y 33348676 <br>
+                                                       HORARIO: 09:00 A 17:00
+                                                   </div>
+                                               </td>
+                                               <td valign="top" style="padding-left: 15px">
+                                                   <br><br>
+                                                   La licecia municipal deberá estar en un sitio visible. <br><br>
+                                                   El <b>refrendo</b> de la licencia municipal es anual y deberá ser realizado durante los primeros dos meses del año fiscal correspondiente. <br><br>
+                                                   En caso de que el negocio deje de operar, el titular de la licencia deberá <b>presentar aviso de baja </b>
+                                                   ante de la Dirección de Padrón y licencias. <br><br>
+                                                   Para realizar <b>traspaso y/o modificaciones en la licencia, </b>se deberá acudir a las oficinas de Padrón y Licencias para su debida autorización. <br><br>
+                                                   <b>EL ESTABLECIMIENTO: MEDIO AMBIENTE, IMAGEN, ORDEN Y SEGURIDAD</b>. <br><br>
+                                                   <li>Mantener una imagen <b>ordenada</b> y limpia en el exterior del establecimiento.</li> <br><br>
+                                                   <li>Contar con las medidas en materia de <b>seguridad</b> y protección civil.</li> <br><br>
+                                                   <li>Permitir el ingreso al personal autorizado por el Ayuntamiento, asi como proporcionarles la documentación requerida para el desarrollo de sus funciones.</li> <br><br>
+                                                   <li>Acatar las disposiciones establecidas en el reglamento de <b>anuncios</b>.</li> <br><br>
+                                                   <li>Queda prohibida la instalación de los <b>anuncios eventuales tipo pendón</b> en todo el Municipio de Guadalajara, de acuerdo al Articulo 39, del Reglamento de Anuncios para el Municipio de Guadalajara.</li><br><br><br><br>
+                                               </td>
+                                           </tr>
+                                           <tr>
+                                               <td></td>
+                                               <td style="text-align: center;">
+                                                   <b>ADOPTA UN ESPACIO VERDE, RESPETA EL ESPACIO PÚBLICO</b>
+                                               </td>
+                                           </tr>
+                                       </table>
+                                   </div>
+                               </body>
+                               </html>';
+
+                               $this->pdf->WriteHTML($html2);
+                               $this->pdf->Output('Licencia_Municipal.pdf', 'I');
+
+       }
    }
 
    public function acuse_envio(){
@@ -933,221 +938,225 @@ class Formatos extends CI_Controller {
        $fecha_limite=$this->FormatosModel->getDiasHabiles(date("Y/m/d"), $this->FormatosModel->_data_last_month_day() , [ '' ]);
        $idTramite = $this->utils->decode($lic);
        $idUsuario = $this->utils->decode($usu);
-       $licencia = $this->LicenciasGiroModel->getLicencia($idUsuario, $idTramite);
-       $id_licencia = $licencia->id_licencia;
-       $no_licencia=$licencia->clave_factibilidad;
-       $actividad = strtoupper($licencia->descripcion_factibilidad);
-       $cajones_estacionamiento=$licencia->st3_cajones_estacionamiento_establecimiento;
-       $aforo_personas="0";
-       $superficie=$licencia->st3_area_utilizar_establecimiento;
-       $horario="";
-       $fecha_sesion="";
-       $calle = strtoupper($licencia->st3_domicilio_establecimiento);
-       $no_ext = $licencia->st3_num_ext_establecimiento;
-       $col = strtoupper($licencia->st3_colonia_establecimiento);
-       $clave_catastral = $licencia->clave_catastral;
-       $no_int = $licencia->st3_num_int_establecimiento;
-       $nombre = strtoupper($licencia->st2_nombre_solicitante);
-       $apellido_primer = strtoupper($licencia->st2_primer_apellido_solicitante);
-       $apellido_segundo = strtoupper($licencia->st2_segundo_apellido_solicitante);
-       $rfc = strtoupper($licencia->st2_rfc_solicitante);
-       $curp = strtoupper($licencia->st2_curp_solicitante);
-       $fecha_recepcion = explode(' ',$licencia->fecha);
-       $fechaTitle = date("Y/m/d");
-       $vacio="&nbsp;";
-       if($licencia->folio_licencia == 0){
-            $params = array(
-               'tipo_tramite'=>'13',
-               'scian'=>$actividad,
-               'x'=>'0',
-               'y'=>'0',
-               'zona'=>'0',
-               'subzona'=>'0',
-               'actividad'=> $actividad,
-               'cvecuenta'=>$licencia->cuenta_predial,
-               'propietario'=> $nombre,
-               'primer_ap'=> $apellido_primer,
-               'segundo_ap'=> $apellido_segundo,
-               'rfc'=>$rfc,
-               'curp'=>$curp,
-               'telefono_prop'=>$licencia->st2_telefono_solicitante,
-               'email'=>$licencia->st2_email_solicitante,
-               'cvecalle'=>'0',
-               'calle'=>$calle,
-               'num_ext'=>$no_ext,
-               'let_ext'=>$licencia->st3_letra_ext_establecimiento,
-               'num_int'=>$no_int,
-               'let_int'=>$licencia->st3_letra_int_establecimiento,
-               'colonia'=>$col,
-               'cp'=>$licencia->st3_cp_establecimiento,
-               'espubic'=>'',
-               'sup_autorizada'=>$superficie,
-               'num_cajones'=>$cajones_estacionamiento,
-               'num_empleados'=>$licencia->st3_empleados_establecimiento,
-               'aforo'=>$aforo_personas,
-               'inversion'=> $licencia->st3_inversion_establecimiento,
-           );
-           $data_soap=$this->utils->conec_soap('licTramite',$params);
-           $folio_licencia=$data_soap->licencia;
-           $this->LicenciasGiroModel->postPdf($idUsuario, $idTramite, $data_soap->licencia);
-        }else{
-           $folio_licencia=$licencia->folio_licencia;
-        }
-        $params = array(
-           'licencia'=>$folio_licencia,
-        );
-        $data_soap=$this->utils->conec_soap('licAdeudo',$params);
+       $licencia = $this->LicenciasGiroModel->getLicencia_fl($idUsuario, $idTramite);
+       if(!$licencia){
+           echo "<center><h3>Propuesta de pago no se puede imprimir</h3></center>";
+       }else{
+           $id_licencia = $licencia->id_licencia;
+           $no_licencia=$licencia->clave_factibilidad;
+           $actividad = strtoupper($licencia->descripcion_factibilidad);
+           $cajones_estacionamiento=$licencia->st3_cajones_estacionamiento_establecimiento;
+           $aforo_personas="0";
+           $superficie=$licencia->st3_area_utilizar_establecimiento;
+           $horario="";
+           $fecha_sesion="";
+           $calle = strtoupper($licencia->st3_domicilio_establecimiento);
+           $no_ext = $licencia->st3_num_ext_establecimiento;
+           $col = strtoupper($licencia->st3_colonia_establecimiento);
+           $clave_catastral = $licencia->clave_catastral;
+           $no_int = $licencia->st3_num_int_establecimiento;
+           $nombre = strtoupper($licencia->st2_nombre_solicitante);
+           $apellido_primer = strtoupper($licencia->st2_primer_apellido_solicitante);
+           $apellido_segundo = strtoupper($licencia->st2_segundo_apellido_solicitante);
+           $rfc = strtoupper($licencia->st2_rfc_solicitante);
+           $curp = strtoupper($licencia->st2_curp_solicitante);
+           $fecha_recepcion = explode(' ',$licencia->fecha);
+           $fechaTitle = date("Y/m/d");
+           $vacio="&nbsp;";
+           if($licencia->folio_licencia == 0){
+               $params = array(
+                   'tipo_tramite'=>'13',
+                   'scian'=>$actividad,
+                   'x'=>'0',
+                   'y'=>'0',
+                   'zona'=>'0',
+                   'subzona'=>'0',
+                   'actividad'=> $actividad,
+                   'cvecuenta'=>$licencia->cuenta_predial,
+                   'propietario'=> $nombre,
+                   'primer_ap'=> $apellido_primer,
+                   'segundo_ap'=> $apellido_segundo,
+                   'rfc'=>$rfc,
+                   'curp'=>$curp,
+                   'telefono_prop'=>$licencia->st2_telefono_solicitante,
+                   'email'=>$licencia->st2_email_solicitante,
+                   'cvecalle'=>'0',
+                   'calle'=>$calle,
+                   'num_ext'=>$no_ext,
+                   'let_ext'=>$licencia->st3_letra_ext_establecimiento,
+                   'num_int'=>$no_int,
+                   'let_int'=>$licencia->st3_letra_int_establecimiento,
+                   'colonia'=>$col,
+                   'cp'=>$licencia->st3_cp_establecimiento,
+                   'espubic'=>'',
+                   'sup_autorizada'=>$superficie,
+                   'num_cajones'=>$cajones_estacionamiento,
+                   'num_empleados'=>$licencia->st3_empleados_establecimiento,
+                   'aforo'=>$aforo_personas,
+                   'inversion'=> $licencia->st3_inversion_establecimiento,
+                   );
+                   $data_soap=$this->utils->conec_soap('licTramite',$params);
+                   $folio_licencia=$data_soap->licencia;
+                   $this->LicenciasGiroModel->postPdf($idUsuario, $idTramite, $data_soap->licencia);
+               }else{
+                   $folio_licencia=$licencia->folio_licencia;
+               }
+               $params = array(
+               'licencia'=>$folio_licencia,
+               );
+               $data_soap=$this->utils->conec_soap('licAdeudo',$params);
 
-       $html='<html>
-       <head>
-           <style>
-                body{
-                    font-family: exo;
-                    font-size:12px;
-                }
-           </style>
-       </head>
-       <body>
-           <div style="position:absolute; left:60px; top:4%; width:20%;">
-               <img src="assets/img/logo-padron.png" alt="">
-           </div>
-           <div  style="position:absolute; left:2%; top:13%; text-align:center; font-weight:bold; width:100%;  color:gray; font-size: 15px;">
-               <span>PROPUESTA DE COBRO</span>
-           </div>
-           <div style="position:absolute; right:10%; top:3%; width: 8%">
-               <img src="assets/img/gdl-logo.png" alt="">
-           </div>
-           <div style="position:absolute; top:17%; text-align:center; width:84%;">
-                 <div style="padding:2px;">
-                    <div style="float:right; width:32%; border:solid 1px #000; border-radius:5px;">
-                        <b>FOLIO</b><br>
-                        '.(empty($id_licencia)?$vacio:$this->FormatosModel->convertir_folio($id_licencia)).'
-                     </div>
-                     <div style="float:right; width:1%;">
-                         &nbsp;
-                      </div>
-                     <div style="float:right; width:32%; border:solid 1px #000; border-radius:5px;">
-                         <b>FECHA DE RECEPCIÓN</b><br>
-                         '.$this->FormatosModel->fechasFormat(str_replace('-','/',$fecha_recepcion[0])).'
-                     </div>
-                     <div style="float:right; width:1%;">
-                         &nbsp;
-                      </div>
-                     <div style="float:right; width:33%; border:solid 1px #000; border-radius:5px;">
-                         <b>FECHA LIMITE DE PAGO</b><br>
-                         '.$this->FormatosModel->fechasFormat($fecha_limite[3]).'
-                     </div>
-                 </div>
-                 <div style="padding:2px;">
-                    <div style="text-align:left; float:right; width:99.8%; border:solid 1px #000; border-radius:5px;">
-                        <div style="margin-left:10px;">
-                            <b>NOMBRE DEL CONTRIBUYENTE</b><br>
-                            '.(empty($nombre)?$vacio:$nombre).'
-                         </div>
-                     </div>
-                 </div>
-                 <div style="padding:2px;">
-                     <div style="text-align:left; float:left; width:59%; border:solid 1px #000; border-radius:5px;">
-                        <div style="margin-left:10px;">
-                            <b>DOMICILIO</b><br>
-                            '.(empty($calle)?$vacio:$calle).' '.(empty($col)?$vacio:$col).'
-                        </div>
-                     </div>
-                     <div style="float:left; width:1%;">
-                         &nbsp;
-                      </div>
-                     <div style="text-align:center; float:left; width:19%; border:solid 1px #000; border-radius:5px;">
-                        <b>NO. EXT.</b><br>
-                        '.(empty($no_ext)?$vacio:$no_ext).'
-                     </div>
-                     <div style="float:left; width:1%;">
-                         &nbsp;
-                      </div>
-                     <div style="text-align:center; float:right; width:19%; border:solid 1px #000; border-radius:5px;">
-                        <b>NO. INT.</b><br>
-                        '.(empty($no_int)?$vacio:$no_int).'
-                     </div>
-                 </div>
-                 <div style="padding:2px;">
-                    <div style="text-align:left; float:right; width:99.8%; border:solid 1px #000; border-radius:5px;">
-                        <div style="margin-left:10px;">
-                            <b>ACTIVIDAD</b><br>
-                            '.(empty($actividad)?$vacio:$actividad).'
-                        </div>
-                     </div>
-                 </div>
-                 <div style="padding:2px;">
-                     <div style="text-align:center; float:left; width:32%; border:solid 1px #000; border-radius:5px;">
-                        <b>NO. CAJONES</b><br>
-                        '.(empty($cajones_estacionamiento)? $vacio : $cajones_estacionamiento).'
-                     </div>
-                     <div style="float:left; width:1%;">
-                         &nbsp;
-                      </div>
-                     <div style="text-align:center; float:left; width:32%; border:solid 1px #000; border-radius:5px;">
-                        <b>SUPERFICIE AUTORIZADA</b><br>
-                        '.(empty($superficie)?$vacio:$superficie).' mts
-                     </div>
-                     <div style="float:left; width:1%;">
-                         &nbsp;
-                      </div>
-                     <div style="text-align:center; float:right; width:33%; border:solid 1px #000; border-radius:5px;">
-                     <b>LICENCIA QUE SE AUTORIZA</b><br>
-                     '.(empty($folio_licencia)?$vacio:$folio_licencia).'
-                     </div>
-                 </div>
-                 <div style="text-align:justify; font-size:10px;">
-                    <p>
-                        ** Estimado usuario, al recibir la propuesta de cobro es su obligación verificar que los datos asentados en ella sean los correctos y antes
-                        de realizar el pago deberá solicitar la aclaración de las tarifas aplicadas si existieran dudas de su parte.
-                    </p><br>
-                 </div>
-                 <div>
-                    <div style="font-size:10px; float:left; width:100%; text-align:normal; border: 1px solid black; border-radius: 5px;">
-                        <table style="width:100%;" cellpadding="4">';
+               $html='<html>
+               <head>
+                   <style>
+                       body{
+                           font-family: exo;
+                           font-size:12px;
+                       }
+                   </style>
+               </head>
+               <body>
+                   <div style="position:absolute; left:60px; top:4%; width:20%;">
+                       <img src="assets/img/logo-padron.png" alt="">
+                   </div>
+                   <div  style="position:absolute; left:2%; top:13%; text-align:center; font-weight:bold; width:100%;  color:gray; font-size: 15px;">
+                       <span>PROPUESTA DE COBRO</span>
+                   </div>
+                   <div style="position:absolute; right:10%; top:3%; width: 8%">
+                       <img src="assets/img/gdl-logo.png" alt="">
+                   </div>
+                   <div style="position:absolute; top:17%; text-align:center; width:84%;">
+                       <div style="padding:2px;">
+                           <div style="float:right; width:32%; border:solid 1px #000; border-radius:5px;">
+                               <b>FOLIO</b><br>
+                               '.(empty($id_licencia)?$vacio:$this->FormatosModel->convertir_folio($id_licencia)).'
+                           </div>
+                           <div style="float:right; width:1%;">
+                               &nbsp;
+                           </div>
+                           <div style="float:right; width:32%; border:solid 1px #000; border-radius:5px;">
+                               <b>FECHA DE RECEPCIÓN</b><br>
+                               '.$this->FormatosModel->fechasFormat(str_replace('-','/',$fecha_recepcion[0])).'
+                           </div>
+                           <div style="float:right; width:1%;">
+                               &nbsp;
+                           </div>
+                           <div style="float:right; width:33%; border:solid 1px #000; border-radius:5px;">
+                               <b>FECHA LIMITE DE PAGO</b><br>
+                               '.$this->FormatosModel->fechasFormat($fecha_limite[3]).'
+                           </div>
+                       </div>
+                       <div style="padding:2px;">
+                           <div style="text-align:left; float:right; width:99.8%; border:solid 1px #000; border-radius:5px;">
+                               <div style="margin-left:10px;">
+                                   <b>NOMBRE DEL CONTRIBUYENTE</b><br>
+                                   '.(empty($nombre)?$vacio:$nombre).'
+                               </div>
+                           </div>
+                       </div>
+                       <div style="padding:2px;">
+                           <div style="text-align:left; float:left; width:59%; border:solid 1px #000; border-radius:5px;">
+                               <div style="margin-left:10px;">
+                                   <b>DOMICILIO</b><br>
+                                   '.(empty($calle)?$vacio:$calle).' '.(empty($col)?$vacio:$col).'
+                               </div>
+                           </div>
+                           <div style="float:left; width:1%;">
+                               &nbsp;
+                           </div>
+                           <div style="text-align:center; float:left; width:19%; border:solid 1px #000; border-radius:5px;">
+                               <b>NO. EXT.</b><br>
+                               '.(empty($no_ext)?$vacio:$no_ext).'
+                           </div>
+                           <div style="float:left; width:1%;">
+                               &nbsp;
+                           </div>
+                           <div style="text-align:center; float:right; width:19%; border:solid 1px #000; border-radius:5px;">
+                               <b>NO. INT.</b><br>
+                               '.(empty($no_int)?$vacio:$no_int).'
+                           </div>
+                       </div>
+                       <div style="padding:2px;">
+                           <div style="text-align:left; float:right; width:99.8%; border:solid 1px #000; border-radius:5px;">
+                               <div style="margin-left:10px;">
+                                   <b>ACTIVIDAD</b><br>
+                                   '.(empty($actividad)?$vacio:$actividad).'
+                               </div>
+                           </div>
+                       </div>
+                       <div style="padding:2px;">
+                           <div style="text-align:center; float:left; width:32%; border:solid 1px #000; border-radius:5px;">
+                               <b>NO. CAJONES</b><br>
+                               '.(empty($cajones_estacionamiento)? $vacio : $cajones_estacionamiento).'
+                           </div>
+                           <div style="float:left; width:1%;">
+                               &nbsp;
+                           </div>
+                           <div style="text-align:center; float:left; width:32%; border:solid 1px #000; border-radius:5px;">
+                               <b>SUPERFICIE AUTORIZADA</b><br>
+                               '.(empty($superficie)?$vacio:$superficie).' mts
+                           </div>
+                           <div style="float:left; width:1%;">
+                               &nbsp;
+                           </div>
+                           <div style="text-align:center; float:right; width:33%; border:solid 1px #000; border-radius:5px;">
+                               <b>LICENCIA QUE SE AUTORIZA</b><br>
+                               '.(empty($folio_licencia)?$vacio:$folio_licencia).'
+                           </div>
+                       </div>
+                       <div style="text-align:justify; font-size:10px;">
+                           <p>
+                               ** Estimado usuario, al recibir la propuesta de cobro es su obligación verificar que los datos asentados en ella sean los correctos y antes
+                               de realizar el pago deberá solicitar la aclaración de las tarifas aplicadas si existieran dudas de su parte.
+                           </p><br>
+                       </div>
+                       <div>
+                           <div style="font-size:10px; float:left; width:100%; text-align:normal; border: 1px solid black; border-radius: 5px;">
+                               <table style="width:100%;" cellpadding="4">';
 
-        for ($i=0; $i < count($data_soap); $i++) {
-            $html .='<tr><td style="border:none;">
-                        '.$data_soap[$i]->descripcion.':
-                    </td>
-                    <td style="text-align:right; border:none;">
-                        $'.$data_soap[$i]->importe.'
-                    </td>
-                </tr>';
-        }
-
-
-            $html .= '<tr>
-                        <td style="border:none;">
-                            <br>
-                            <b>IMPORTE TOTAL A PAGAR:</b>
-                        </td>
-                        <td style="text-align:right; border:none;">
-                            <br>
-                            <b>$'.$data_soap[(count($data_soap)-1)]->acumulado.'</b>
-                        </td>
-                    </tr>
-                </table>
-            </div>
-            <div style="text-align:left; color:#C40E91; font-weight:bold; font-size:15px; margin-top:10px; margin-left:5px;">
-                <span>Esta propuesta de cobro sólo será válida hasta la fecha límite señalada a continuación:</span>
-            </div>
-            <div>
-                <div style="text-align:left; width:50%; float:left; margin-top:10%;">
-                    <span><b>Fecha de impresión: '.$this->FormatosModel->fechasFormat($fechaTitle).'</b></span><br><br>
-                    <barcode code="'.$this->utils->encode($folio_licencia).'" type="C128A" class="barcode" size="0.5" style="margin-left:-5px";/>
-                </div>
-                <div style="text-align:right; float:right; width:50%;">
-                    <span><b>Fecha límite de pago: '.$this->FormatosModel->fechasFormat($fecha_limite[3]).'</b></span>
-                </div>
-            </div>
-        </div>
-        </div>
-        </body>
-        </html>';
+                                   for ($i=0; $i < count($data_soap); $i++) {
+                                       $html .='<tr><td style="border:none;">
+                                           '.$data_soap[$i]->descripcion.':
+                                       </td>
+                                       <td style="text-align:right; border:none;">
+                                           $'.$data_soap[$i]->importe.'
+                                       </td>
+                                   </tr>';
+                               }
 
 
-       $this->pdf->WriteHTML($html);
-       $this->pdf->Output('propuesta_cobro.pdf', 'I');
+                               $html .= '<tr>
+                                   <td style="border:none;">
+                                       <br>
+                                       <b>IMPORTE TOTAL A PAGAR:</b>
+                                   </td>
+                                   <td style="text-align:right; border:none;">
+                                       <br>
+                                       <b>$'.$data_soap[(count($data_soap)-1)]->acumulado.'</b>
+                                   </td>
+                               </tr>
+                           </table>
+                       </div>
+                       <div style="text-align:left; color:#C40E91; font-weight:bold; font-size:15px; margin-top:10px; margin-left:5px;">
+                           <span>Esta propuesta de cobro sólo será válida hasta la fecha límite señalada a continuación:</span>
+                       </div>
+                       <div>
+                           <div style="text-align:left; width:50%; float:left; margin-top:10%;">
+                               <span><b>Fecha de impresión: '.$this->FormatosModel->fechasFormat($fechaTitle).'</b></span><br><br>
+                               <barcode code="'.$this->utils->encode($folio_licencia).'" type="C128A" class="barcode" size="0.5" style="margin-left:-5px";/>
+                               </div>
+                               <div style="text-align:right; float:right; width:50%;">
+                                   <span><b>Fecha límite de pago: '.$this->FormatosModel->fechasFormat($fecha_limite[3]).'</b></span>
+                               </div>
+                           </div>
+                       </div>
+                   </div>
+               </body>
+               </html>';
+
+
+               $this->pdf->WriteHTML($html);
+               $this->pdf->Output('propuesta_cobro.pdf', 'I');
+       }
     }
 }

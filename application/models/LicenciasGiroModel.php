@@ -72,6 +72,11 @@ class LicenciasGiroModel extends CI_Model {
         return $licencia;
     }
 
+    public function getLicencia_fl($idU, $idLicencia){
+        $licencia =  $this->db->select('*')->from('tbl_licencias_giro')->where('id_usuario', $idU)->where('id_licencia', $idLicencia)->where('status', 'FL')->get()->row();
+        return $licencia;
+    }
+
     public function updateLicencia($idTramite, $params, $firma){
         $this->db->query('update tbl_rel_licencia_usuario set firma_e= "'.$firma.'" where id_licencia='.$idTramite);
         $this->db->trans_start();
@@ -97,11 +102,11 @@ class LicenciasGiroModel extends CI_Model {
     }
 
     public function licencia_nueva($id_licencia,$folio){
-        $query=$this->db->query('select * from tbl_licencias_giro where status="N" and id_licencia='.$id_licencia.' and folio_licencia='.$folio);
+        $queryC=$this->db->query('select * from tbl_licencias_giro where status="N" and id_licencia='.$id_licencia.' and folio_licencia='.$folio);
 
-        if($query->num_rows() > 0){
-            $query=$this->db->query('Update tbl_licencias_giro set status="FL" and id_licencia='.$id_licencia.' and folio_licencia='.$folio);
-            $resultado=array("status"=>true);
+        if($queryC->num_rows() > 0){
+            $query=$this->db->query('Update tbl_licencias_giro set status="FL" where id_licencia='.$id_licencia.' and folio_licencia='.$folio);
+            $resultado=array("status"=>true, "data"=> $queryC->result());
         }else{
             $resultado=array("status"=>false);
         }

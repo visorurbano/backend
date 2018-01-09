@@ -219,7 +219,25 @@ input:-webkit-autofill {
   color: #ffffff;
 }
 
-#overlayErrorContent .footer{
+#overlayErrorContent .footer, #overlayWarningContent .footer{
   width: 100%;
   text-align: right;
+}
+#overlayErrorContent ul, #overlayWarningContent ul {
+  padding: 20px;
+}
+
+#overlayWarningContent{
+  width: 40%;
+  padding: 25px;
+  -webkit-border-radius: 1px;
+  -moz-border-radius: 1px;
+  border-radius: 1px;
+  margin: 0px auto;
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: #76C058;
+  z-index: 999999;
+  color: #ffffff;
 }

@@ -13,7 +13,7 @@
 		},
 	"\/css\/admin\/admin.css": {
 		"fileType": 16,
-		"ignore": 0,
+		"ignore": 1,
 		"ignoreWasSetByUser": 0,
 		"inputAbbreviatedPath": "\/css\/admin\/admin.css",
 		"outputAbbreviatedPath": "No Output Path",
@@ -334,6 +334,39 @@
 		"outputPathIsSetByUser": 0,
 		"processed": 0
 		},
+	"\/img\/escudo.jpg": {
+		"fileType": 16384,
+		"ignore": 0,
+		"ignoreWasSetByUser": 0,
+		"initialSize": 43504,
+		"inputAbbreviatedPath": "\/img\/escudo.jpg",
+		"outputAbbreviatedPath": "\/img\/escudo.jpg",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"processed": 0
+		},
+	"\/img\/escudo.png": {
+		"fileType": 32768,
+		"ignore": 0,
+		"ignoreWasSetByUser": 0,
+		"initialSize": 15284,
+		"inputAbbreviatedPath": "\/img\/escudo.png",
+		"outputAbbreviatedPath": "\/img\/escudo.png",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"processed": 0
+		},
+	"\/img\/gdl-logo.png": {
+		"fileType": 32768,
+		"ignore": 0,
+		"ignoreWasSetByUser": 0,
+		"initialSize": 314023,
+		"inputAbbreviatedPath": "\/img\/gdl-logo.png",
+		"outputAbbreviatedPath": "\/img\/gdl-logo.png",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"processed": 0
+		},
 	"\/img\/gobiernoGuadalajara-blanco.png": {
 		"fileType": 32768,
 		"ignore": 0,
@@ -429,6 +462,28 @@
 		"initialSize": 3787,
 		"inputAbbreviatedPath": "\/img\/logo-blanco.png",
 		"outputAbbreviatedPath": "\/img\/logo-blanco.png",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"processed": 0
+		},
+	"\/img\/logo-GDL-licencia.png": {
+		"fileType": 32768,
+		"ignore": 0,
+		"ignoreWasSetByUser": 0,
+		"initialSize": 372887,
+		"inputAbbreviatedPath": "\/img\/logo-GDL-licencia.png",
+		"outputAbbreviatedPath": "\/img\/logo-GDL-licencia.png",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"processed": 0
+		},
+	"\/img\/logo-padron.png": {
+		"fileType": 32768,
+		"ignore": 0,
+		"ignoreWasSetByUser": 0,
+		"initialSize": 326279,
+		"inputAbbreviatedPath": "\/img\/logo-padron.png",
+		"outputAbbreviatedPath": "\/img\/logo-padron.png",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0,
 		"processed": 0
@@ -609,6 +664,17 @@
 		"outputPathIsSetByUser": 0,
 		"processed": 0
 		},
+	"\/img\/tesoreria.png": {
+		"fileType": 32768,
+		"ignore": 0,
+		"ignoreWasSetByUser": 0,
+		"initialSize": 26424,
+		"inputAbbreviatedPath": "\/img\/tesoreria.png",
+		"outputAbbreviatedPath": "\/img\/tesoreria.png",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"processed": 0
+		},
 	"\/img\/vu-black.png": {
 		"fileType": 32768,
 		"ignore": 0,
@@ -653,6 +719,28 @@
 		"outputStyle": 1,
 		"syntaxCheckerStyle": 1
 		},
+	"\/js\/confirmacion_licencia.js": {
+		"fileType": 64,
+		"ignore": 0,
+		"ignoreWasSetByUser": 0,
+		"inputAbbreviatedPath": "\/js\/confirmacion_licencia.js",
+		"outputAbbreviatedPath": "\/js\/min\/confirmacion_licencia-min.js",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"outputStyle": 1,
+		"syntaxCheckerStyle": 1
+		},
+	"\/js\/confirmacion_licencia.min.js": {
+		"fileType": 64,
+		"ignore": 0,
+		"ignoreWasSetByUser": 0,
+		"inputAbbreviatedPath": "\/js\/confirmacion_licencia.min.js",
+		"outputAbbreviatedPath": "\/js\/min\/confirmacion_licencia.min-min.js",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"outputStyle": 1,
+		"syntaxCheckerStyle": 1
+		},
 	"\/js\/contact_me.js": {
 		"fileType": 64,
 		"ignore": 0,
@@ -672,28 +760,6 @@
 		"outputAbbreviatedPath": "\/js\/min\/forms-min-min.js",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0,
-		"outputStyle": 1,
-		"syntaxCheckerStyle": 1
-		},
-	"\/js\/forms.admin-min.js": {
-		"fileType": 64,
-		"ignore": 1,
-		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/js\/forms.admin-min.js",
-		"outputAbbreviatedPath": "\/js\/min\/forms.admin-min-min.js",
-		"outputPathIsOutsideProject": 0,
-		"outputPathIsSetByUser": 0,
-		"outputStyle": 1,
-		"syntaxCheckerStyle": 1
-		},
-	"\/js\/forms.admin.js": {
-		"fileType": 64,
-		"ignore": 0,
-		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/js\/forms.admin.js",
-		"outputAbbreviatedPath": "\/js\/forms.admin-min.js",
-		"outputPathIsOutsideProject": 0,
-		"outputPathIsSetByUser": 1,
 		"outputStyle": 1,
 		"syntaxCheckerStyle": 1
 		},
@@ -818,6 +884,17 @@
 		"outputStyle": 1,
 		"syntaxCheckerStyle": 1
 		},
+	"\/js\/min\/forms.admin-min.js": {
+		"fileType": 64,
+		"ignore": 1,
+		"ignoreWasSetByUser": 0,
+		"inputAbbreviatedPath": "\/js\/min\/forms.admin-min.js",
+		"outputAbbreviatedPath": "\/js\/min\/min\/forms.admin-min-min.js",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"outputStyle": 1,
+		"syntaxCheckerStyle": 1
+		},
 	"\/js\/min\/visor_urbano-min.js": {
 		"fileType": 64,
 		"ignore": 1,
@@ -851,6 +928,28 @@
 		"outputStyle": 1,
 		"syntaxCheckerStyle": 1
 		},
+	"\/js\/revision.js": {
+		"fileType": 64,
+		"ignore": 0,
+		"ignoreWasSetByUser": 0,
+		"inputAbbreviatedPath": "\/js\/revision.js",
+		"outputAbbreviatedPath": "\/js\/min\/revision-min.js",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"outputStyle": 1,
+		"syntaxCheckerStyle": 1
+		},
+	"\/js\/revision.min.js": {
+		"fileType": 64,
+		"ignore": 0,
+		"ignoreWasSetByUser": 0,
+		"inputAbbreviatedPath": "\/js\/revision.min.js",
+		"outputAbbreviatedPath": "\/js\/min\/revision.min-min.js",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"outputStyle": 1,
+		"syntaxCheckerStyle": 1
+		},
 	"\/js\/tether.min.js": {
 		"fileType": 64,
 		"ignore": 0,
@@ -859,6 +958,17 @@
 		"outputAbbreviatedPath": "\/js\/min\/tether.min-min.js",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0,
+		"outputStyle": 1,
+		"syntaxCheckerStyle": 1
+		},
+	"\/js\/utils.js": {
+		"fileType": 64,
+		"ignore": 0,
+		"ignoreWasSetByUser": 0,
+		"inputAbbreviatedPath": "\/js\/utils.js",
+		"outputAbbreviatedPath": "\/js\/utils-min.js",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 1,
 		"outputStyle": 1,
 		"syntaxCheckerStyle": 1
 		},
@@ -1147,7 +1257,7 @@
 		"ignore": 0,
 		"ignoreWasSetByUser": 0,
 		"inputAbbreviatedPath": "\/scss\/admin.scss",
-		"outputAbbreviatedPath": "\/css\/admin.css",
+		"outputAbbreviatedPath": "\/css\/admin\/admin.css",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 1,
 		"outputStyle": 0,

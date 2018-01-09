@@ -575,7 +575,7 @@ class Formatos extends CI_Controller {
                                    <!--Zona: '.$zona.'-->
                                </div>
                                <div style="width: 30%; float: right; margin-left: 10%;">
-                                   Nombre: '.$nombre.'<br>
+                                   Nombre: '.$nombre.' '.$apellido_primer.' '.$apellido_segundo.'<br>
                                    RFC: '.$rfc.'<br>
                                    CURP: '.$curp.'
                                </div>
@@ -938,7 +938,7 @@ class Formatos extends CI_Controller {
        $fecha_limite=$this->FormatosModel->getDiasHabiles(date("Y/m/d"), $this->FormatosModel->_data_last_month_day() , [ '' ]);
        $idTramite = $this->utils->decode($lic);
        $idUsuario = $this->utils->decode($usu);
-       $licencia = $this->LicenciasGiroModel->getLicencia_fl($idUsuario, $idTramite);
+       $licencia = $this->LicenciasGiroModel->getLicencia($idUsuario, $idTramite);
        if(!$licencia){
            echo "<center><h3>Propuesta de pago no se puede imprimir</h3></center>";
        }else{
@@ -1050,7 +1050,7 @@ class Formatos extends CI_Controller {
                            <div style="text-align:left; float:right; width:99.8%; border:solid 1px #000; border-radius:5px;">
                                <div style="margin-left:10px;">
                                    <b>NOMBRE DEL CONTRIBUYENTE</b><br>
-                                   '.(empty($nombre)?$vacio:$nombre).'
+                                   '.(empty($nombre)?$vacio:$nombre).' '.(empty($apellido_primer)?$vacio:$apellido_primer).' '.(empty($apellido_segundo)?$vacio:$apellido_segundo).'
                                </div>
                            </div>
                        </div>

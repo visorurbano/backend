@@ -112,4 +112,32 @@ class LicenciasGiroModel extends CI_Model {
         }
         return $resultado;
     }
+
+    public function updatePropietario($result,$clave_catastral){
+        $nombre = $result->data->propietario->nombre;
+        $ape_paterno=$result->data->propietario->ape_paterno;
+        $ape_materno=$result->data->propietario->ape_materno;
+        $rfc=$result->data->propietario->rfc;
+        $calle=$result->data->propietario->calle;
+        $colonia=$result->data->propietario->colonia;
+        $curp=$result->data->propietario->curp;
+        $n_exterior=$result->data->propietario->n_exterior;
+        $n_interior=$result->data->propietario->n_interior;
+        $ciudad=$result->data->propietario->ciudad;
+        $cp=$result->data->propietario->cp;
+        $tel=$result->data->propietario->telefono;
+        if(empty($n_exterior)){
+            $n_exterior = 0;
+        }
+        if(empty($n_interior)){
+            $n_interior = 0;
+        }
+        if(empty($cp)){
+            $cp = 0;
+        }
+        $query = 'Update tbl_licencias_giro set st2_nombre_solicitante = "'.$nombre.'",st2_primer_apellido_solicitante = "'.$ape_paterno;
+        $query .= '",st2_segundo_apellido_solicitante = "'.$ape_materno.'",st2_curp_solicitante = "'.$curp.'",st2_rfc_solicitante = "'.$rfc.'",st2_domicilio_solicitante = "'.$calle.'",st2_num_ext_solicitante = '.$n_exterior.',st2_num_int_solicitante = '.$n_interior.',st2_colonia_solicitante = "'.$colonia.'",st2_ciudad_solicitante="'.$ciudad.'",st2_cp_solicitante='.$cp.',st2_telefono_solicitante = "'.$tel.'" where clave_catastral="'.$clave_catastral.'"';
+        $query2 = $this->db->query($query);
+
+    }
 }

@@ -103,6 +103,7 @@ class UtilsController extends CI_Controller {
                 $data['estado'] = $result->data->propietario->estado;
                 $data['cp'] = $result->data->propietario->cp;
                 $data['telefono'] = $result->data->propietario->telefono;
+                $this->LicenciasGiroModel->updatePropietario($result,$params['clave']);
                 $this->output->set_content_type('application/json');
                 $this->output->set_output(json_encode(array('status' => 200, 'message' =>'Sucesfully', 'data'=>$data)));
             }else{

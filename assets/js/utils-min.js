@@ -1,0 +1,1 @@
+function setLoading(){$("#overlayLoading").remove();var o=$("<div/>",{id:"overlayLoading"}).appendTo($("body"));$("<div/>",{id:"overlayLoadingContent",class:"mui--z2"}).appendTo(o);$("body").css("overflow: hidden")}function unsetLoading(){$("#overlayLoading").remove(),$("body").css("overflow-y: auto")}

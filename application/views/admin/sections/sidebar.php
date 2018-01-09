@@ -7,7 +7,14 @@
         <!--<img class="admin-gdl-logo" src="<?php echo base_url(); ?>assets/img/g-logo.png" alt="Gobierno de Guadalajara">-->
         <!-- Sidebar Header-->
         <div class="sidebar-header d-flex align-items-center">
-            <div class="avatar"><img src="<?php echo base_url(); ?>assets/img/default.png" alt="..." class="img-fluid rounded-circle"></div>
+            <?php if ($this->session->userdata('level') == 2): ?>
+                <div class="avatar"><img src="<?php echo base_url(); ?>assets/img/ventanilla.png" alt="..." class="img-fluid rounded-circle"></div>
+            <?php elseif($this->session->userdata('level') == 1): ?>
+                <div class="avatar"><img src="<?php echo base_url(); ?>assets/img/default.png" alt="..." class="img-fluid rounded-circle"></div>
+            <?php else: ?>
+                <div class="avatar"><img src="<?php echo base_url(); ?>assets/img/default.png" alt="..." class="img-fluid rounded-circle"></div>
+            <?php endif; ?>
+
             <div class="title">
                 <h1 class="h4" id="contUserName"><?php echo $this->session->userdata('nombre');?></h1>
                 <small><a href="<?=base_url();?>admin/usuario"><i class="fa fa-pencil" aria-hidden="true"></i>Editar mi perfil</a></small>

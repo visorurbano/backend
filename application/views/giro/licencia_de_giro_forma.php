@@ -558,6 +558,7 @@
                            <div class="row">
                                <div class="col-md-12">
                                    <button type="button" class="mui-btn mui-btn--primary" data-toggle="modal" data-target="#firmaModal"><i class="fa fa-lock" aria-hidden="true"></i> Firmar Solicitud</button>
+                                   <a href="javascript:continuarVentanilla()" class="mui-btn mui-btn--danger"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> No tengo firma electrónica</a>
                                </div>
                            </div>
                            <br>

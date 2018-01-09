@@ -598,23 +598,14 @@ $(document).ready(function () {
                 unsetError();
                 $('#seccionCartaAnuencia').show();
             }else{
-                errorLicenciaGiro(1);
+                var errores = [];
+                errores[0] = 'El contrato de arrendamiento no te faculta para abrir un negocio.';
+                errores[1] = 'No cuentas con la anuencia del propietario para abrir un negocio.';
+                errorLicenciaGiro(1, errores);
                 $('#seccionCartaAnuencia').hide();
 
             }
         });
-    });
-
-    // ------------------------------------------------------- //
-    // Pago en Linea
-    // ------------------------------------------------------ //
-    $('#btnPagoLinea').on('click', function(e){
-        e.preventDefault();
-        var dataSend = {name:"status", value:"FL"};
-        updateForma(new Array(dataSend), 4, $('#tramite').val()).done(function(data){
-            window.location.href = baseURL + "admin/mis-licencias";
-        });
-
     });
 
     // ------------------------------------------------------- //

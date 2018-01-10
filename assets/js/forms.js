@@ -225,6 +225,7 @@ $(document).ready(function () {
         params["ape_materno"] = ape_materno;
         params["celular"] = celular;
         params["password"] = md5(pass);
+        params["origen"] = 4;
         return $.ajax({
             url: userURL +"registro",
             type: "post",

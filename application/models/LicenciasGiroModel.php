@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 class LicenciasGiroModel extends CI_Model {
-    public function setLicencia($idU, $predial, $catastral, $factibiliad, $descFactibilidad, $claveFactibilidad){
+    public function setLicencia($idU, $predial, $catastral, $factibiliad, $descFactibilidad, $claveFactibilidad, $distrito, $subDistrito, $zonificacion, $levelUsuario){
         $licencia =  $this->db->select('*')->from('tbl_licencias_giro')->where('id_usuario', $idU)->where('cuenta_predial', $predial)->where('clave_catastral', $catastral)->where('folio_factibilidad', $factibiliad)->get()->row();
         if (!empty($licencia)){
             return array('status'=>false);
@@ -26,7 +26,11 @@ class LicenciasGiroModel extends CI_Model {
                     'predio_numero_int'=> $catastro->data->numeroInterior,
                     'predio_municipio'=> $catastro->data->poblacion,
                     'predio_estado'=> $catastro->data->estado,
-                    'predio_area_titulo'=> $catastro->data->areaTitulo
+                    'predio_area_titulo'=> $catastro->data->areaTitulo,
+                    'predio_distrito'=> $distrito,
+                    'predio_sub_distrito'=> $subDistrito,
+                    'predio_zonificacion'=> $zonificacion,
+                    'level_usuario'=> $levelUsuario
                 );
 
                 $this->db->trans_start();

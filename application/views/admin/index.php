@@ -2,7 +2,11 @@
         <!-- Page Header-->
         <header class="page-header">
             <div class="container-fluid">
-                <h2 class="no-margin-bottom">Mis Trámites</h2>
+                <?php if($this->session->userdata('level') == 2): ?>
+                    <h2 class="no-margin-bottom">Listado de Trámites</h2>
+                <?php else: ?>
+                    <h2 class="no-margin-bottom">Mis Trámites</h2>
+                <?php endif; ?>
             </div>
         </header>
         <!-- Projects Section-->

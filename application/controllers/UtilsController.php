@@ -40,7 +40,7 @@ class UtilsController extends CI_Controller {
             }
 
             if ($this->utils->compareDecript($params['original'], $params['compare'])){
-                $result =  $this->LicenciasGiroModel->setLicencia($this->session->userdata('idU'), $params['original'], $params['cuenta_catastro'], $params['factibilidad'], $factibilidad->data[0]->descripciongiro, $factibilidad->data[0]->codigogiro);
+                $result =  $this->LicenciasGiroModel->setLicencia($this->session->userdata('idU'), $params['original'], $params['cuenta_catastro'], $params['factibilidad'], $factibilidad->data[0]->descripciongiro, $factibilidad->data[0]->codigogiro, $factibilidad->data[0]->numerodistrito, $factibilidad->data[0]->numerosubdistrito, $factibilidad->data[0]->zonificacion, $this->session->userdata('level'));
                 if ($result['status']){
                     $this->output->set_content_type('application/json');
                     $this->output->set_output(json_encode(array('status' => 200, 'message' =>'Sucesfully', 'data'=>array('sec' => $this->utils->encode($result['id']), 'sec2'=>$this->utils->encode($this->session->userdata('idU')), 'id'=>$result['id']))));

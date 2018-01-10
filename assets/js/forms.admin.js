@@ -5,7 +5,7 @@ var baseURL = "http://localhost/backend/";
 
 var stepsForm = null;
 var currentStep = $('#step').val();
-
+var informado=false;
 
 
 $(document).ready(function () {
@@ -207,6 +207,7 @@ $(document).ready(function () {
         });
     }
 
+    var arregloDatosP=[];
     if ($('#frmSolicitudLicenciaGiro').length){
         var form = $("#frmSolicitudLicenciaGiro");
         form.validate({
@@ -445,43 +446,95 @@ $(document).ready(function () {
             startIndex: parseInt(currentStep),
             onStepChanging: function (event, currentIndex, newIndex)
             {
-                /*var validado = false;
-                if(currentIndex == 3 && data_cer != "" && $('#firma_electronica').text() != "" &&  newIndex > 3){
-                    validado = validar_cer();
-                }else if(currentIndex == 3 && data_cer == "" &&  newIndex > 3){
-                    var errores=[];
-                    errores[0] = 'Falta subir archivo .cer';
-                    setError(errores);
-                }else if(currentIndex == 3 && $('#firma_electronica').text() == '' &&  newIndex > 3){
-                    var errores=[];
-                    errores[0] = 'Falta subir archivo .key';
-                    setError(errores);
-                }*/
+                console.log((newIndex+1));
+                if((newIndex+1) == 3){
+                    arregloDatosP=[];
 
-                if(currentIndex != 3){
-                  form.validate().settings.ignore = ":disabled,:hidden,.valid";
-                  if (form.valid()){
-                    var frm  = form.find(":input:not(:hidden)").serializeArray();
-                    updateForma(frm, newIndex, $('#tramite').val());
-                  }
-                  if (newIndex == 3){
-                    resumenLicenciaGiro();
-                  }
-                  return form.valid();
+                    if(arregloPropietario.nombre != ""){
+                        if(arregloPropietario.nombre != $('#txtNombre').val().toUpperCase()){
+                            arregloDatosP.push('NOMBRE');
+                        }
+                    }
+                    if(arregloPropietario.ape_paterno != ""){
+                        if(arregloPropietario.ape_paterno != $('#txtPApellidoSolicitante').val().toUpperCase()){
+                            arregloDatosP.push('APELLIDO PATERNO');
+                        }
+                    }
+                    if(arregloPropietario.ape_materno != ""){
+                        if(arregloPropietario.ape_materno != $('#txtSApellidoSolicitante').val().toUpperCase()){
+                            arregloDatosP.push('APELLIDO MATERNO');
+                        }
+                    }
+                    if(arregloPropietario.curp != ""){
+                        if(arregloPropietario.curp != $('#txtCURP').val().toUpperCase()){
+                            arregloDatosP.push('CURP');
+                        }
+                    }
+                    if(arregloPropietario.rfc != ""){
+                        if(arregloPropietario.rfc != $('#txtRFC').val().toUpperCase()){
+                            arregloDatosP.push('RFC');
+                        }
+                    }
+                    if(arregloPropietario.calle != ""){
+                        if(arregloPropietario.calle != $('#txtDomicilio').val().toUpperCase()){
+                            arregloDatosP.push('DOMICILIO');
+                        }
+                    }
+                    if(arregloPropietario.n_exterior != ""){
+                        if(arregloPropietario.n_exterior != $('#txtNExterior').val()){
+                            arregloDatosP.push('No. EXTERIOR');
+                        }
+                    }
+                    if(arregloPropietario.n_interior != ""){
+                        if(arregloPropietario.n_interior != $('#txtNInterior').val()){
+                            arregloDatosP.push('No. INTERIOR');
+                        }
+                    }
+                    if(arregloPropietario.colonia != ""){
+                        if(arregloPropietario.colonia != $('#txtColonia').val().toUpperCase()){
+                            arregloDatosP.push('COLONIA');
+                        }
+                    }
+                    if(arregloPropietario.ciudad != ""){
+                        if(arregloPropietario.ciudad != $('#txtCiudad').val().toUpperCase()){
+                            arregloDatosP.push('CIUDAD');
+                        }
+                    }
+                    if(arregloPropietario.cp != ""){
+                        if(arregloPropietario.cp != $('#txtCP').val().toUpperCase()){
+                            arregloDatosP.push('CP');
+                        }
+                    }
+                    form.validate().settings.ignore = ":disabled,:hidden,.valid";
+                    if (form.valid()){
+                        var frm  = form.find(":input:not(:hidden)").serializeArray();
+                        updateForma(frm, newIndex, $('#tramite').val());
+                    }
+                    if (newIndex == 3){
+                        resumenLicenciaGiro();
+                    }
+                    if(arregloDatosP.length > 0 && !informado){
+                        setWarning(arregloDatosP);
+                        $('.footer').attr('onclick','nextPaso()');
+                        return "";
+                    }else {
+                        return form.valid();
+                    }
+
+                }else if(currentIndex != 3){
+                    form.validate().settings.ignore = ":disabled,:hidden,.valid";
+                    if (form.valid()){
+                        var frm  = form.find(":input:not(:hidden)").serializeArray();
+                        console.log(frm);
+                        updateForma(frm, newIndex, $('#tramite').val());
+                    }
+                    if (newIndex == 3){
+                        resumenLicenciaGiro();
+                    }
+                    return form.valid();
                 }
 
-                /*if((currentIndex == 3 && validado) || newIndex < 3){
-                  form.validate().settings.ignore = ":disabled,:hidden,.valid";
-                  if (form.valid()){
-                    var frm  = form.find(":input:not(:hidden)").serializeArray();
-                    updateForma(frm, newIndex, $('#tramite').val());
-                  }
-                  if (newIndex == 3){
-                    resumenLicenciaGiro();
-                  }
-                  unsetError();
-                  return form.valid();
-                }*/
+
                 return form.valid();
 
             },
@@ -489,6 +542,15 @@ $(document).ready(function () {
                 ResumeLicenciaGiro();
                 if (currentIndex == 3){
                     resumenLicenciaGiro();
+                }
+                if((currentIndex+1) == 2){
+                    getDataPropietario($('#claveCatastral').val()).done(function(data){
+                        if (data.status == 200){
+                            arregloPropietario=data.data;
+                            arregloPropietario.n_exterior = (arregloPropietario.n_exterior != "" ? parseInt(arregloPropietario.n_exterior): "");
+                            arregloPropietario.n_interior = (arregloPropietario.n_interior != "" ? parseInt(arregloPropietario.n_interior): "");
+                        }
+                    });
                 }
                 $('#frmSolicitudLicenciaGiro .actions li a').addClass('mui-btn mui-btn--primary');
             },
@@ -623,6 +685,10 @@ $(document).ready(function () {
 
 
 });
+
+function nextPaso(){
+    informado=true;
+}
 
 function setPass(npass, pass, email) {
     var params = {};
@@ -821,25 +887,38 @@ function updateFiles(field, fleName, id){
     });
 }
 
+var arregloPropietario=[];
 function fillPropietario(){
+    //setLoading();
     getDataPropietario($('#claveCatastral').val()).done(function(data){
         if (data.status == 200){
+            //unsetLoading();
+            arregloPropietario=data.data;
+            arregloPropietario.n_exterior = (arregloPropietario.n_exterior != "" ? parseInt(arregloPropietario.n_exterior): "");
+            arregloPropietario.n_interior = (arregloPropietario.n_interior != "" ? parseInt(arregloPropietario.n_interior): "");
             cleanPropietario();
             //$('#txtNombre').val(data.data.nombre + ' ' + data.data.ape_paterno + ' ' + data.data.ape_materno);
+            $('#txtNombre').parent().find("label").addClass('active');
+            $('#txtNombre').val(capitalize(data.data.nombre.toLowerCase()));
+            $('#txtPApellidoSolicitante').parent().find("label").addClass('active');
+            $('#txtPApellidoSolicitante').val(capitalize(data.data.ape_paterno.toLowerCase()));
+            $('#txtSApellidoSolicitante').parent().find("label").addClass('active');
+            $('#txtSApellidoSolicitante').val(capitalize(data.data.ape_materno.toLowerCase()));
+
             $('#txtNombre').parent().find("label").addClass('active');
             $('#txtCURP').val(data.data.curp);
             $('#txtCURP').parent().find("label").addClass('active');
             $('#txtRFC').val(data.data.rfc);
             $('#txtRFC').parent().find("label").addClass('active');
-            $('#txtDomicilio').val(data.data.calle);
+            $('#txtDomicilio').val(capitalize(data.data.calle.toLowerCase()));
             $('#txtDomicilio').parent().find("label").addClass('active');
             $('#txtNExterior').val(data.data.n_exterior);
             $('#txtNExterior').parent().find("label").addClass('active');
             $('#txtNInterior').val(data.data.n_interior);
             $('#txtNInterior').parent().find("label").addClass('active');
-            $('#txtColonia').val(data.data.colonia);
+            $('#txtColonia').val(capitalize(data.data.colonia.toLowerCase()));
             $('#txtColonia').parent().find("label").addClass('active');
-            $('#txtCiudad').val(data.data.ciudad);
+            $('#txtCiudad').val(capitalize(data.data.ciudad.toLowerCase()));
             $('#txtCiudad').parent().find("label").addClass('active');
             $('#txtCP').val(data.data.cp);
             $('#txtCP').parent().find("label").addClass('active');
@@ -851,6 +930,7 @@ function fillPropietario(){
         $('input:radio[name=st1_anuencia]').prop('checked', false);
     });
 }
+
 
 function ResumeLicenciaGiro(){
     //alert($('input:radio[name=st1_tipo_solicitante]:checked').val());
@@ -1079,7 +1159,7 @@ function loadFile(element){
         });
     }
 }
-    
+
     function validateFirma(){
         if ($('#frmFirmar').valid()){
             var cer = document.getElementById('fleCER').files[0];

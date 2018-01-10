@@ -135,9 +135,26 @@ class LicenciasGiroModel extends CI_Model {
         if(empty($cp)){
             $cp = 0;
         }
-        $query = 'Update tbl_licencias_giro set st2_nombre_solicitante = "'.$nombre.'",st2_primer_apellido_solicitante = "'.$ape_paterno;
-        $query .= '",st2_segundo_apellido_solicitante = "'.$ape_materno.'",st2_curp_solicitante = "'.$curp.'",st2_rfc_solicitante = "'.$rfc.'",st2_domicilio_solicitante = "'.$calle.'",st2_num_ext_solicitante = '.$n_exterior.',st2_num_int_solicitante = '.$n_interior.',st2_colonia_solicitante = "'.$colonia.'",st2_ciudad_solicitante="'.$ciudad.'",st2_cp_solicitante='.$cp.',st2_telefono_solicitante = "'.$tel.'" where clave_catastral="'.$clave_catastral.'"';
-        $query2 = $this->db->query($query);
-
+        $consulta = $this->db->query('SELECT * from  tbl_licencias_giro where clave_catastral="'.$clave_catastral.'"');
+        if($consulta->num_rows() > 0){
+            $resultado = $consulta->result()[0];
+            $c_n = $resultado->st2_nombre_solicitante;
+            $c_ap = $resultado->st2_primer_apellido_solicitante;
+            $c_am = $resultado->st2_segundo_apellido_solicitante;
+            $c_c = $resultado->st2_curp_solicitante;
+            $c_r = $resultado->st2_rfc_solicitante;
+            $c_do = $resultado->st2_domicilio_solicitante;
+            $c_nex = $resultado->st2_num_ext_solicitante;
+            $c_nin = $resultado->st2_num_int_solicitante;
+            $c_col = $resultado->st2_colonia_solicitante;
+            $c_cd = $resultado->st2_ciudad_solicitante;
+            $c_cp = $resultado->st2_cp_solicitante;
+            $c_tel = $resultado->st2_telefono_solicitante;
+            if($c_n == "" && $c_ap == "" && $c_am == "" && $c_c == "" && $c_r == "" && $c_do == "" && $c_nex == "0" && $c_nin == "0" && $c_col == "" && $c_cd == "" && $c_cp == "0" && $c_tel == ""){
+                $query = 'Update tbl_licencias_giro set st2_nombre_solicitante = "'.$nombre.'",st2_primer_apellido_solicitante = "'.$ape_paterno;
+                $query .= '",st2_segundo_apellido_solicitante = "'.$ape_materno.'",st2_curp_solicitante = "'.$curp.'",st2_rfc_solicitante = "'.$rfc.'",st2_domicilio_solicitante = "'.$calle.'",st2_num_ext_solicitante = '.$n_exterior.',st2_num_int_solicitante = '.$n_interior.',st2_colonia_solicitante = "'.$colonia.'",st2_ciudad_solicitante="'.$ciudad.'",st2_cp_solicitante='.$cp.',st2_telefono_solicitante = "'.$tel.'" where clave_catastral="'.$clave_catastral.'"';
+                $query2 = $this->db->query($query);
+            }
+        }
     }
 }

@@ -80,6 +80,13 @@ class LicenciasGiroModel extends CI_Model {
     public function updateLicencia($idTramite, $params, $firma){
         $this->db->query('update tbl_rel_licencia_usuario set firma_e= "'.$firma.'" where id_licencia='.$idTramite);
         $this->db->trans_start();
+        foreach ($params as $clave=>$valor){
+            if(strpos($clave,'rfc') == '' && strpos($clave,'curp') == '' && $clave != 'status'){
+                $params[$clave] = ucfirst(strtolower($valor));
+            }else{
+                $params[$clave] = strtoupper($valor);
+            }
+   		}
         $this->db->where('id_licencia',$idTramite)->update('tbl_licencias_giro', $params);
         if ($this->db->trans_status() === FALSE){
             $this->db->trans_rollback();

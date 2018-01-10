@@ -44,7 +44,7 @@ function setWarning(msg){
     contLoading.append('<div class="footer"><a href="javascript:removeWarning()" class="mui-btn">Entiendo</a></div>')
     $('body').css('overflow', 'hidden');
     $.each(msg, function( index, value ) {
-        $('#overlayErrorContent ul').append('<li>'+value+'</li>');
+        $('#overlayWarningContent ul').append('<li>'+value+'</li>');
     });
 }
 

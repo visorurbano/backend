@@ -33,13 +33,13 @@
                                <div class="form-group seccionTipoSolicitantes">
                                    <label><b>* Tipo de Solicitante:</b></label>
                                    <br>
-                                   <input id="rbtPropietario" type="radio" name="st1_tipo_solicitante" value="propietario" <?php if($st1_tipo_solicitante == 'propietario') echo 'checked'; ?> required>
+                                   <input id="rbtPropietario" type="radio" name="st1_tipo_solicitante" value="propietario" <?php if(strtolower($st1_tipo_solicitante) == 'propietario') echo 'checked'; ?> required>
                                    <label for="rbtPropietario">Soy Propietario del predio</label>
                                    <br>
-                                   <input id="rbtPromotor" type="radio" name="st1_tipo_solicitante" value="promotor" <?php if($st1_tipo_solicitante == 'promotor') echo 'checked'; ?> required>
+                                   <input id="rbtPromotor" type="radio" name="st1_tipo_solicitante" value="promotor" <?php if(strtolower($st1_tipo_solicitante) == 'promotor') echo 'checked'; ?> required>
                                    <label for="rbtPromotor">Soy Representante del propietario/Arrendatario</label>
                                    <br>
-                                   <input id="rbtArrendatario" type="radio" name="st1_tipo_solicitante" value="arrendatario" <?php if($st1_tipo_solicitante == 'arrendatario') echo 'checked'; ?> required>
+                                   <input id="rbtArrendatario" type="radio" name="st1_tipo_solicitante" value="arrendatario" <?php if(strtolower($st1_tipo_solicitante) == 'arrendatario') echo 'checked'; ?> required>
                                    <label for="rbtArrendatario">Soy Arrendatario del predio</label>
                                </div>
 
@@ -47,23 +47,23 @@
                                    <div class="form-group">
                                        <label><b>* Tipo de Representante:</b></label>
                                        <br>
-                                       <input id="rbtPromotorPropietario" type="radio" name="st1_tipo_representante" value="propietario" <?php if($st1_tipo_representante == 'propietario') echo 'checked'; ?> required>
+                                       <input id="rbtPromotorPropietario" type="radio" name="st1_tipo_representante" value="propietario" <?php if(strtolower($st1_tipo_representante) == 'propietario') echo 'checked'; ?> required>
                                        <label for="rbtPromotorPropietario">Soy Representante de persona física/moral que es dueña del predio</label>
                                        <br>
-                                       <input id="rbtPromotorRenta" type="radio" name="st1_tipo_representante" value="arrendatario" <?php if($st1_tipo_representante == 'arrendatario') echo 'checked'; ?> required>
+                                       <input id="rbtPromotorRenta" type="radio" name="st1_tipo_representante" value="arrendatario" <?php if(strtolower($st1_tipo_representante) == 'arrendatario') echo 'checked'; ?> required>
                                        <label for="rbtPromotorRenta">Soy Representante de persona física/moral que está rentando el predio</label>
                                        <br>
-                                       <!--<input id="rbtPromotorRenta" type="radio" name="st1_tipo_representante" value="arrendatario" <?php if($st1_tipo_representante == 'arrendatario') echo 'checked'; ?> required>
+                                       <!--<input id="rbtPromotorRenta" type="radio" name="st1_tipo_representante" value="arrendatario" <?php if(strtolower($st1_tipo_representante) == 'arrendatario') echo 'checked'; ?> required>
                                        <label for="rbtPromotorRenta">Soy Albacea de la sucesión</label>-->
                                    </div>
 
                                    <div class="form-group">
                                        <label><b>* Tipo Poder:</b></label>
                                        <br>
-                                       <input id="rbtCartaPoderSimple" type="radio" name="st1_tipo_carta_poder" value="simple" <?php if($st1_tipo_carta_poder == 'simple' || empty($st1_tipo_representante)) echo 'checked'; ?> required>
+                                       <input id="rbtCartaPoderSimple" type="radio" name="st1_tipo_carta_poder" value="simple" <?php if(strtolower($st1_tipo_carta_poder) == 'simple' || empty($st1_tipo_representante)) echo 'checked'; ?> required>
                                        <label for="rbtCartaPoderSimple">Carta Poder Simple</label>
                                        <br>
-                                       <input id="rbtCartaPoderNotariada" type="radio" name="st1_tipo_carta_poder" value="notariada" <?php if($st1_tipo_carta_poder == 'notariada') echo 'checked'; ?> required>
+                                       <input id="rbtCartaPoderNotariada" type="radio" name="st1_tipo_carta_poder" value="notariada" <?php if(strtolower($st1_tipo_carta_poder) == 'notariada') echo 'checked'; ?> required>
                                        <label for="rbtCartaPoderNotariada">Carta Poder Notariada/Poder Notarial</label>
                                    </div>
 
@@ -131,20 +131,20 @@
                                    <div class="form-group">
                                        <label><b>* ¿El contrato de arrendamiento te faculta para abrir un negocio?</b></label>
                                        <br>
-                                       <input id="rbtFacultaSi" type="radio" name="st1_faculta" value="s" <?php if($st1_faculta == 's') echo 'checked'; ?> required>
+                                       <input id="rbtFacultaSi" type="radio" name="st1_faculta" value="s" <?php if(strtolower($st1_faculta) == 's') echo 'checked'; ?> required>
                                        <label for="rbtFacultaSi">Si</label>
                                        <br>
-                                       <input id="rbtFacultaNo" type="radio" name="st1_faculta" value="n" <?php if($st1_faculta == 'n') echo 'checked'; ?> required>
+                                       <input id="rbtFacultaNo" type="radio" name="st1_faculta" value="n" <?php if(strtolower($st1_faculta) == 'n') echo 'checked'; ?> required>
                                        <label for="rbtFacultaNo">No</label>
                                    </div>
                                    <div id="seccionAnuencia">
                                        <div class="form-group">
                                            <label><b>* ¿Cuentas con la anuencia del arrendador para abrir un negocio?</b></label>
                                            <br>
-                                           <input id="rbtAnuenciaSi" type="radio" name="st1_anuencia" value="s" <?php if($st1_anuencia == 's') echo 'checked'; ?> required>
+                                           <input id="rbtAnuenciaSi" type="radio" name="st1_anuencia" value="s" <?php if(strtolower($st1_anuencia) == 's') echo 'checked'; ?> required>
                                            <label for="rbtAnuenciaSi">Si</label>
                                            <br>
-                                           <input id="rbtAnuenciaNo" type="radio" name="st1_anuencia" value="n" <?php if($st1_anuencia == 'n') echo 'checked'; ?> required>
+                                           <input id="rbtAnuenciaNo" type="radio" name="st1_anuencia" value="n" <?php if(strtolower($st1_anuencia) == 'n') echo 'checked'; ?> required>
                                            <label for="rbtAnuenciaNo">No</label>
                                        </div>
                                    </div>

@@ -6,7 +6,7 @@ var baseURL = "http://localhost/backend/";
 var stepsForm = null;
 var currentStep = $('#step').val();
 var informado=false;
-
+var arregloDatosP=[];
 
 $(document).ready(function () {
     'use strict';
@@ -207,7 +207,6 @@ $(document).ready(function () {
         });
     }
 
-    var arregloDatosP=[];
     if ($('#frmSolicitudLicenciaGiro').length){
         var form = $("#frmSolicitudLicenciaGiro");
         form.validate({
@@ -446,7 +445,6 @@ $(document).ready(function () {
             startIndex: parseInt(currentStep),
             onStepChanging: function (event, currentIndex, newIndex)
             {
-                console.log((newIndex+1));
                 if((newIndex+1) == 3){
                     arregloDatosP=[];
 
@@ -521,16 +519,25 @@ $(document).ready(function () {
                         return form.valid();
                     }
 
+                }else if((newIndex+1) == 2){
+                    getDataPropietario($('#claveCatastral').val()).done(function(data){
+                        if (data.status == 200){
+                            arregloPropietario=data.data;
+                            arregloPropietario.n_exterior = (arregloPropietario.n_exterior != "" ? parseInt(arregloPropietario.n_exterior): "");
+                            arregloPropietario.n_interior = (arregloPropietario.n_interior != "" ? parseInt(arregloPropietario.n_interior): "");
+                        }
+                    });
+                    informado = false;
                 }else if(currentIndex != 3){
                     form.validate().settings.ignore = ":disabled,:hidden,.valid";
                     if (form.valid()){
                         var frm  = form.find(":input:not(:hidden)").serializeArray();
-                        console.log(frm);
                         updateForma(frm, newIndex, $('#tramite').val());
                     }
                     if (newIndex == 3){
                         resumenLicenciaGiro();
                     }
+                    informado = true;
                     return form.valid();
                 }
 
@@ -893,11 +900,11 @@ function fillPropietario(){
     getDataPropietario($('#claveCatastral').val()).done(function(data){
         if (data.status == 200){
             //unsetLoading();
+            cleanPropietario();
             arregloPropietario=data.data;
             arregloPropietario.n_exterior = (arregloPropietario.n_exterior != "" ? parseInt(arregloPropietario.n_exterior): "");
             arregloPropietario.n_interior = (arregloPropietario.n_interior != "" ? parseInt(arregloPropietario.n_interior): "");
-            cleanPropietario();
-            //$('#txtNombre').val(data.data.nombre + ' ' + data.data.ape_paterno + ' ' + data.data.ape_materno);
+
             $('#txtNombre').parent().find("label").addClass('active');
             $('#txtNombre').val(capitalize(data.data.nombre.toLowerCase()));
             $('#txtPApellidoSolicitante').parent().find("label").addClass('active');
@@ -990,7 +997,7 @@ function resumenLicenciaGiro(){
     var resumen_isd = $('<div/>', {id: 'resumenIdentificacionSolicitante'}).appendTo('#resumen-container');
     resumen_isd.append('<h3>Identificación del solicitante</h3><br>');
     var RtipoSolicitante = $('<div/>', {addClass:'row'}).appendTo(resumen_isd);
-    RtipoSolicitante.append('<div class="col-md-4">Tipo Solicitante: <b>'+capitalize($('input:radio[name=st1_tipo_solicitante]:checked').val())+'</b></div>');
+    RtipoSolicitante.append('<div class="col-md-4">Tipo Solicitante: <b>'+capitalize($('input:radio[name=st1_tipo_solicitante]:checked').val().toLowerCase())+'</b></div>');
     if ($('input:radio[name=st1_tipo_solicitante]:checked').val() == 'promotor'){
         if ($('input:radio[name=st1_tipo_representante]:checked').val() == 'arrendatario'){
             des = 'Persona física/moral que está rentando el predio';
@@ -1002,7 +1009,7 @@ function resumenLicenciaGiro(){
 
         resumen_isd.append('<br>');
         var RtipoCartaPoder = $('<div/>', {addClass:'row'}).appendTo(resumen_isd);
-        RtipoCartaPoder.append('<div class="col-md-4">Tipo Carta Poder: <b>'+ capitalize($('input:radio[name=st1_tipo_carta_poder]:checked').val()) +'</b></div>');
+        RtipoCartaPoder.append('<div class="col-md-4">Tipo Carta Poder: <b>'+ capitalize($('input:radio[name=st1_tipo_carta_poder]:checked').val().toLowerCase()) +'</b></div>');
         RtipoCartaPoder.append('<div class="col-md-8">Carta Poder: <b><a href="http://192.168.66.93/licencia_giro/demo/carta_poder.pdf" target="_blank"><i class="fa fa-file-text" aria-hidden="true"></i> carta_poder.pdf</a></b></div>');
         if ($('input:radio[name=st1_tipo_carta_poder]:checked').val() == 'simple'){
             resumen_isd.append('<br>');

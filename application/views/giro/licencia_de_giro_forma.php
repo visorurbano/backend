@@ -539,6 +539,33 @@
                                    </div>
                                </div>
                            </div>
+                           <div class="row" id="es_numero_interior" style="margin-bottom:15px; display:none;">
+                               <div class="col-md-12">
+                                   <h3>Se ha encontrado que existen más licencias para la misma cuenta</h3>
+                               </div>
+                               <div class="col-md-12">
+                                   <h4>¿Es en número interior?</h4>
+                               </div>
+                               <div class="col-md-12">
+                                   <input id="es_num_interior_s" type="radio" name="st3_es_numero_interior" value="S" onclick="campos_extra('S')" <?php if($st3_es_numero_interior == 'S') echo 'checked'; ?> required>
+                                   <label for="es_num_interior_s">Si</label>&nbsp;
+                                   <input id="es_num_interior_n" type="radio" name="st3_es_numero_interior" value="N" onclick="campos_extra('N')" required>
+                                   <label for="es_num_interior_n">No</label>
+                               </div>
+                           </div>
+                           <div class="row" style="margin-top:20px; display: <?php echo $st3_es_numero_interior == 'S' ? 'block' : 'none'; ?>;" id="adjunto_lineamiento">
+                               <div class="col-md-4">
+                                   <div class="form-group fto-st3">
+                                       <label for="exampleInputFile"><b>* Adjuntar Dictamen de lineamiento y numero oficial</b></label>
+                                       <input type="file" class="form-control-file <?php if(!empty($st3_dictamen_lineamiento)){echo 'valid';}?>" id="fleFotoLocal4" onchange="loadFile(this);" name="st3_dictamen_lineamiento" aria-describedby="fileHelp" data-type="st3_dictamen_lineamiento" data-elastic="fleFotoLocal4Elastic" data-text="Dictamen de lineamiento y número oficial">
+                                       <div id="fleFotoLocal4Elastic" class="progress-bar-custom"></div>
+                                       <small id="fileHelp" class="form-text text-muted">Debe ser escaneada del documento original en formato .pdf.</small>
+                                       <?php if(!empty($st3_dictamen_lineamiento)):?>
+                                           <a href="<?=$st3_dictamen_lineamiento?>" target="_blank" class="link-to-file"><i class="fa fa-file-text-o" aria-hidden="true"></i> Dictamen de lineamiento y número oficial</a>
+                                       <?php endif;?>
+                                   </div>
+                               </div>
+                           </div>
                        </section>
 
                        <h3>Resumen</h3>

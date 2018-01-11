@@ -178,4 +178,37 @@ class LicenciasGiroModel extends CI_Model {
             }
         }
     }
+
+    public function consultClave($idLic){
+         $queryC=$this->db->query('select cuenta_predial from tbl_licencias_giro where id_licencia='.$idLic);
+         if($queryC->num_rows() > 0){
+             $resultado=$queryC->result()[0]->cuenta_predial;
+         }else{
+             $resultado="";
+         }
+         return $resultado;
+     }
+
+     public function PropietarioLic($data,$idLic){
+            $queryC=$this->db->query('select * from tbl_licencias_giro where id_licencia='.$idLic);
+            if($queryC->num_rows() > 0){
+                $resultado=$queryC->result()[0];
+                    $conteo=0;
+                    $diferencia=0;
+                    for ($i=0; $i < count($data); $i++) {
+                        $nombre_a = $data[$i]->propietario;
+                        $nombre_b = $resultado->st2_primer_apellido_solicitante.' '.$resultado->st2_segundo_apellido_solicitante.' '.$resultado->st2_nombre_solicitante;
+                        if($nombre_a != strtoupper($nombre_b)){
+                            $conteo++;
+                        }
+                    }
+                    if($conteo > 0){
+                        return true;
+                    }else{
+                        return false;
+                    }
+            }else{
+                $resultado="";
+            }
+        }
 }

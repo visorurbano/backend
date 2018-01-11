@@ -327,6 +327,12 @@ $(document).ready(function () {
                 },
                 st3_img3_establecimiento:{
                     required: true
+                },
+                st3_es_numero_interior:{
+                    required: true
+                },
+                st3_dictamen_lineamiento:{
+                    required: true
                 }
             },
             messages:{
@@ -432,6 +438,12 @@ $(document).ready(function () {
                 st3_img2_establecimiento:{
                     required: 'Adjunta la fotografía panorámica de la fachada con la puerta o cortina abierta para continuar'
                 },
+                st3_es_numero_interior:{
+                    required: 'Confirma si la licencia será para número interior'
+                },
+                st3_dictamen_lineamiento:{
+                    required: 'Adjunta el Dictamen de lineamiento y número ofical para continuar'
+                },
                 st4_declaratoria:{
                     required: 'La confirmación de que la información es correcta es requerida para continuar'
                 }
@@ -506,7 +518,11 @@ $(document).ready(function () {
                     form.validate().settings.ignore = ":disabled,:hidden,.valid";
                     if (form.valid()){
                         var frm  = form.find(":input:not(:hidden)").serializeArray();
-                        updateForma(frm, newIndex, $('#tramite').val());
+                        updateForma(frm, newIndex, $('#tramite').val()).done(function(data){
+                            if(data.validacionMultiLic){
+                                $('#es_numero_interior').show();
+                            }
+                        });
                     }
                     if (newIndex == 3){
                         resumenLicenciaGiro();
@@ -537,28 +553,36 @@ $(document).ready(function () {
                     if (newIndex == 3){
                         resumenLicenciaGiro();
                     }
-                    informado = true;
                     return form.valid();
+                    informado = true;
                 }
-
 
                 return form.valid();
 
             },
             onInit: function(event, currentIndex){
                 ResumeLicenciaGiro();
+                informado = true;
                 if (currentIndex == 3){
                     resumenLicenciaGiro();
                 }
-                if((currentIndex+1) == 2){
-                    getDataPropietario($('#claveCatastral').val()).done(function(data){
-                        if (data.status == 200){
-                            arregloPropietario=data.data;
-                            arregloPropietario.n_exterior = (arregloPropietario.n_exterior != "" ? parseInt(arregloPropietario.n_exterior): "");
-                            arregloPropietario.n_interior = (arregloPropietario.n_interior != "" ? parseInt(arregloPropietario.n_interior): "");
+                if(currentIndex == 1){
+                    informado = false;
+                }
+                if(currentIndex == 2){
+                    consulLicP($('#tramite').val()).done(function(data){
+                        if(data.validacionMultiLic){
+                            $('#es_numero_interior').show();
                         }
                     });
                 }
+                getDataPropietario($('#claveCatastral').val()).done(function(data){
+                    if (data.status == 200){
+                        arregloPropietario=data.data;
+                        arregloPropietario.n_exterior = (arregloPropietario.n_exterior != "" ? parseInt(arregloPropietario.n_exterior): "");
+                        arregloPropietario.n_interior = (arregloPropietario.n_interior != "" ? parseInt(arregloPropietario.n_interior): "");
+                    }
+                });
                 $('#frmSolicitudLicenciaGiro .actions li a').addClass('mui-btn mui-btn--primary');
             },
             onFinished: function (event, currentIndex) {
@@ -695,6 +719,19 @@ $(document).ready(function () {
 
 function nextPaso(){
     informado=true;
+}
+
+function campos_extra(val){
+    if (val == "S") {
+        $('#adjunto_lineamiento').show();
+        unsetError();
+    }else{
+        $('#adjunto_lineamiento').hide();
+        var error=[];
+        error[0]="";
+        setError();
+        errorLicenciaGiro(1, error);
+    }
 }
 
 function setPass(npass, pass, email) {
@@ -880,6 +917,15 @@ function updateForma(campos, step, id){
         type: "post",
         dataType: 'json',
         data: {'licencia': id, 'campos': data, 'firma':$('#firma_electronica').text()}
+    });
+}
+
+function consulLicP(id){
+    return $.ajax({
+        url: baseURL + "LicenciasGiro/redir_validacion",
+        type: "post",
+        dataType: 'json',
+        data: {'licencia': id}
     });
 }
 

@@ -60,6 +60,7 @@ $route['recuperar-contrasena'] = 'auth/recuperarContrasena';
 //Admin
 $route['admin'] = 'admin';
 $route['admin/mis-licencias'] = 'admin/misLicencias';
+$route['admin/impresion'] = 'admin/impresion';
 $route['admin/usuario'] = 'admin/perfilUsuario';
 $route['admin/mis-mensajes'] = 'admin/mensajes';
 $route['admin/mis-mensajes/(:any)'] = 'admin/mensaje';

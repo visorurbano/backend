@@ -18,13 +18,36 @@ class Admin extends CI_Controller {
     }
     public function index()
     {
-        $data['licencias'] = $this->LicenciasGiroModel->getLicencias($this->session->userdata('idU'), false);
-        $this->load->view('admin/index', $data);
+        switch ($this->session->userdata('level')){
+            case 1:
+                $data['licencias'] = $this->LicenciasGiroModel->getLicencias($this->session->userdata('idU'), false);
+                $this->load->view('admin/index', $data);
+            break;
+            case 2:
+                $data['licenciasVentanilla'] = $this->LicenciasGiroModel->getLicenciasVentanilla($this->session->userdata('idU'), false);
+                $data['licenciasTVentanilla'] = $this->LicenciasGiroModel->getLicenciasByStatus('V');
+                $this->load->css('https://cdn.datatables.net/v/bs4/dt-1.10.16/datatables.min.css');
+                $this->load->js('https://cdn.datatables.net/v/bs4/dt-1.10.16/datatables.min.js');
+                $this->load->view('admin/funcionarios_padron/bandeja_ventanilla', $data);
+            break;
+        }
+
     }
     public function misLicencias()
     {
         $data['licencias'] = $this->LicenciasGiroModel->getLicencias($this->session->userdata('idU'), true);
         $this->load->view('admin/misLicencias', $data);
+    }
+    public function impresion()
+    {
+        $data['levelUsuario'] = $this->session->userdata('level');
+        if ($this->session->userdata('level') < 2){
+            redirect(base_url().'admin', 'refresh');
+        }
+        $data['licencias'] = $this->LicenciasGiroModel->getLicenciasByStatus('FL');
+        $this->load->css('https://cdn.datatables.net/v/bs4/dt-1.10.16/datatables.min.css');
+        $this->load->js('https://cdn.datatables.net/v/bs4/dt-1.10.16/datatables.min.js');
+        $this->load->view('admin/impresion', $data);
     }
     public function perfilUsuario(){
         $this->load->js(base_url().'assets/js/jquery.validate.min.js');

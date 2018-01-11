@@ -13,10 +13,85 @@ $(document).ready(function () {
             "oLanguage": {
                 "sSearch": "<span>Buscar mensaje:</span> _INPUT_",
                 "sEmptyTable": "No se encontraron mensajes :(",
-                "zeroRecords": "No se encontraron coincidencias :(",
+                "sZeroRecords": "No hay información para mostrar con los criterios de busqueda indicados."
             },
             "language": {
                 "zeroRecords": "No records to display"
+            }
+        });
+    }
+
+    if ($('#tblImpresionLicencia').length){
+        $('#tblImpresionLicencia').DataTable({
+            "ordering": false,
+            "info":     false,
+            "paging":   true,
+            "oLanguage": {
+                "oPaginate": {
+                    "sNext": "Siguiente Pagina",
+                    "sPrevious": "Pagina Anterior",
+                },
+                "sSearch": "<span>Buscar Licencia:</span> _INPUT_",
+                "sEmptyTable": "No data available in tablesss",
+                "sZeroRecords": "No hay información para mostrar con los criterios de busqueda indicados.",
+                "sLengthMenu": 'Mostrar <select>'+
+                '<option value="10">10</option>'+
+                '<option value="20">20</option>'+
+                '<option value="30">30</option>'+
+                '<option value="40">40</option>'+
+                '<option value="50">50</option>'+
+                '<option value="-1">Todas</option>'+
+                '</select> Licencias'
+            }
+        });
+    }
+
+    if ($('#tblVentanilla').length){
+        $('#tblVentanilla').DataTable({
+            "ordering": false,
+            "info":     false,
+            "paging":   true,
+            "oLanguage": {
+                "oPaginate": {
+                    "sNext": "Siguiente Pagina",
+                    "sPrevious": "Pagina Anterior",
+                },
+                "sSearch": "<span>Buscar Trámite:</span> _INPUT_",
+                "sEmptyTable": "No data available in tablesss",
+                "sZeroRecords": "No hay información para mostrar con los criterios de busqueda indicados.",
+                "sLengthMenu": 'Mostrar <select>'+
+                '<option value="10">10</option>'+
+                '<option value="20">20</option>'+
+                '<option value="30">30</option>'+
+                '<option value="40">40</option>'+
+                '<option value="50">50</option>'+
+                '<option value="-1">Todas</option>'+
+                '</select> trámites'
+            }
+        });
+    }
+
+    if ($('#tbltVentanilla').length){
+        $('#tbltVentanilla').DataTable({
+            "ordering": false,
+            "info":     false,
+            "paging":   true,
+            "oLanguage": {
+                "oPaginate": {
+                    "sNext": "Siguiente Pagina",
+                    "sPrevious": "Pagina Anterior",
+                },
+                "sSearch": "<span>Buscar Trámite:</span> _INPUT_",
+                "sEmptyTable": "No data available in tablesss",
+                "sZeroRecords": "No hay información para mostrar con los criterios de busqueda indicados.",
+                "sLengthMenu": 'Mostrar <select>'+
+                '<option value="10">10</option>'+
+                '<option value="20">20</option>'+
+                '<option value="30">30</option>'+
+                '<option value="40">40</option>'+
+                '<option value="50">50</option>'+
+                '<option value="-1">Todas</option>'+
+                '</select> trámites'
             }
         });
     }

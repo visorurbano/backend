@@ -61,6 +61,16 @@ class LicenciasGiroModel extends CI_Model {
         return $licencias;
     }
 
+    public function getLicenciasByStatus($status){
+        $licencias =  $this->db->select('id_licencia, id_usuario, descripcion_factibilidad, st2_nombre_solicitante, st2_primer_apellido_solicitante, st2_segundo_apellido_solicitante, clave_catastral, folio_licencia')->from('tbl_licencias_giro')->where('status', $status)->get()->result();
+        return $licencias;
+    }
+
+    public function getLicenciasVentanilla(){
+        $licencias =  $this->db->select('id_licencia, id_usuario, descripcion_factibilidad, st2_nombre_solicitante, st2_primer_apellido_solicitante, st2_segundo_apellido_solicitante, clave_catastral, folio_licencia')->from('tbl_licencias_giro')->where('level_usuario', 2)->where('status', 'N')->get()->result();
+        return $licencias;
+    }
+
     public function getFirma($idU,$id_lic){
        $firma = $this->db->query('Select * from tbl_rel_licencia_usuario where id_licencia='.$id_lic.' and id_usuario='.$idU);
        if($firma->num_rows() > 0){

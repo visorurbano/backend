@@ -215,6 +215,8 @@ class LicenciasGiro extends CI_Controller {
                 $data['st3_img1_establecimiento'] = $licencia->st3_img1_establecimiento;
                 $data['st3_img2_establecimiento'] = $licencia->st3_img2_establecimiento;
                 $data['st3_img3_establecimiento'] = $licencia->st3_img3_establecimiento;
+                $data['st3_dictamen_lineamiento'] = $licencia->st3_dictamen_lineamiento;
+                $data['st3_es_numero_interior'] = $licencia->st3_es_numero_interior;
                 $data['st4_declaratoria'] = $licencia->st4_declaratoria;
                 $data['status'] = $predio->status;
             }
@@ -256,11 +258,15 @@ class LicenciasGiro extends CI_Controller {
                 throw new Exception('El folio del trámite es requerido', 404);
             }
             $data = $params['campos'];
-
+            if($data['step'] == 2){
+                $validacion=$this->validacionPropietarioLic($params['licencia']);
+            }else{
+                $validacion=false;
+            }
             $result =  $this->LicenciasGiroModel->updateLicencia($params['licencia'], $data, $params['firma']);
             if ($result['status']){
                 $this->output->set_content_type('application/json');
-                $this->output->set_output(json_encode(array('status' => 200, 'message' =>'Sucesfully')));
+                $this->output->set_output(json_encode(array('status' => 200, 'message' =>'Sucesfully','validacionMultiLic' => $validacion)));
             }else{
                 throw new Exception('Ocurrio un error inesperado por favor intenta mas tarde.', 401);
             }
@@ -398,6 +404,22 @@ class LicenciasGiro extends CI_Controller {
           }else{
             return false;
           }
-      }
+        }
+
+        public function redir_validacion(){
+            $params = $_REQUEST;
+            $validacion = $this->validacionPropietarioLic($params['licencia']);
+            $this->output->set_output(json_encode(array('status' => 200, 'message' =>'Sucesfully','validacionMultiLic' => $validacion)));
+        }
+
+        public function validacionPropietarioLic($idLic){
+            $cuenta = $this->LicenciasGiroModel->consultClave($idLic);
+            $params = array(
+                'cvecuenta'=> $cuenta,//'92928',
+            );
+            $data_soap=$this->utils->conec_soap('consLicXCvecuenta',$params);
+            $consulta = $this->LicenciasGiroModel->PropietarioLic($data_soap,$idLic);
+            return $consulta;
+        }
 
     }

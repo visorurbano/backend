@@ -404,6 +404,7 @@ class Formatos extends CI_Controller {
            $apellido_segundo = $licencia->st2_segundo_apellido_solicitante;
            $rfc = $licencia->st2_rfc_solicitante;
            $curp = $licencia->st2_curp_solicitante;
+           $zona = $licencia->predio_distrito.(empty($licencia->predio_sub_distrito)?'':' - '.$licencia->predio_sub_distrito);
            $fechaTitle = date("d/m/Y H:i");
            $pago=$licencia->metodo_pago;
            if($licencia->folio_licencia == 0){
@@ -571,8 +572,9 @@ class Formatos extends CI_Controller {
                                    Cve Catastral: '.$clave_catastral.'
                                </div>
                                <div style="width: 20%; float: left;">
-                                   No. Int: '.$no_int.'<br>
-                                   <!--Zona: '.$zona.'-->
+                                    <br>
+                                    No. Int: '.$no_int.'<br>
+                                    Distrito: '.$zona.'
                                </div>
                                <div style="width: 30%; float: right; margin-left: 10%;">
                                    Nombre: '.$nombre.' '.$apellido_primer.' '.$apellido_segundo.'<br>
@@ -757,7 +759,7 @@ class Formatos extends CI_Controller {
                                                    <b>F. </b>COLOCAR ANUNCIOS SOBRE LA VÍA PÚBLICA. <br>
                                                    <b>G. </b>OBSTRUIR EL PASO PEATONAL. HACIENDO USO DE LA VÍA PÚBLICA SIN AUTORIZACIÓN.<br>
                                                    <b>H. </b>EXCEDER EL AFORO AUTORIZADO. <br>
-                                                   <b>I. </b>EXCEDER CON EMISIONES DE RUIDO. NORMA AMBIENTAL NOM-081-SEMARNAT-94 DE DECIBELES (RELATIVA A LOS DECIBELES PERMITIDOS). <br>
+                                                   <b>I. </b>EXCEDER CON EMISIONES DE RUIDO. NORMA AMBIENTAL NOM-081-SEMARNAT-1994 DE DECIBELES (RELATIVA A LOS DECIBELES PERMITIDOS). <br>
                                                    <b>J. </b>DESCARGA DE RESIDUOS NOCIVOS A LA RED MUNICIPAL. <br>
                                                    <b>K. </b>OPERAR MÁQUINAS DE JUEGOS DE AZAR. <br>
                                                    <b>L. </b>QUE LOS DOCUMENTOS Y DATOS PROPORCIONADOS EN LA PLATAFORMA SEAN FALSOS. <br>

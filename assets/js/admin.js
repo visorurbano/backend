@@ -1,7 +1,5 @@
 $(document).ready(function () {
-
     'use strict';
-
     // ------------------------------------------------------- //
     // Mensajes
     // ------------------------------------------------------ //
@@ -57,7 +55,7 @@ $(document).ready(function () {
                     "sPrevious": "Pagina Anterior",
                 },
                 "sSearch": "<span>Buscar Trámite:</span> _INPUT_",
-                "sEmptyTable": "No data available in tablesss",
+                "sEmptyTable": "No existen trámites para mostrar",
                 "sZeroRecords": "No hay información para mostrar con los criterios de busqueda indicados.",
                 "sLengthMenu": 'Mostrar <select>'+
                 '<option value="10">10</option>'+
@@ -82,7 +80,7 @@ $(document).ready(function () {
                     "sPrevious": "Pagina Anterior",
                 },
                 "sSearch": "<span>Buscar Trámite:</span> _INPUT_",
-                "sEmptyTable": "No data available in tablesss",
+                "sEmptyTable": "No existen trámites para mostrar",
                 "sZeroRecords": "No hay información para mostrar con los criterios de busqueda indicados.",
                 "sLengthMenu": 'Mostrar <select>'+
                 '<option value="10">10</option>'+
@@ -101,12 +99,13 @@ $(document).ready(function () {
 function logout(){
    acLogout().done(function(data){
         if (data.status == 200){
-            window.location.href = baseURL + "ingresar";
+            window.location.href = "http://visorurbano.guadalajara.gob.mx/ingresar";
         }
    });
 }
 
 function acLogout(){
+    console.log(baseURL);
     return $.ajax({
         url: baseURL + "auth/logout",
         type: "post",

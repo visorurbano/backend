@@ -51,7 +51,7 @@
 <script src="<?php echo base_url(); ?>assets/vendor/bootstrap/js/bootstrap.min.js"></script>
 <script src="<?php echo base_url(); ?>assets/js/jquery.validate.min.js"></script>
 <script src="//cdn.muicss.com/mui-0.9.30/js/mui.min.js"></script>
-
+<script src="<?php echo base_url(); ?>assets/js/base-min.js"></script>
 <?php
 foreach($js as $file){
     echo "\n\t\t";

@@ -1,5 +1,3 @@
-//var baseURL = 'http://visorurbano.guadalajara.gob.mx/';
-var baseURL = "http://localhost/backend/";
 var getUrl = window.location;
 var params1 = getUrl.pathname.split('/')[4];
 var params2 = getUrl.pathname.split('/')[5];

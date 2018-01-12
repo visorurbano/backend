@@ -1,7 +1,3 @@
-var userURL = 'http://licenciasprueba.guadalajara.gob.mx/gdlusuarios/auth/';
-//var baseURL = 'http://visorurbano.guadalajara.gob.mx/';
-var baseURL = "http://localhost/backend/";
-//var userURL = "http://localhost/usrGDL/auth/";*/
 var getUrl = window.location;
 var params = getUrl.pathname.split('/')[3];
 if(params){
@@ -13,9 +9,7 @@ if(params){
     $('#contenido_tablas').show();
     $('#contenido_detalle').hide();
 }
-/*var tbTodas = $('#tblTodas').DataTable();
-var tbRevisada = $('#tblRevisadas').DataTable();
-var tbPri = $('#tblPrioritarios').DataTable();*/
+
 var table = $('.style_table').DataTable({
     "ordering": false,
     "info":     false,

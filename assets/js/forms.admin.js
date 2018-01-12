@@ -1,13 +1,7 @@
-var userURL = 'http://licenciasprueba.guadalajara.gob.mx/gdlusuarios/auth/';
-//var baseURL = 'http://visorurbano.guadalajara.gob.mx/';
-var baseURL = "http://localhost/backend/";
-//var userURL = "http://localhost/usrGDL/auth/";*/
-
 var stepsForm = null;
 var currentStep = $('#step').val();
 var informado=false;
 var arregloDatosP=[];
-
 $(document).ready(function () {
     'use strict';
     // ------------------------------------------------------- //

@@ -519,8 +519,15 @@ $(document).ready(function () {
                     if (form.valid()){
                         var frm  = form.find(":input:not(:hidden)").serializeArray();
                         updateForma(frm, newIndex, $('#tramite').val()).done(function(data){
-                            if(data.validacionMultiLic){
+                            if(data.validacionMultiLic.status){
                                 $('#es_numero_interior').show();
+                                $('#lista_lic').empty();
+                                for (var i = 0; i < data.validacionMultiLic.licencias.length; i++) {
+                                    $('#lista_lic').append('<li>'+
+                                    'Licencia: '+ data.validacionMultiLic.licencias[i].id+
+                                    ' - '+ data.validacionMultiLic.licencias[i].actividad+
+                                    '</li>');
+                                }
                             }
                         });
                     }
@@ -544,7 +551,8 @@ $(document).ready(function () {
                         }
                     });
                     informado = false;
-                }else if(currentIndex != 3){
+                }
+                if(currentIndex != 3){
                     form.validate().settings.ignore = ":disabled,:hidden,.valid";
                     if (form.valid()){
                         var frm  = form.find(":input:not(:hidden)").serializeArray();
@@ -571,8 +579,15 @@ $(document).ready(function () {
                 }
                 if(currentIndex == 2){
                     consulLicP($('#tramite').val()).done(function(data){
-                        if(data.validacionMultiLic){
+                        if(data.validacionMultiLic.status){
                             $('#es_numero_interior').show();
+                            $('#lista_lic').empty();
+                            for (var i = 0; i < data.validacionMultiLic.licencias.length; i++) {
+                                $('#lista_lic').append('<li>'+
+                                'Licencia: '+ data.validacionMultiLic.licencias[i].id+
+                                ' - '+ data.validacionMultiLic.licencias[i].actividad+
+                                '</li>');
+                            }
                         }
                     });
                 }
@@ -728,7 +743,7 @@ function campos_extra(val){
     }else{
         $('#adjunto_lineamiento').hide();
         var error=[];
-        error[0]="";
+        error[0]="Acuda a dar de baja estas licencias a ventanilla";
         setError();
         errorLicenciaGiro(1, error);
     }
@@ -942,40 +957,38 @@ function updateFiles(field, fleName, id){
 
 var arregloPropietario=[];
 function fillPropietario(){
-    //setLoading();
     getDataPropietario($('#claveCatastral').val()).done(function(data){
         if (data.status == 200){
-            //unsetLoading();
             cleanPropietario();
             arregloPropietario=data.data;
             arregloPropietario.n_exterior = (arregloPropietario.n_exterior != "" ? parseInt(arregloPropietario.n_exterior): "");
             arregloPropietario.n_interior = (arregloPropietario.n_interior != "" ? parseInt(arregloPropietario.n_interior): "");
 
             $('#txtNombre').parent().find("label").addClass('active');
-            $('#txtNombre').val(capitalize(data.data.nombre.toLowerCase()));
             $('#txtPApellidoSolicitante').parent().find("label").addClass('active');
-            $('#txtPApellidoSolicitante').val(capitalize(data.data.ape_paterno.toLowerCase()));
             $('#txtSApellidoSolicitante').parent().find("label").addClass('active');
-            $('#txtSApellidoSolicitante').val(capitalize(data.data.ape_materno.toLowerCase()));
-
-            $('#txtNombre').parent().find("label").addClass('active');
-            $('#txtCURP').val(data.data.curp);
             $('#txtCURP').parent().find("label").addClass('active');
-            $('#txtRFC').val(data.data.rfc);
             $('#txtRFC').parent().find("label").addClass('active');
-            $('#txtDomicilio').val(capitalize(data.data.calle.toLowerCase()));
             $('#txtDomicilio').parent().find("label").addClass('active');
-            $('#txtNExterior').val(data.data.n_exterior);
             $('#txtNExterior').parent().find("label").addClass('active');
-            $('#txtNInterior').val(data.data.n_interior);
             $('#txtNInterior').parent().find("label").addClass('active');
-            $('#txtColonia').val(capitalize(data.data.colonia.toLowerCase()));
             $('#txtColonia').parent().find("label").addClass('active');
-            $('#txtCiudad').val(capitalize(data.data.ciudad.toLowerCase()));
             $('#txtCiudad').parent().find("label").addClass('active');
-            $('#txtCP').val(data.data.cp);
             $('#txtCP').parent().find("label").addClass('active');
+
+            $('#txtNombre').val(capitalize(data.data.nombre.toLowerCase()));
+            $('#txtPApellidoSolicitante').val(capitalize(data.data.ape_paterno.toLowerCase()));
+            $('#txtSApellidoSolicitante').val(capitalize(data.data.ape_materno.toLowerCase()));
+            $('#txtCURP').val(data.data.curp);
+            $('#txtRFC').val(data.data.rfc);
+            $('#txtDomicilio').val(capitalize(data.data.calle.toLowerCase()));
+            $('#txtNExterior').val(data.data.n_exterior);
+            $('#txtNInterior').val(data.data.n_interior);
+            $('#txtColonia').val(capitalize(data.data.colonia.toLowerCase()));
+            $('#txtCiudad').val(capitalize(data.data.ciudad.toLowerCase()));
+            $('#txtCP').val(data.data.cp);
         }
+
         $('input:radio[name=st1_tipo_representante]').prop('checked', false);
         $('input:radio[name=st1_tipo_carta_poder]').prop('checked', false);
         $('#rbtCartaPoderSimple').prop('checked', true);
@@ -1124,7 +1137,7 @@ function resumenLicenciaGiro(){
     var Rpredio = $('<div/>', {addClass:'row'}).appendTo(resumen_isd);
     Rpredio.append('<div class="col-md-3">Clave Catastral: <b>'+ $('#claveCatastral').val()+'</b></div>');
     Rpredio.append('<br><br>');
-    Rpredio.append('<div class="col-md-12">Actividad espesifica: <b>'+ $('input:text[name=descripcion_factibilidad]').val()+'</b></div>');
+    Rpredio.append('<div class="col-md-12">Actividad especifica: <b>'+ ($('input:text[name=descripcion_factibilidad]').val() ? $('input:text[name=descripcion_factibilidad]').val():'')+'</b></div>');
     Rpredio.append('<br><br>');
     Rpredio.append('<div class="col-md-12">Nombre del negocio: <b>'+ $('input:text[name=st3_nombre_establecimiento]').val()+'</b></div>');
     Rpredio.append('<br><br>');

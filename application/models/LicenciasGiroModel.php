@@ -192,6 +192,7 @@ class LicenciasGiroModel extends CI_Model {
      public function PropietarioLic($data,$idLic){
             $queryC=$this->db->query('select * from tbl_licencias_giro where id_licencia='.$idLic);
             if($queryC->num_rows() > 0){
+                $myArray= array();
                 $resultado=$queryC->result()[0];
                     $conteo=0;
                     $diferencia=0;
@@ -199,13 +200,14 @@ class LicenciasGiroModel extends CI_Model {
                         $nombre_a = $data[$i]->propietario;
                         $nombre_b = $resultado->st2_primer_apellido_solicitante.' '.$resultado->st2_segundo_apellido_solicitante.' '.$resultado->st2_nombre_solicitante;
                         if($nombre_a != strtoupper($nombre_b)){
+                            array_push($myArray,(object) array('id' => $data[$i]->licencia, 'actividad' => $data[$i]->actividad));
                             $conteo++;
                         }
                     }
                     if($conteo > 0){
-                        return true;
+                        return array('status'=>true, 'licencias'=> $myArray);
                     }else{
-                        return false;
+                        return array('status'=>false, 'licencias'=> $myArray);
                     }
             }else{
                 $resultado="";

@@ -39,7 +39,7 @@ function setWarning(msg){
     var overlay = $('<div/>',{id:'overlayError'}).appendTo($('body'));
     var contLoading = $('<div/>',{id:'overlayWarningContent', class:'mui--z2'}).appendTo(overlay);
     contLoading.append('<h3><i class="fa fa-info-circle" aria-hidden="true"></i> Importante:</h3>');
-    contLoading.append('<span>Se encontrarón las siguientes diferencias entre los datos proporcionados y la base de datos de Guadalajara</span>');
+    contLoading.append('<span>Se encontrarón las siguientes diferencias entre los datos proporcionados del propietario y la base de datos de Guadalajara: </span>');
     contLoading.append('<ul></ul>');
     contLoading.append('<div class="footer"><a href="javascript:removeWarning()" class="mui-btn">Entiendo</a></div>')
     $('body').css('overflow', 'hidden');

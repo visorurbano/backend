@@ -7,6 +7,8 @@ class Auth extends CI_Controller {
         parent::__construct();
         $this->load->model('AuthModel');
         $this->load->helper('url');
+        $this->output->set_header("Cache-Control: no-store, no-cache, must-revalidate, no-transform, max-age=0, post-check=0, pre-check=0");
+        $this->output->set_header("Pragma: no-cache");
     }
 
     public function index()
@@ -79,19 +81,11 @@ class Auth extends CI_Controller {
         try{
             if ($_SERVER['REQUEST_METHOD'] != 'POST'){
                 throw new Exception('Bad request', 400);
-            }
-
-            $email = $this->session->userdata('email');
-
-            if ($this->AuthModel->logout($email)){
+            }else{
                 $this->session->sess_destroy();
                 $this->output->set_content_type('application/json');
-                $this->output->set_output(json_encode(array('status'=>200, 'message'=>'succesfully')));
-            } else{
-                $this->session->sess_destroy();
-                throw new Exception('Internal server error', 500);
+                $this->output->set_output(json_encode(array('status'=>250, 'message'=>'succesfully')));
             }
-
         }catch (Exception $e){
             $this->output->set_content_type('application/json');
             $this->output->set_output(json_encode(array('status' => $e->getCode(),'message' => $e->getMessage())));

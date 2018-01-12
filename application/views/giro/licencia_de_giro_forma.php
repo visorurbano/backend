@@ -541,10 +541,13 @@
                            </div>
                            <div class="row" id="es_numero_interior" style="margin-bottom:15px; display:none;">
                                <div class="col-md-12">
-                                   <h3>Se ha encontrado que existen más licencias para la misma cuenta</h3>
+                                   <h3>Se han encontrado estas licencias asociadas al predio:</h3>
+                                   <ul id="lista_lic">
+
+                                   </ul>
                                </div>
                                <div class="col-md-12">
-                                   <h4>¿Es en número interior?</h4>
+                                   <h4>¿La licencia que esta solicitando es en un número interior?</h4>
                                </div>
                                <div class="col-md-12">
                                    <input id="es_num_interior_s" type="radio" name="st3_es_numero_interior" value="S" onclick="campos_extra('S')" <?php if($st3_es_numero_interior == 'S') echo 'checked'; ?> required>

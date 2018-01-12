@@ -304,11 +304,35 @@ form {
 #tblMensajes tbody tr td {
   padding: 20px 10px; }
 
+/******* Data Tables ********/
 div.dataTables_wrapper div.dataTables_filter input {
   border-top: 0px;
   border-left: 0px;
   border-right: 0px;
-  width: 200px !important; }
+  width: 200px !important;
+  font-size: 15px; }
+
+.dataTableVU {
+  font-size: 15px; }
+
+.dataTableVU td:first-child {
+  padding-left: 10px; }
+
+.dataTableVU td:last-child {
+  padding-right: 10px; }
+
+ul.pagination a {
+  border: none !important; }
+
+.dataTableVU thead th {
+  padding: 10px 0px; }
+
+.page-item.active .page-link {
+  background-color: transparent;
+  color: #2196F3; }
+
+.dataTables_filter input {
+  width: 40% !important; }
 
 /*======= Error Modal =========*/
 .errorModal .modal-header {

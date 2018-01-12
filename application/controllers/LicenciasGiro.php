@@ -415,7 +415,7 @@ class LicenciasGiro extends CI_Controller {
         public function validacionPropietarioLic($idLic){
             $cuenta = $this->LicenciasGiroModel->consultClave($idLic);
             $params = array(
-                'cvecuenta'=> $cuenta,//'92928',
+                'cvecuenta'=> $cuenta,
             );
             $data_soap=$this->utils->conec_soap('consLicXCvecuenta',$params);
             $consulta = $this->LicenciasGiroModel->PropietarioLic($data_soap,$idLic);

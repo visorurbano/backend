@@ -1060,7 +1060,7 @@ class Formatos extends CI_Controller {
                            <div style="text-align:left; float:left; width:59%; border:solid 1px #000; border-radius:5px;">
                                <div style="margin-left:10px;">
                                    <b>DOMICILIO</b><br>
-                                   '.(empty($calle)?$vacio:$calle).' '.(empty($col)?$vacio:$col).'
+                                   '.(empty($calle)?$vacio:$calle).', col. '.(empty($col)?$vacio:$col).'
                                </div>
                            </div>
                            <div style="float:left; width:1%;">

@@ -498,7 +498,7 @@
                                </div>
                                <div class="col-md-4">
                                    <div class="mui-textfield mui-textfield--float-label nerror">
-                                       <input id="txtCajonesEstacionamiento" type="text" readonly onfocus="this.removeAttribute('readonly');" name="st3_cajones_estacionamiento_establecimiento" autocomplete="off" class="input-material" value="<?=$st3_cajones_estacionamiento_establecimiento;?>" required>
+                                       <input id="txtCajonesEstacionamiento" type="text" name="st3_cajones_estacionamiento_establecimiento" autocomplete="off" class="input-material" value="<?=$st3_cajones_estacionamiento_establecimiento;?>" required>
                                        <label for="txtCajonesEstacionamiento">* No. Cajones de estacionamiento </label>
                                    </div>
                                </div>
@@ -574,12 +574,7 @@
                        <h3>Resumen</h3>
                        <section>
                            <div id="resumen-container"></div>
-                          <!--<div class="form-group">
-                               <input type="checkbox" id="ckbDeclaratoria" name="st4_declaratoria" value="1" <?php if ($st4_declaratoria > 0) echo 'checked'; ?> aria-required="true" required>
-                               <label for="ckbDeclaratoria">
-                                   La información mostrada en este resumen es correcta y deseo continuar con el trámite
-                               </label>
-                           </div>-->
+
                            <div class="card card-body bg-light">
                                <h2>Cadena original a firmar</h2>
                                <div class="cadenaFirmar"></div>
@@ -596,12 +591,12 @@
                                <div class="col-md-12" id="contMSGFirmaError"></div>
                            </div>
                            <br>
-                           <div class="card card-body bg-light">
+                           <div class="card card-body bg-light" id="firmaContainer">
                              <h2>Cadena Firmada</h2>
                              <span id="firma_electronica"><?=$firma?></span>
                            </div>
                            <div class="row">
-                               <div class="col-md-12 aviso-privacidad">
+                               <div class="col-md-12 st4_aviso_privacidad">
                                    <label>
                                        <input  type="checkbox" name="st4_declaratoria" value="1" required="" aria-required="true" <?php if ($st4_declaratoria == 1) echo "checked"; ?>>
                                        Bajo protesta de decir verdad manifiesto que todos los datos mencionados y documentos anexos al presente procedimiento administrativo son verdaderos y cotejables con documentación legal.
@@ -611,6 +606,7 @@
                            <br>
                            <div class="row">
                                <div class="col-md-12">
+                                   <br>
                                    <p style="color: #F35B53; text-align: justify;">
                                        <b><i class="fa fa-exclamation-circle" aria-hidden="true"></i> Nota: </b>El municipio de Guadalajara por cualquiera de sus dependencias cuenta con la facultad de realizar cuantas inspecciones considere necesarias para verificar la autenticidad de los datos y documentos que fueron entregados por el solicitante, teniendo la potestad de revocar la licencia en caso de que los instrumentos fundatorios del trámite hayan sido falsificados y/o apócrifos, independientemente de las sanciones administrativas y penales que pudieran incurrir.
                                    </p>

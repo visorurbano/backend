@@ -30,6 +30,11 @@ class Admin extends CI_Controller {
                 $this->load->js('https://cdn.datatables.net/v/bs4/dt-1.10.16/datatables.min.js');
                 $this->load->view('admin/funcionarios_padron/bandeja_ventanilla', $data);
             break;
+            case 3:
+                $this->load->css('https://cdn.datatables.net/v/bs4/dt-1.10.16/datatables.min.css');
+                $this->load->js('https://cdn.datatables.net/v/bs4/dt-1.10.16/datatables.min.js');
+                redirect(base_url().'revision','refresh');
+            break;
         }
 
     }
@@ -80,5 +85,5 @@ class Admin extends CI_Controller {
         $this->load->view('admin/confirmacion_licencia');
     }
 
-    
+
 }

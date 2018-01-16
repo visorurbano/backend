@@ -22,22 +22,28 @@
         </div>
         <!-- Sidebar Navidation Menus-->
         <ul class="list-unstyled">
-            <li> <a href="<?=base_url()?>admin"><i class="fa fa-list" aria-hidden="true"></i> Mis Trámites</a></li>
-            <?php if ($this->session->userdata('level') == 1): ?>
-            <li> <a href="<?=base_url()?>admin/mis-licencias"><i class="fa fa-file-text-o" aria-hidden="true"></i> Mis Licencias</a></li>
+            <?php if ($this->session->userdata('level') != 3): ?>
+                <li> <a href="<?=base_url()?>admin"><i class="fa fa-list" aria-hidden="true"></i> Mis Trámites</a></li>
             <?php endif; ?>
-            <?php if ($this->session->userdata('level') > 1): ?>
+            <?php if ($this->session->userdata('level') == 1 && $this->session->userdata('level') != 3): ?>
+                <li> <a href="<?=base_url()?>admin/mis-licencias"><i class="fa fa-file-text-o" aria-hidden="true"></i> Mis Licencias</a></li>
+            <?php endif; ?>
+            <?php if ($this->session->userdata('level') > 1 && $this->session->userdata('level') != 3): ?>
                 <li> <a href="<?=base_url()?>admin/impresion"><i class="fa fa-print" aria-hidden="true"></i> Impresión de Licencias</a></li>
             <?php endif; ?>
             <li> <a href="<?=base_url()?>admin/mis-mensajes"><i class="fa fa-envelope-o" aria-hidden="true"></i> Mis Mensajes</a></li>
-            <li><a href="#tramites" aria-expanded="false" data-toggle="collapse"> <i class="fa fa-file" aria-hidden="true"></i> Nuevo Trámite </a>
-                <ul id="tramites" class="collapse list-unstyled">
-                    <li><a href="<?=base_url()?>nueva-licencia"><i class="fa fa-file-text-o" aria-hidden="true"></i> Licencia de giro tipo A</a></li>
-                    <li><a href="https://servicios.guadalajara.gob.mx/registro_ciudadano/users/sign_in"><i class="fa fa-file-text-o" aria-hidden="true"></i> Licencia de construcción</a></li>
-                </ul>
-            </li>
+            <?php if ($this->session->userdata('level') != 3): ?>
+                <li><a href="#tramites" aria-expanded="false" data-toggle="collapse"> <i class="fa fa-file" aria-hidden="true"></i> Nuevo Trámite </a>
+                    <ul id="tramites" class="collapse list-unstyled">
+                        <li><a href="<?=base_url()?>nueva-licencia"><i class="fa fa-file-text-o" aria-hidden="true"></i> Licencia de giro tipo A</a></li>
+                        <li><a href="https://servicios.guadalajara.gob.mx/registro_ciudadano/users/sign_in"><i class="fa fa-file-text-o" aria-hidden="true"></i> Licencia de construcción</a></li>
+                    </ul>
+                </li>
+            <?php endif; ?>
+            <?php if ($this->session->userdata('level') == 3): ?>
+                <li> <a href="<?=base_url()?>revision"><i class="fa fa-check-circle-o" aria-hidden="true"></i> Revisión</a></li>
+            <?php endif; ?>
             <!--<li class=""> <a href="./"><i class="fa fa-question" aria-hidden="true"></i> Ayuda</a></li>-->
 
         </ul>
     </nav>
-

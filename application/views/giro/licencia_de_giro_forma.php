@@ -629,7 +629,8 @@
                                        <a href="<?=base_url()?>formatos/orden_pago?lic=<?= $this->utils->encode($licencia->id_licencia);?>&usu=<?= $this->utils->encode($licencia->id_usuario);?>" target="_blank" class="btn btn-lg btn-secondary"><i class="fa fa-print" aria-hidden="true"></i> Imprimir Propuesta de Cobro</a>
 
                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                       <a href="#" id="btnPagoLinea" class="btn btn-lg btn-secondary"><i class="fa fa-credit-card-alt" aria-hidden="true"></i> Pagar en  linea</a>
+                                       <a id="btnPagoLinea" onclick="pago_linea()" class="btn btn-lg btn-secondary"><i class="fa fa-credit-card-alt" aria-hidden="true"></i> Pagar en  linea</a>
+                                       <!--a href="<?=base_url()?>confirmacion_licencia/pago_linea/<?= $this->utils->encode($licencia->id_licencia);?>/<?= $this->utils->encode($licencia->id_usuario);?>" id="btnPagoLinea" class="btn btn-lg btn-secondary"><i class="fa fa-credit-card-alt" aria-hidden="true"></i> Pagar en  linea</a-->
                                    </center>
                                </div>
                            </div>
@@ -644,7 +645,44 @@
         </div>
     </section>
 </div>
-
+<form style="display:none" name='form-pago' id='form-pago' action='https://pagoenlinea.guadalajara.gob.mx/licenciasdegiro/verifDatos.php' method='POST'>
+    <input type='text' id='tipo_tramite_form' name='tipo_tramite' value='13' readonly>
+    <input type='text' id='scian_form' name='scian' readonly>
+    <input type='text' id='x_form' name='x' value='0' readonly>
+    <input type='text' id='y_form' name='y' value='0' readonly>
+    <input type='text' id='zona_form' name='zona' readonly>
+    <input type='text' id='sub_zona_form' name='sub_zona' readonly>
+    <input type='text' id='actividad_form' name='actividad' readonly>
+    <input type='text' id='cvecuenta_form' name='cvecuenta' readonly>
+    <input type='text' id='propietario_form' name='propietario' readonly>
+    <input type='text' id='primer_ap_form' name='primer_ap' readonly>
+    <input type='text' id='segundo_ap_form' name='segundo_ap' readonly>
+    <input type='text' id='rfc_form' name='rfc' readonly>
+    <input type='text' id='curp_form' name='curp' readonly>
+    <input type='text' id='telefono_prop_form' name='telefono_prop' readonly>
+    <input type='text' id='email_form' name='email' readonly>
+    <input type='text' id='cvecalle_form' name='cvecalle' value='0' readonly>
+    <input type='text' id='calle_form' name='calle' readonly>
+    <input type='text' id='num_ext_form' name='num_ext' readonly>
+    <input type='text' id='let_ext_form' name='let_ext' readonly>
+    <input type='text' id='num_int_form' name='num_int' readonly>
+    <input type='text' id='let_int_form' name='let_int' readonly>
+    <input type='text' id='colonia_form' name='colonia' readonly>
+    <input type='text' id='cp_form' name='cp' readonly>
+    <input type='text' id='espubic_form' name='espubic' value='' readonly>
+    <input type='text' id='sup_autorizada_form' name='sup_autorizada' readonly>
+    <input type='text' id='num_cajones_form' name='num_cajones' readonly>
+    <input type='text' id='num_empleados_form' name='num_empleados' readonly>
+    <input type='text' id='aforo_form' name='aforo' value='0' readonly>
+    <input type='text' id='inversion_form' name='inversion' readonly>
+    <input type='text' id='licencia_form' name='licencia' readonly>
+    <input type='text' id='importe_form' name='importe' readonly>
+    <input type='text' id='origen_form' name='origen' value='102' readonly>
+    <input type='text' id='tipo_form' name='tipo' value='A' readonly>
+    <input type='text' id='entre_form' name='entre' value='' readonly>
+    <input type='text' id='id_usuario_form' name='id_usuario' readonly>
+    <button type='submit' id="enviar_form">enviar</button>
+</form>
 
 <div class="modal fade" id="firmaModal">
     <div class="modal-dialog" role="document">

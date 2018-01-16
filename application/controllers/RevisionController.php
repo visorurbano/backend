@@ -6,7 +6,9 @@ class RevisionController extends CI_Controller {
         parent::__construct();
         $this->load->helper('url');
         $this->load->model('RevisionModel');
-        if (!$this->session->userdata('loged')){
+        if($this->session->userdata('level') != 3){
+            redirect(base_url().'admin','refresh');
+        }else if (!$this->session->userdata('loged')){
             $this->session->sess_destroy();
             redirect(base_url().'ingresar', 'refresh');
         }
@@ -21,6 +23,7 @@ class RevisionController extends CI_Controller {
         $this->load->css(base_url().'assets/css/lightbox.min.css');
         $this->load->js(base_url().'assets/vendor/lightbox.min.js');
         $this->load->js(base_url().'assets/js/revision.min.js');
+        $this->load->js(base_url().'assets/js/admin-min.js');
         $this->load->view('admin/revision');
     }
 

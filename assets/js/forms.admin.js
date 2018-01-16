@@ -454,6 +454,16 @@ $(document).ready(function () {
                 if(newIndex == 4){
                     fill_pago();
                 }
+                if((newIndex+1) == 5){
+                    if($('#firma_electronica').text() == ''){
+                        $('#firma_electronica').text('');
+                        $('#firmaContainer').append('<span style="color: #F35B53;" class="contErrorInsideFirma">Debes firmar la solicitud utilizando tu firma electronica (FIEL) para poder continuar.</span>');
+                        $(window).scrollTop($('#firmaContainer').offset().top);
+                        return false;
+                    }else{
+                        $('.contErrorInsideFirma').remove();
+                    }
+                }
                 /*if((newIndex+1) == 3){
                     arregloDatosP=[];
 
@@ -774,9 +784,9 @@ function fill_pago(){
         }
     });
 }
-function nextPaso(){
+/*function nextPaso(){
     informado=true;
-}
+}*/
 
 function campos_extra(val){
     if (val == "S") {
@@ -1284,8 +1294,8 @@ function loadFile(element){
                 contentType:false,
                 data:data,
                 processData:false,
-                beforeSend:function(){
-                   /* $('#'+el.data('elastic')).css('margin','15px 0px');
+                /*beforeSend:function(){
+                    $('#'+el.data('elastic')).css('margin','15px 0px');
                     var circle = new ProgressBar.Line('#'+el.data('elastic'), {
                         color: '#8CBC5F',
                         easing: 'easeInOut'
@@ -1296,8 +1306,8 @@ function loadFile(element){
                     }, function() {
                         circle.destroy();
                         $('#'+el.data('elastic')).css('margin','0px');
-                    });*/
-                },
+                    });
+                },*/
                 success:function(data){
                     $('#txtPassFIEL').val('');
                     $('#txtPassFIEL').removeClass('mui--is-dirty mui--is-not-empty valid mui--is-touched');
@@ -1309,8 +1319,17 @@ function loadFile(element){
                         $('#firma_electronica').empty();
                         $('#contMSGFirmaError').empty().append('<div class="alert alert-danger"><strong>Error: </strong>'+sdata.message+'</div>')
                     }else{
+                        var nombreTitular = (sdata.titular[0]);
+                        var curpTitular = (sdata.titular[4]);
+                        var rfcTitular = (sdata.titular[3]);
+                        if($('input:radio[name=st1_tipo_solicitante]:checked').val() == 'promotor'){
+
+                        }else{
+
+                        }
                         $('#contMSGFirmaError').empty();
                         $('#firma_electronica').empty().text(sdata.firma);
+                        $('.contErrorInsideFirma').remove();
                     }
                 },
                 error:function(){

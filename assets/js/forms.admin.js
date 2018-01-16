@@ -451,7 +451,10 @@ $(document).ready(function () {
             startIndex: parseInt(currentStep),
             onStepChanging: function (event, currentIndex, newIndex)
             {
-                if((newIndex+1) == 3){
+                if(newIndex == 4){
+                    fill_pago();
+                }
+                /*if((newIndex+1) == 3){
                     arregloDatosP=[];
 
                     if(arregloPropietario.nombre != ""){
@@ -536,7 +539,7 @@ $(document).ready(function () {
                         return form.valid();
                     }
 
-                }else if((newIndex+1) == 2){
+                }else*/ if((newIndex+1) == 2){
                     getDataPropietario($('#claveCatastral').val()).done(function(data){
                         if (data.status == 200){
                             arregloPropietario=data.data;
@@ -565,6 +568,9 @@ $(document).ready(function () {
             onInit: function(event, currentIndex){
                 ResumeLicenciaGiro();
                 informado = true;
+                if(currentIndex == 4){
+                    fill_pago();
+                }
                 if (currentIndex == 3){
                     resumenLicenciaGiro();
                 }
@@ -726,6 +732,48 @@ $(document).ready(function () {
 
 });
 
+function pago_linea(){
+    $('#enviar_form').trigger('click');
+}
+
+function fill_pago(){
+    $.ajax({
+        url: baseURL + "confirmacion_licencia/pago_linea",
+        type: "post",
+        dataType: 'json',
+        data: {
+            'licencia':$('#tramite').val(),
+        },
+        success: function(data){
+            $('#scian_form').val(data.data.scian);
+            $('#zona_form').val(data.data.zona);
+            $('#sub_zona_form').val(data.data.subzona);
+            $('#actividad_form').val(data.data.actividad);
+            $('#cvecuenta_form').val(data.data.cvecuenta);
+            $('#propietario_form').val(data.data.propietario);
+            $('#primer_ap_form').val(data.data.primer_ap);
+            $('#segundo_ap_form').val(data.data.segundo_ap);
+            $('#rfc_form').val(data.data.rfc);
+            $('#curp_form').val(data.data.curp);
+            $('#telefono_prop_form').val(data.data.telefono_prop);
+            $('#email_form').val(data.data.email);
+            $('#calle_form').val(data.data.calle);
+            $('#num_ext_form').val(data.data.num_ext);
+            $('#let_ext_form').val(data.data.let_ext);
+            $('#num_int_form').val(data.data.num_int);
+            $('#let_int_form').val(data.data.let_int);
+            $('#colonia_form').val(data.data.colonia);
+            $('#cp_form').val(data.data.cp);
+            $('#sup_autorizada_form').val(data.data.sup_autorizada);
+            $('#num_cajones_form').val(data.data.num_cajones);
+            $('#num_empleados_form').val(data.data.num_empleados);
+            $('#inversion_form').val(data.data.inversion);
+            $('#licencia_form').val(data.data.licencia);
+            $('#importe_form').val(data.data.importe);
+            $('#id_usuario_form').val(data.data.id_usuario);
+        }
+    });
+}
 function nextPaso(){
     informado=true;
 }

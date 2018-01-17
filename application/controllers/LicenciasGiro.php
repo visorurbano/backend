@@ -58,6 +58,8 @@ class LicenciasGiro extends CI_Controller {
                 }else{
                     $data['mercado'] = true;
                 }
+                $zonificacion = explode('/', $licencia->predio_zonificacion);
+                $data['zonificacion'] = $zonificacion[2];
                 //Step 1
                 $data['st1_tipo_solicitante'] = $licencia->st1_tipo_solicitante;
                 $data['st1_tipo_representante'] = $licencia->st1_tipo_representante;

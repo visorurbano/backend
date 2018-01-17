@@ -462,111 +462,23 @@ $(document).ready(function () {
                         return false;
                     }else{
                         $('.contErrorInsideFirma').remove();
+                        updateForma(frm, newIndex, $('#tramite').val()).done(function (data) {});
                     }
                 }
                 if(newIndex == 2){
                     getNegocio();
                 }
-                if((newIndex+1) == 3){
-                    /*arregloDatosP=[];
+                if((newIndex+1) == 3) {
 
-                    if(arregloPropietario.nombre != ""){
-                        if(arregloPropietario.nombre != $('#txtNombre').val().toUpperCase()){
-                            arregloDatosP.push('NOMBRE');
-                        }
-                    }
-                    if(arregloPropietario.ape_paterno != ""){
-                        if(arregloPropietario.ape_paterno != $('#txtPApellidoSolicitante').val().toUpperCase()){
-                            arregloDatosP.push('APELLIDO PATERNO');
-                        }
-                    }
-                    if(arregloPropietario.ape_materno != ""){
-                        if(arregloPropietario.ape_materno != $('#txtSApellidoSolicitante').val().toUpperCase()){
-                            arregloDatosP.push('APELLIDO MATERNO');
-                        }
-                    }
-                    if(arregloPropietario.curp != ""){
-                        if(arregloPropietario.curp != $('#txtCURP').val().toUpperCase()){
-                            arregloDatosP.push('CURP');
-                        }
-                    }
-                    if(arregloPropietario.rfc != ""){
-                        if(arregloPropietario.rfc != $('#txtRFC').val().toUpperCase()){
-                            arregloDatosP.push('RFC');
-                        }
-                    }
-                    if(arregloPropietario.calle != ""){
-                        if(arregloPropietario.calle != $('#txtDomicilio').val().toUpperCase()){
-                            arregloDatosP.push('DOMICILIO');
-                        }
-                    }
-                    if(arregloPropietario.n_exterior != ""){
-                        if(arregloPropietario.n_exterior != $('#txtNExterior').val()){
-                            arregloDatosP.push('No. EXTERIOR');
-                        }
-                    }
-                    if(arregloPropietario.n_interior != ""){
-                        if(arregloPropietario.n_interior != $('#txtNInterior').val()){
-                            arregloDatosP.push('No. INTERIOR');
-                        }
-                    }
-                    if(arregloPropietario.colonia != ""){
-                        if(arregloPropietario.colonia != $('#txtColonia').val().toUpperCase()){
-                            arregloDatosP.push('COLONIA');
-                        }
-                    }
-                    if(arregloPropietario.ciudad != ""){
-                        if(arregloPropietario.ciudad != $('#txtCiudad').val().toUpperCase()){
-                            arregloDatosP.push('CIUDAD');
-                        }
-                    }
-                    if(arregloPropietario.cp != ""){
-                        if(arregloPropietario.cp != $('#txtCP').val().toUpperCase()){
-                            arregloDatosP.push('CP');
-                        }
-                    }*/
                     form.validate().settings.ignore = ":disabled,:hidden,.valid";
-                    if (form.valid()){
-                        var frm  = form.find(":input:not(:hidden)").serializeArray();
-                        updateForma(frm, newIndex, $('#tramite').val()).done(function(data){
-                            if(data.validacionMultiLic.status){
-                                //$('#es_numero_interior').show();
-                                //$('#lista_lic').empty();
-                                var error=[];
-                                error[0]="Acuda a dar de baja estas licencias a ventanilla";
-                                for (var i = 0; i < data.validacionMultiLic.licencias.length; i++) {
-                                    /*$('#lista_lic').append('<li>'+
-                                    'Licencia: '+ data.validacionMultiLic.licencias[i].id+
-                                    ' - '+ data.validacionMultiLic.licencias[i].actividad+
-                                    '</li>');*/
-                                    error[i+1]=data.validacionMultiLic.licencias[i].id+" - "+data.validacionMultiLic.licencias[i].actividad;
-                                }
-                                setError();
-                                errorLicenciaGiro(1, error);
-                            }
-                        });
+                    if (form.valid()) {
+                        var frm = form.find(":input:not(:hidden)").serializeArray();
+                        updateForma(frm, newIndex, $('#tramite').val()).done(function (data) {});
                     }
-                    if (newIndex == 3){
+                    if (newIndex == 3) {
                         resumenLicenciaGiro();
                     }
-                    /*if(arregloDatosP.length > 0 && !informado){
-                        setWarning(arregloDatosP);
-                        $('.footer').attr('onclick','nextPaso()');
-                        return "";
-                    }else {
-                        return form.valid();
-                    }*/
-
-                }/*else if((newIndex+1) == 2){
-                    getDataPropietario($('#claveCatastral').val()).done(function(data){
-                        if (data.status == 200){
-                            arregloPropietario=data.data;
-                            arregloPropietario.n_exterior = (arregloPropietario.n_exterior != "" ? parseInt(arregloPropietario.n_exterior): "");
-                            arregloPropietario.n_interior = (arregloPropietario.n_interior != "" ? parseInt(arregloPropietario.n_interior): "");
-                        }
-                    });
-                    informado = false;
-                }*/
+                }
                 if(currentIndex != 3){
                     form.validate().settings.ignore = ":disabled,:hidden,.valid";
                     if (form.valid()){
@@ -597,23 +509,7 @@ $(document).ready(function () {
                 }
                 if(currentIndex == 2){
                     getNegocio();
-                    consulLicP($('#tramite').val()).done(function(data){
-                        if(data.validacionMultiLic.status){
-                            //$('#es_numero_interior').show();
-                            //$('#lista_lic').empty();
-                            var error=[];
-                            error[0]="Acuda a dar de baja estas licencias a ventanilla";
-                            for (var i = 0; i < data.validacionMultiLic.licencias.length; i++) {
-                                //$('#lista_lic').append('<li>'+
-                                //'Licencia: '+ data.validacionMultiLic.licencias[i].id+
-                                //' - '+ data.validacionMultiLic.licencias[i].actividad+
-                                //'</li>');
-                                error[i+1]=data.validacionMultiLic.licencias[i].id+" - "+data.validacionMultiLic.licencias[i].actividad;
-                            }
-                            setError();
-                            errorLicenciaGiro(1, error);
-                        }
-                    });
+                    consulLicP($('#tramite').val()).done(function(data){});
                 }
                 getDataPropietario($('#claveCatastral').val()).done(function(data){
                     if (data.status == 200){
@@ -769,6 +665,22 @@ $(document).ready(function () {
         }
     });
 
+    // ------------------------------------------------------- //
+    // Validar area a utilizar
+    // ------------------------------------------------------ //
+    $('#txtAreaUtilizar').on('blur', function(){
+        if ($(this).val() != ''){
+            if($('#zncion').val() == 'H1' || $('#zncion').val() == 'H2' || $('#zncion').val() == 'H3' || $('#zncion').val() == 'H4' || $('#zncion').val() == 'H5'){
+                if ($(this).val() > 30){
+                    $(this).val('')
+                }
+            }else{
+                if ($(this).val() > 300){
+                    $(this).val('')
+                }
+            }
+        }
+    });
 
 });
 
@@ -828,23 +740,6 @@ function getNegocio(){
         }
     });
 }
-
-/*function nextPaso(){
-    informado=true;
-}*/
-
-/*function campos_extra(val){
-    if (val == "S") {
-        $('#adjunto_lineamiento').show();
-        unsetError();
-    }else{
-        $('#adjunto_lineamiento').hide();
-        var error=[];
-        error[0]="Acuda a dar de baja estas licencias a ventanilla";
-        setError();
-        errorLicenciaGiro(1, error);
-    }
-}*/
 
 function setPass(npass, pass, email) {
     var params = {};
@@ -1164,14 +1059,35 @@ function resumenLicenciaGiro(){
             resumen_isd.append('<table class="mui-table mui-table--bordered"><thead><th>Clave Catastral</th></tr></thead><tbody><tr><td>'+data.data.clave_catastral+'</td></tr></tbody></table>')
             resumen_isd.append('<table class="mui-table mui-table--bordered"><thead><th>Giro solicitado:</th></tr></thead><tbody><tr><td>'+data.data.descripcion_factibilidad+'</td></tr></tbody></table><br><br>')
             /* Identificacion del solicitante */
-            resumen_isd.append('<table class="mui-table mui-table--bordered" id="tbl_identificacion_solicitante"><thead><th colspan="3">Identificación del solicitante:</th></tr></thead><tbody><tr><td colspan="3"> <b>Tipo solicitante:</b> '+ data.data.st1_tipo_solicitante + '</td></tr>' +
-                '<tr><td><b>C.U.R.P.:</b> '+data.data.st2_curp_solicitante+'</td><td><b>R.F.C.:</b> '+data.data.st2_rfc_solicitante+'</td></tr>' +
-                '<tr><td colspan="3"><b>Correo Electrónico:</b> ' +data.data.st2_email_solicitante+'</td></tr>'+
-                '<tr><td><b>Domicilio:</b> '+data.data.st2_domicilio_solicitante+'</td><td ><b>Num Ext:</b> '+data.data.st2_num_ext_solicitante+'</td><td><b>Num Int:</b> '+data.data.st2_num_int_solicitante+'</td></tr>' +
-                '<tr><td colspan="2"><b>Colonia:</b> '+data.data.st2_colonia_solicitante+'</td><td colspan="1"><b>C.P.:</b> '+data.data.st2_cp_solicitante+'</td></tr>' +
-                '<tr><td colspan="2"><b>Ciudad:</b> '+data.data.st2_ciudad_solicitante+'</td><td colspan="1"><b>Teléfono:</b> '+data.data.st2_telefono_solicitante+'</td></tr>' +
-                '</tbody></table><br><br>');
+            resumen_isd.append('<table class="mui-table mui-table--bordered" id="tbl_identificacion_solicitante"><thead><th colspan="3">Identificación del solicitante:</th></tr></thead><tbody><tr><td colspan="3"> <b>Tipo solicitante:</b> '+ data.data.st1_tipo_solicitante + '</td></tr></tbody></table><br><br>');
+            if (data.data.st1_tipo_solicitante == 'Promotor'){
+                if ( data.data.st1_tipo_representante == 'Propietario'){
+                    st1_tipo_representante = 'Representante de persona física/moral que es dueña del predio.';
+                }else{
+                    st1_tipo_representante = 'Representante de persona física/moral que está rentando el predio.';
+                }
+                $('#tbl_identificacion_solicitante').append('<tr><td colspan="3"><b>Tipo de Representante:</b> Carta Poder ' + st1_tipo_representante + '</td></tr>');
+                $('#tbl_identificacion_solicitante').append('<tr><td colspan="3"><b>Tipo de Poder:</b> Carta poder ' + data.data.st1_tipo_carta_poder + '</td></tr>');
+                $('#tbl_identificacion_solicitante').append('<tr><td colspan="3"><a href="'+data.data.st1_carta_poder+'" target="_blank"><i class="fa fa-file-text-o" aria-hidden="true"></i> Carta Poder</a></td></tr>');
 
+                if(data.data.st1_tipo_carta_poder == 'Simple'){
+                    $('#tbl_identificacion_solicitante').append('<tr><td colspan="3"><a href="'+data.data.st1_identificacion_otorgante+'" target="_blank"><i class="fa fa-id-card-o" aria-hidden="true"></i> Identificación del otorgante</a></td></tr>');
+                    $('#tbl_identificacion_solicitante').append('<tr><td colspan="3"><a href="'+data.data.st1_identificacion_testigo1+'" target="_blank"><i class="fa fa-id-card-o" aria-hidden="true"></i> Identificación del Testigo 1</a></td></tr>');
+                    $('#tbl_identificacion_solicitante').append('<tr><td colspan="3"><a href="'+data.data.st1_identificacion_testigo2+'" target="_blank"><i class="fa fa-id-card-o" aria-hidden="true"></i> Identificación del Testigo 2</a></td></tr>');
+                }
+            }
+
+            if (data.data.st1_tipo_solicitante == 'Arrendatario' || data.data.st1_tipo_representante == 'Arrendatario'){
+                $('#tbl_identificacion_solicitante').append('<tr><td colspan="3"><a href="'+data.data.st1_contrato_arrendamiento+'" target="_blank"><i class="fa fa-file-text-o" aria-hidden="true"></i> Contrato de arrendamiento</a></td></tr>');
+                var facutlta = ( data.data.st1_faculta == 'N' ) ? 'No' : 'Si';
+                $('#tbl_identificacion_solicitante').append('<tr><td colspan="3"><b>El contrato de arrendamiento te faculta para abrir un negocio:</b> ' + facutlta + '</td></tr>');
+                var anuencia = ( data.data.st1_anuencia == 'N' ) ? 'No' : 'Si';
+                $('#tbl_identificacion_solicitante').append('<tr><td colspan="3"><b>Cuentas con la anuencia del arrendador para abrir un negocio:</b> ' + anuencia + '</td></tr>');
+                if (data.data.st1_anuencia == 'S'){
+                    $('#tbl_identificacion_solicitante').append('<tr><td colspan="3"><a href="'+data.data.st1_carta_anuencia+'" target="_blank"><i class="fa fa-file-text-o" aria-hidden="true"></i> Carta de anuencia</a></td></tr>');
+                }
+
+            }
 
             /* Datos Representante */
             if (data.data.st1_tipo_solicitante == 'Promotor'){
@@ -1311,20 +1227,6 @@ function loadFile(element){
                 contentType:false,
                 data:data,
                 processData:false,
-                /*beforeSend:function(){
-                    $('#'+el.data('elastic')).css('margin','15px 0px');
-                    var circle = new ProgressBar.Line('#'+el.data('elastic'), {
-                        color: '#8CBC5F',
-                        easing: 'easeInOut'
-                    });
-
-                    circle.animate(1.0, {
-                        duration: 900
-                    }, function() {
-                        circle.destroy();
-                        $('#'+el.data('elastic')).css('margin','0px');
-                    });
-                },*/
                 success:function(data){
                     $('#txtPassFIEL').val('');
                     $('#txtPassFIEL').removeClass('mui--is-dirty mui--is-not-empty valid mui--is-touched');

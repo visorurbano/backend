@@ -16,6 +16,7 @@
                         <input type="hidden" id="claveCatastral" value="<?=$cuenta?>">
                         <input type="hidden" id="step" value="<?=$licencia->step?>">
                         <input type="hidden" id="tramite" value="<?=$licencia->id_licencia?>">
+                        <input type="hidden" id="zncion" value="<?=$zonificacion?>">
                    <div>
                        <h3>Idenficación del Solicitante</h3>
                        <?php if ($this->session->userdata('level') > 1): ?>
@@ -384,7 +385,9 @@
                                    <h3>Actividad Especifica: <span id="descActividad"><?=$descripcion_factibilidad?></span></h3>
                                </div>
                            </div>
-                           <br>
+                           <?php if ($zonificacion == 'H1' || $zonificacion == 'H2' || $zonificacion == 'H3' || $zonificacion == 'H4' || $zonificacion == 'H5'): ?>
+                           <h5 style="color: #F44336;"><b>Nota:</b> Hemos detectado que el predio se encuentra en una zona habitacional, de acuerdo con el Artículo 32 del Reglamento para la Gestión Integral del Municipio de Guadalajara. Por ello,  sólo se te permitirá utilizar 30m<sup>2</sup> de la totalidad del predio para el giro solicitado.</h5>
+                           <?php endif; ?>
                            <div class="mui-textfield mui-textfield--float-label nerror">
                                <input id="txtNombreNegocio" type="text" name="st3_nombre_establecimiento"  class="input-material" value="<?=$st3_nombre_establecimiento;?>">
                                <label for="txtNombreNegocio">Nombre comercial del negocio</label>
@@ -566,7 +569,7 @@
                            <div class="row">
                                <div class="col-md-12">
                                    <button type="button" class="mui-btn mui-btn--primary" data-toggle="modal" data-target="#firmaModal"><i class="fa fa-lock" aria-hidden="true"></i> Firmar Solicitud</button>
-                                   <a href="javascript:continuarVentanilla()" class="mui-btn mui-btn--danger"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> No tengo firma electrónica</a>
+                                   <a href="javascript:continuarVentanilla()" class="mui-btn mui-btn--raised"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> No tengo firma electrónica</a>
                                </div>
                            </div>
                            <br>

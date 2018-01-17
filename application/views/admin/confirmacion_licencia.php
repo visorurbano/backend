@@ -8,8 +8,11 @@
     <!-- Projects Section-->
     <section class="projects">
         <div class="container-fluid">
-            <div id="mensaje">
-                
+            <div id="boton">
+
+            </div>
+            <div style="display:none;">
+                <input id="datos" type="text" name="" value="<?=$licencia?>" readonly>
             </div>
         </div>
     </section>

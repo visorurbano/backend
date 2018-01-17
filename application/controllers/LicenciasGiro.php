@@ -13,8 +13,9 @@ class LicenciasGiro extends CI_Controller {
 
         if (!$this->session->userdata('loged')){
             $cuenta = $this->uri->segment(2, 0);
+            $red = $this->utils->encode((isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]");
             $this->session->sess_destroy();
-            redirect(base_url().'ingresar?redirect='.$cuenta, 'refresh');
+            redirect(base_url().'ingresar?redirect='.$red, 'refresh');
         }
     }
     public function index()
@@ -219,6 +220,8 @@ class LicenciasGiro extends CI_Controller {
                 $data['st3_es_numero_interior'] = $licencia->st3_es_numero_interior;
                 $data['st4_declaratoria'] = $licencia->st4_declaratoria;
                 $data['status'] = $predio->status;
+
+                $data['st3_asignacion_numero'] = $licencia->st3_asignacion_numero;
             }
 
         }else{
@@ -420,6 +423,12 @@ class LicenciasGiro extends CI_Controller {
             $data_soap=$this->utils->conec_soap('consLicXCvecuenta',$params);
             $consulta = $this->LicenciasGiroModel->PropietarioLic($data_soap,$idLic);
             return $consulta;
+        }
+
+        public function getNegocio(){
+            extract($_GET);
+            $licencia = $this->LicenciasGiroModel->getNegocio($licencia);
+            echo json_encode(array("status"=>'true', "data" => $licencia));
         }
 
     }

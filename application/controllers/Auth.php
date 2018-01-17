@@ -18,7 +18,7 @@ class Auth extends CI_Controller {
         }
         $params = $_REQUEST;
         if (isset($params['redirect'])){
-            $data['redirect'] = $params['redirect'];
+            $data['redirect'] = $this->utils->decode($params['redirect']);//$params['redirect'];
         }else{
             $data['redirect'] = "";
         }
@@ -84,7 +84,7 @@ class Auth extends CI_Controller {
             }else{
                 $this->session->sess_destroy();
                 $this->output->set_content_type('application/json');
-                $this->output->set_output(json_encode(array('status'=>250, 'message'=>'succesfully')));
+                $this->output->set_output(json_encode(array('status'=>200, 'message'=>'succesfully')));
             }
         }catch (Exception $e){
             $this->output->set_content_type('application/json');

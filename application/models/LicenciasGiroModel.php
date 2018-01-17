@@ -99,8 +99,10 @@ class LicenciasGiroModel extends CI_Model {
         $this->db->query('update tbl_rel_licencia_usuario set firma_e= "'.$firma.'" where id_licencia='.$idTramite);
         $this->db->trans_start();
         foreach ($params as $clave=>$valor){
-            if(strpos($clave,'rfc') == '' && strpos($clave,'curp') == '' && $clave != 'status'){
+            if(strpos($clave,'rfc') == '' && strpos($clave,'curp') == '' && $clave != 'status' && strpos($clave,'email') == ''){
                 $params[$clave] = ucfirst(strtolower($valor));
+            }else if(strpos($clave,'email') != ""){
+                $params[$clave] = $valor;
             }else{
                 $params[$clave] = strtoupper($valor);
             }
@@ -208,9 +210,20 @@ class LicenciasGiroModel extends CI_Model {
                     $diferencia=0;
                     for ($i=0; $i < count($data); $i++) {
                         $nombre_a = $data[$i]->propietario;
+                        $calle_a = $data[$i]->calle;
+                        $num_ext_a = $data[$i]->num_ext;
+                        $letra_ext_a = $data[$i]->let_ext;
+                        $num_int_a = $data[$i]->num_int;
+                        $letra_int_a = $data[$i]->let_int;
+
                         $nombre_b = $resultado->st2_primer_apellido_solicitante.' '.$resultado->st2_segundo_apellido_solicitante.' '.$resultado->st2_nombre_solicitante;
-                        if($nombre_a != strtoupper($nombre_b)){
-                            array_push($myArray,(object) array('id' => $data[$i]->licencia, 'actividad' => $data[$i]->actividad));
+                        $calle_b = (empty($resultado->st3_domicilio_establecimiento)? strtoupper($resultado->predio_calle) : strtoupper($resultado->st3_domicilio_establecimiento));
+                        $num_ext_b = (empty($resultado->st3_num_ext_establecimiento)? strtoupper($resultado->predio_numero_ext):strtoupper($resultado->st3_num_ext_establecimiento));
+                        $letra_ext_b = (empty($resultado->st3_letra_ext_establecimiento)? "":strtoupper($resultado->st3_letra_ext_establecimiento));
+                        $num_int_b = (empty($resultado->st3_num_int_establecimiento)? strtoupper($resultado->predio_numero_int):strtoupper($resultado->st3_num_int_establecimiento));
+                        $letra_int_b = (empty($resultado->st3_letra_int_establecimiento)? "":strtoupper($resultado->st3_letra_int_establecimiento));
+                        if($nombre_a != strtoupper($nombre_b) && $calle_a == $calle_b && $num_ext_a == $num_ext_b && $letra_ext_a == $letra_ext_b && $num_int_a == $num_int_b && $letra_int_a == $letra_int_b){
+                            array_push($myArray,(object) array('id' => $data[$i]->licencia, 'actividad' => $data[$i]->actividad, "data"=>$data[$i]));
                             $conteo++;
                         }
                     }
@@ -223,4 +236,9 @@ class LicenciasGiroModel extends CI_Model {
                 $resultado="";
             }
         }
+
+    public function getNegocio($idLicencia){
+        $licencia = $this->db->select('predio_numero_ext')->from('tbl_licencias_giro')->where('id_licencia', $idLicencia)->get()->row();
+        return $licencia;
+    }
 }

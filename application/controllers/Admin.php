@@ -12,8 +12,9 @@ class Admin extends CI_Controller {
         $this->load->section('sidebar', 'admin/sections/sidebar');
 
         if (!$this->session->userdata('loged')){
+            $red = $this->utils->encode((isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]");
             $this->session->sess_destroy();
-            redirect(base_url().'ingresar', 'refresh');
+            redirect(base_url().'ingresar?redirect='.$red, 'refresh');
         }
     }
     public function index()
@@ -82,6 +83,8 @@ class Admin extends CI_Controller {
 
     public function confirmacion_licencia(){
         $this->load->js(base_url().'assets/js/confirmacion_licencia.min.js');
+        extract($_POST);
+        print_r($licencia);
         $this->load->view('admin/confirmacion_licencia');
     }
 

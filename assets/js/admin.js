@@ -99,13 +99,12 @@ $(document).ready(function () {
 function logout(){
    acLogout().done(function(data){
         if (data.status == 200){
-            window.location.href = "http://visorurbano.guadalajara.gob.mx/ingresar";
+            window.location.href = baseURL+"ingresar";
         }
    });
 }
 
 function acLogout(){
-    console.log(baseURL);
     return $.ajax({
         url: baseURL + "auth/logout",
         type: "post",

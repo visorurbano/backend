@@ -128,14 +128,23 @@ class LicenciasGiroModel extends CI_Model {
         return $resultado;
     }
 
-    public function licencia_nueva($id_licencia,$folio){
-        $queryC=$this->db->query('select * from tbl_licencias_giro where status="N" and id_licencia='.$id_licencia.' and folio_licencia='.$folio);
+    public function licencia_nueva($folio){
+        $queryC=$this->db->query('select * from tbl_licencias_giro where folio_licencia='.$folio);
 
         if($queryC->num_rows() > 0){
-            $query=$this->db->query('Update tbl_licencias_giro set status="FL" where id_licencia='.$id_licencia.' and folio_licencia='.$folio);
-            $resultado=array("status"=>true, "data"=> $queryC->result());
+            if($queryC->result()[0]->status == 'N' || $queryC->result()[0]->status == 'FP'){
+                $query=$this->db->query('Update tbl_licencias_giro set status="FL", metodo_pago="Tarjeta bancaria" where folio_licencia='.$folio);
+                $res['folio']=$this->utils->encode($folio);
+                $res['usu']=$this->utils->encode($queryC->result()[0]->id_usuario);
+                $res['lic']=$this->utils->encode($queryC->result()[0]->id_licencia);
+                $resultado=array("status"=>true, "data"=> $res);
+            }else if($queryC->result()[0]->status == 'FL'){
+                $resultado=array("status"=>false, 'tipo'=>'FL');
+            }else{
+                $resultado=array("status"=>false, 'tipo'=>'P');
+            }
         }else{
-            $resultado=array("status"=>false);
+            $resultado=array("status"=>false, 'tipo'=>'P');
         }
         return $resultado;
     }

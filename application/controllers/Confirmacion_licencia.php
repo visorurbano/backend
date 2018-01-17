@@ -14,9 +14,8 @@ class Confirmacion_licencia extends CI_Controller {
     }
 
     public function confirmacion_lic(){
-        $id_s = 420202;//$this->utils->decode($this->input->get('id_s'));
         $id_l = $this->utils->decode($this->input->get('id_l'));
-        $consulta = $this->LicenciasGiroModel->licencia_nueva($id_l,$id_s);
+        $consulta = $this->LicenciasGiroModel->licencia_nueva($id_l);
         echo json_encode($consulta);
     }
 
@@ -25,39 +24,39 @@ class Confirmacion_licencia extends CI_Controller {
         $licencia = $this->LicenciasGiroModel->getLicencia("", $licencia);
         if($licencia->folio_licencia == 0){
             $params = array(
-                'tipo_tramite'=>'13',
-                'scian'=>$actividad,
+                "tipo_tramite" => '13',
+                "scian" => $licencia->descripcion_factibilidad,
                 'x'=>'0',
                 'y'=>'0',
-                'zona'=>'0',
-                'subzona'=>'0',
-                'actividad'=> $actividad,
+                'zona' => $licencia->predio_distrito,
+                'subzona' => $licencia->predio_sub_distrito,
+                'actividad'=> $licencia->descripcion_factibilidad,
                 'cvecuenta'=>$licencia->cuenta_predial,
-                'propietario'=> $nombre,
-                'primer_ap'=> $apellido_primer,
-                'segundo_ap'=> $apellido_segundo,
-                'rfc'=>$rfc,
-                'curp'=>$curp,
+                'propietario'=> $licencia->st2_nombre_solicitante,
+                'primer_ap'=> $licencia->st2_primer_apellido_solicitante,
+                'segundo_ap'=> $licencia->st2_segundo_apellido_solicitante,
+                'rfc'=> $licencia->st2_rfc_solicitante,
+                'curp'=>$licencia->st2_curp_solicitante,
                 'telefono_prop'=>$licencia->st2_telefono_solicitante,
                 'email'=>$licencia->st2_email_solicitante,
                 'cvecalle'=>'0',
-                'calle'=>$calle,
-                'num_ext'=>$no_ext,
+                'calle'=>$licencia->st3_domicilio_establecimiento,
+                'num_ext'=>$licencia->st3_num_ext_establecimiento,
                 'let_ext'=>$licencia->st3_letra_ext_establecimiento,
-                'num_int'=>$no_int,
+                'num_int'=>$licencia->st3_num_int_establecimiento,
                 'let_int'=>$licencia->st3_letra_int_establecimiento,
-                'colonia'=>$col,
+                'colonia'=>$licencia->st3_colonia_establecimiento,
                 'cp'=>$licencia->st3_cp_establecimiento,
                 'espubic'=>'',
-                'sup_autorizada'=>$superficie,
-                'num_cajones'=>$cajones_estacionamiento,
+                'sup_autorizada'=>$licencia->st3_area_utilizar_establecimiento,
+                'num_cajones'=>$licencia->st3_cajones_estacionamiento_establecimiento,
                 'num_empleados'=>$licencia->st3_empleados_establecimiento,
-                'aforo'=>$aforo_personas,
+                'aforo'=>'0',
                 'inversion'=> $licencia->st3_inversion_establecimiento,
                 );
             $data_soap=$this->utils->conec_soap('licTramite',$params);
             $folio_licencia=$data_soap->licencia;
-            $this->LicenciasGiroModel->postPdf($idUsuario, $idTramite, $data_soap->licencia);
+            $this->LicenciasGiroModel->postPdf($licencia->id_usuario, $licencia->id_licencia, $data_soap->licencia);
         }else{
             $folio_licencia=$licencia->folio_licencia;
         }
@@ -96,8 +95,8 @@ class Confirmacion_licencia extends CI_Controller {
             'num_empleados'=>$licencia->st3_empleados_establecimiento,
             'aforo'=>'0',
             'inversion'=> $licencia->st3_inversion_establecimiento,
-            'licencia' => $this->utils->encode($folio_licencia), 
-            'importe' => $total,
+            'licencia' => $this->utils->encode($folio_licencia),
+            'importe' => '1.00',//$total,
             'origen' => 102,
             'tipo' => 'A',
             'entre' => "",

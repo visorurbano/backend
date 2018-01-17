@@ -84,8 +84,11 @@ class Admin extends CI_Controller {
     public function confirmacion_licencia(){
         $this->load->js(base_url().'assets/js/confirmacion_licencia.min.js');
         extract($_POST);
-        print_r($licencia);
-        $this->load->view('admin/confirmacion_licencia');
+        if(empty($licencia)){
+            $licencia="";
+        }
+        $datos['licencia'] = $licencia;
+        $this->load->view('admin/confirmacion_licencia',$datos);
     }
 
 

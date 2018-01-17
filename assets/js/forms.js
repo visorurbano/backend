@@ -40,7 +40,7 @@ $(document).ready(function () {
                             setLogin(data.data).done(function(data){
                                 if (data.status == 200){
                                     if ($('#txtRedirect').val() != ''){
-                                        window.location.href = baseURL + "nueva-licencia/" + $('#txtRedirect').val();
+                                        window.location.href = $('#txtRedirect').val();//baseURL + "nueva-licencia/" + $('#txtRedirect').val();
                                     }else{
                                         window.location.href = baseURL + "admin";
                                     }
@@ -65,7 +65,7 @@ $(document).ready(function () {
                     setLogin(data.data).done(function(data){
                         if (data.status == 200){
                             if ($('#txtRedirect').val() != ''){
-                                window.location.href = baseURL + "nueva-licencia/" + $('#txtRedirect').val();
+                                window.location.href = $('#txtRedirect').val();//baseURL + "nueva-licencia/" + $('#txtRedirect').val();
                             }else{
                                 window.location.href = baseURL + "admin";
                             }
@@ -225,4 +225,3 @@ $(document).ready(function () {
         });
     }
 });
-

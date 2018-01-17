@@ -325,7 +325,7 @@ $(document).ready(function () {
                 st3_es_numero_interior:{
                     required: true
                 },
-                st3_dictamen_lineamiento:{
+                $st3_asignacion_numero:{
                     required: true
                 }
             },
@@ -435,8 +435,8 @@ $(document).ready(function () {
                 st3_es_numero_interior:{
                     required: 'Confirma si la licencia será para número interior'
                 },
-                st3_dictamen_lineamiento:{
-                    required: 'Adjunta el Dictamen de lineamiento y número ofical para continuar'
+                $st3_asignacion_numero:{
+                    required: 'Adjunta la asignación de número ofical para continuar'
                 },
                 st4_declaratoria:{
                     required: 'La confirmación de que la información es correcta es requerida para continuar'
@@ -464,8 +464,11 @@ $(document).ready(function () {
                         $('.contErrorInsideFirma').remove();
                     }
                 }
-                /*if((newIndex+1) == 3){
-                    arregloDatosP=[];
+                if(newIndex == 2){
+                    getNegocio();
+                }
+                if((newIndex+1) == 3){
+                    /*arregloDatosP=[];
 
                     if(arregloPropietario.nombre != ""){
                         if(arregloPropietario.nombre != $('#txtNombre').val().toUpperCase()){
@@ -521,35 +524,40 @@ $(document).ready(function () {
                         if(arregloPropietario.cp != $('#txtCP').val().toUpperCase()){
                             arregloDatosP.push('CP');
                         }
-                    }
+                    }*/
                     form.validate().settings.ignore = ":disabled,:hidden,.valid";
                     if (form.valid()){
                         var frm  = form.find(":input:not(:hidden)").serializeArray();
                         updateForma(frm, newIndex, $('#tramite').val()).done(function(data){
                             if(data.validacionMultiLic.status){
-                                $('#es_numero_interior').show();
-                                $('#lista_lic').empty();
+                                //$('#es_numero_interior').show();
+                                //$('#lista_lic').empty();
+                                var error=[];
+                                error[0]="Acuda a dar de baja estas licencias a ventanilla";
                                 for (var i = 0; i < data.validacionMultiLic.licencias.length; i++) {
-                                    $('#lista_lic').append('<li>'+
+                                    /*$('#lista_lic').append('<li>'+
                                     'Licencia: '+ data.validacionMultiLic.licencias[i].id+
                                     ' - '+ data.validacionMultiLic.licencias[i].actividad+
-                                    '</li>');
+                                    '</li>');*/
+                                    error[i+1]=data.validacionMultiLic.licencias[i].id+" - "+data.validacionMultiLic.licencias[i].actividad;
                                 }
+                                setError();
+                                errorLicenciaGiro(1, error);
                             }
                         });
                     }
                     if (newIndex == 3){
                         resumenLicenciaGiro();
                     }
-                    if(arregloDatosP.length > 0 && !informado){
+                    /*if(arregloDatosP.length > 0 && !informado){
                         setWarning(arregloDatosP);
                         $('.footer').attr('onclick','nextPaso()');
                         return "";
                     }else {
                         return form.valid();
-                    }
+                    }*/
 
-                }else*/ if((newIndex+1) == 2){
+                }/*else if((newIndex+1) == 2){
                     getDataPropietario($('#claveCatastral').val()).done(function(data){
                         if (data.status == 200){
                             arregloPropietario=data.data;
@@ -558,7 +566,7 @@ $(document).ready(function () {
                         }
                     });
                     informado = false;
-                }
+                }*/
                 if(currentIndex != 3){
                     form.validate().settings.ignore = ":disabled,:hidden,.valid";
                     if (form.valid()){
@@ -588,16 +596,22 @@ $(document).ready(function () {
                     informado = false;
                 }
                 if(currentIndex == 2){
+                    getNegocio();
                     consulLicP($('#tramite').val()).done(function(data){
                         if(data.validacionMultiLic.status){
-                            $('#es_numero_interior').show();
-                            $('#lista_lic').empty();
+                            //$('#es_numero_interior').show();
+                            //$('#lista_lic').empty();
+                            var error=[];
+                            error[0]="Acuda a dar de baja estas licencias a ventanilla";
                             for (var i = 0; i < data.validacionMultiLic.licencias.length; i++) {
-                                $('#lista_lic').append('<li>'+
-                                'Licencia: '+ data.validacionMultiLic.licencias[i].id+
-                                ' - '+ data.validacionMultiLic.licencias[i].actividad+
-                                '</li>');
+                                //$('#lista_lic').append('<li>'+
+                                //'Licencia: '+ data.validacionMultiLic.licencias[i].id+
+                                //' - '+ data.validacionMultiLic.licencias[i].actividad+
+                                //'</li>');
+                                error[i+1]=data.validacionMultiLic.licencias[i].id+" - "+data.validacionMultiLic.licencias[i].actividad;
                             }
+                            setError();
+                            errorLicenciaGiro(1, error);
                         }
                     });
                 }
@@ -630,6 +644,7 @@ $(document).ready(function () {
 
         });
     }
+
 
     //tipo Solicitante
     $('input:radio[name=st1_tipo_solicitante]').each(function(index, el) {
@@ -738,6 +753,21 @@ $(document).ready(function () {
     // Estilos botones steps
     // ------------------------------------------------------ //
 
+    $("#txtNExterior_establecimiento").blur(function(){
+            if($(this).val() != NumExtPredio || $("#txtLExterior").val() != ""){
+                $('#asignacion_numero').show();
+            }else{
+                $('#asignacion_numero').hide();
+            }
+        });
+
+    $("#txtLExterior").blur(function(){
+        if($(this).val() != "" || $("#txtNExterior_establecimiento").val() != NumExtPredio){
+            $('#asignacion_numero').show();
+        }else{
+            $('#asignacion_numero').hide();
+        }
+    });
 
 
 });
@@ -784,11 +814,26 @@ function fill_pago(){
         }
     });
 }
+
+function getNegocio(){
+    $.ajax({
+        url: baseURL + "LicenciasGiro/getNegocio",
+        type: "GET",
+        dataType: 'json',
+        data: {
+            'licencia':$('#tramite').val(),
+        },
+        success: function(data){
+            NumExtPredio=data.data.predio_numero_ext;
+        }
+    });
+}
+
 /*function nextPaso(){
     informado=true;
 }*/
 
-function campos_extra(val){
+/*function campos_extra(val){
     if (val == "S") {
         $('#adjunto_lineamiento').show();
         unsetError();
@@ -799,7 +844,7 @@ function campos_extra(val){
         setError();
         errorLicenciaGiro(1, error);
     }
-}
+}*/
 
 function setPass(npass, pass, email) {
     var params = {};

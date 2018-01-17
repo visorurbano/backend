@@ -627,7 +627,7 @@
         </div>
     </section>
 </div>
-<form style="display:none" name='form-pago' id='form-pago' action='http://localhost/backend/admin/confirmacion_licencia' method='POST'>
+<form style="display:none" name='form-pago' id='form-pago' action='https://pagoenlinea.guadalajara.gob.mx/licenciasdegiro/verifDatos.php' method='POST'>
     <input type='text' id='tipo_tramite_form' name='tipo_tramite' value='13' readonly>
     <input type='text' id='scian_form' name='scian' readonly>
     <input type='text' id='x_form' name='x' value='0' readonly>

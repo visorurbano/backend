@@ -623,19 +623,13 @@ class Formatos extends CI_Controller {
                                        <div style="width: 80%; float: left;">
                                            ('.$this->FormatosModel->denominacion_moneda($this->FormatosModel->to_word($total,null)).' 00/100 M.N.)
                                        </div>
-                                       <!--div  style="width: 5%; float: left;">
-                                           &nbsp;
-                                       </div>
-                                       <div style="width: 30%; float: left;">
-                                           <b>PAGO EN: '.$pago.'</b>
-                                       </div-->
                                        <div style="width: 20%; float: right; text-align: right;">
                                            <b>$'.$total.'</b>
                                        </div>
                                    </div>
                                    <div class="tamano_12" style="marin-top:5px;">
                                        <div style="width: 30%; float: left;">
-                                           <b>PAGO EN: '.$pago.'</b>
+                                           <b>Forma de pago: '.$pago.'</b>
                                        </div>
                                    </div>
                                    <div>

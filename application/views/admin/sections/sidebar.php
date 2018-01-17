@@ -36,7 +36,9 @@
                 <li><a href="#tramites" aria-expanded="false" data-toggle="collapse"> <i class="fa fa-file" aria-hidden="true"></i> Nuevo Trámite </a>
                     <ul id="tramites" class="collapse list-unstyled">
                         <li><a href="<?=base_url()?>nueva-licencia"><i class="fa fa-file-text-o" aria-hidden="true"></i> Licencia de giro tipo A</a></li>
+                        <?php if($this->session->userdata('level') == 1): ?>
                         <li><a href="https://servicios.guadalajara.gob.mx/registro_ciudadano/users/sign_in"><i class="fa fa-file-text-o" aria-hidden="true"></i> Licencia de construcción</a></li>
+                        <?php endif; ?>
                     </ul>
                 </li>
             <?php endif; ?>

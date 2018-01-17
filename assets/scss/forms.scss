@@ -29,13 +29,19 @@ input.input-material:focus {
 }
 
 input.input-material ~ label.error, .checkbox-template ~ label.error{
-  color: #d9534f;
+  color: #F35B53;
   font-size: 0.75em;
   position: absolute;
   top: auto;
   bottom: -25px;
   left: 0;
 }
+
+.st4_aviso_privacidad label.error{
+  bottom: -18px !important;
+  left: 0px !important;
+}
+
 
 .mui-textfield{
   margin-bottom: 30px;
@@ -48,7 +54,7 @@ input.input-material ~ label.active {
 }
 
 input.error ~ label{
-  color: #d9534f !important;
+  color: #F35B53 !important;
 }
 
 .txtUP{

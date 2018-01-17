@@ -14,14 +14,12 @@
 }
 
 input.input-material ~ label.error, .checkbox-template ~ label.error {
-  color: #d9534f;
+  color: #F35B53;
   font-size: 0.75em;
   position: absolute;
   top: auto;
   bottom: -30px;
   left: 0; }
-
-
 
 input.input-material ~ label.active {
   font-size: 0.8em;

@@ -387,7 +387,7 @@
                            <br>
                            <div class="mui-textfield mui-textfield--float-label nerror">
                                <input id="txtNombreNegocio" type="text" name="st3_nombre_establecimiento"  class="input-material" value="<?=$st3_nombre_establecimiento;?>">
-                               <label for="txtNombreNegocio">Nombre del negocio</label>
+                               <label for="txtNombreNegocio">Nombre comercial del negocio</label>
                            </div>
                            <div class="row">
                                <div class="col-md-8">

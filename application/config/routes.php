@@ -81,6 +81,7 @@ $route['validacuentapredial'] = 'UtilsController/validateCuentaPredial';
 $route['validaclavecatastral'] = 'UtilsController/validateClaveCatastral';
 $route['datosPropietario'] = 'UtilsController/datosPropietario';
 $route['admin/setMensaje'] = 'UtilsController/setMensaje';
+$route['getTramite'] = 'UtilsController/getTramite';
 
 //Formas
 $route['orden-pago/licencia-giro/(:any)/(:any)'] = 'Formatos/formaPagoLicencias';

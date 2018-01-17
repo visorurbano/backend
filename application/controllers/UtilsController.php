@@ -9,6 +9,23 @@ class UtilsController extends CI_Controller {
         $this->load->model('LicenciasGiroModel');
     }
 
+    public function getTramite(){
+        try{
+            if ($_SERVER['REQUEST_METHOD'] != 'GET') {
+                throw new Exception('Bad request', 400);
+            }
+            $params = $_REQUEST;
+            $result = $this->LicenciasGiroModel->getLicencia($this->session->userdata('idU'), $params['idTramite']);
+            $this->output->set_content_type('application/json');
+            $this->output->set_output(json_encode(array('status' => 200, 'message' =>'Sucesfully', 'data'=>$result)));
+
+        }
+        catch (Exception $e) {
+            $this->output->set_content_type('application/json');
+            $this->output->set_output(json_encode(array('status' => $e->getCode(), 'message' => $e->getMessage())));
+        }
+    }
+
     public function validateCuentaPredial(){
         try{
             if ($_SERVER['REQUEST_METHOD'] != 'GET') {

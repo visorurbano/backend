@@ -1104,118 +1104,90 @@ function ResumeLicenciaGiro(){
 }
 
 function resumenLicenciaGiro(){
-    $("#resumenIdentificacionSolicitante").remove();
-    var resumen_isd = $('<div/>', {id: 'resumenIdentificacionSolicitante'}).appendTo('#resumen-container');
-    resumen_isd.append('<h3>Identificación del solicitante</h3><br>');
-    var RtipoSolicitante = $('<div/>', {addClass:'row'}).appendTo(resumen_isd);
-    RtipoSolicitante.append('<div class="col-md-4">Tipo Solicitante: <b>'+capitalize($('input:radio[name=st1_tipo_solicitante]:checked').val().toLowerCase())+'</b></div>');
-    if ($('input:radio[name=st1_tipo_solicitante]:checked').val() == 'promotor'){
-        if ($('input:radio[name=st1_tipo_representante]:checked').val() == 'arrendatario'){
-            des = 'Persona física/moral que está rentando el predio';
-        }else{
-            des = 'Persona física/moral que es dueña del predio';
+    var data = {};
+    data['idTramite'] = $('#tramite').val();
+    $.ajax({
+        type: 'GET',
+        url: baseURL + "getTramite",
+        data:data,
+        dataType: 'json',
+        success:function(data){
+            $("#resumenIdentificacionSolicitante").remove();
+            var resumen_isd = $('<div/>', {id: 'resumenIdentificacionSolicitante'}).appendTo('#resumen-container');
+            /* Datos Principales */
+            var principalesCont = $('<div/>').appendTo(resumen_isd);
+            resumen_isd.append('<table class="mui-table mui-table--bordered"><thead><th>Clave Catastral</th></tr></thead><tbody><tr><td>'+data.data.clave_catastral+'</td></tr></tbody></table>')
+            resumen_isd.append('<table class="mui-table mui-table--bordered"><thead><th>Giro solicitado:</th></tr></thead><tbody><tr><td>'+data.data.descripcion_factibilidad+'</td></tr></tbody></table><br><br>')
+            /* Identificacion del solicitante */
+            resumen_isd.append('<table class="mui-table mui-table--bordered" id="tbl_identificacion_solicitante"><thead><th colspan="3">Identificación del solicitante:</th></tr></thead><tbody><tr><td colspan="3"> <b>Tipo solicitante:</b> '+ data.data.st1_tipo_solicitante + '</td></tr>' +
+                '<tr><td><b>C.U.R.P.:</b> '+data.data.st2_curp_solicitante+'</td><td><b>R.F.C.:</b> '+data.data.st2_rfc_solicitante+'</td></tr>' +
+                '<tr><td colspan="3"><b>Correo Electrónico:</b> ' +data.data.st2_email_solicitante+'</td></tr>'+
+                '<tr><td><b>Domicilio:</b> '+data.data.st2_domicilio_solicitante+'</td><td ><b>Num Ext:</b> '+data.data.st2_num_ext_solicitante+'</td><td><b>Num Int:</b> '+data.data.st2_num_int_solicitante+'</td></tr>' +
+                '<tr><td colspan="2"><b>Colonia:</b> '+data.data.st2_colonia_solicitante+'</td><td colspan="1"><b>C.P.:</b> '+data.data.st2_cp_solicitante+'</td></tr>' +
+                '<tr><td colspan="2"><b>Ciudad:</b> '+data.data.st2_ciudad_solicitante+'</td><td colspan="1"><b>Teléfono:</b> '+data.data.st2_telefono_solicitante+'</td></tr>' +
+                '</tbody></table><br><br>');
+
+
+            /* Datos Representante */
+            if (data.data.st1_tipo_solicitante == 'Promotor'){
+                resumen_isd.append('<table class="mui-table mui-table--bordered" id="tbl_representante"><thead><th colspan="3">Datos del representante:</th></tr></thead><tbody><tr><td colspan="3"> <b>Nombre del representante:</b> '+ data.data.st2_nombre_representante + ' ' + data.data.st2_priper_apellido_representante + ' ' + data.data.st2_segundo_apellido_representante +'</td></tr>' +
+                    '<tr><td><b>C.U.R.P.:</b> '+data.data.st2_curp_representante+'</td><td><b>R.F.C.:</b> '+data.data.st2_rfc_representante+'</td></tr>' +
+                    '<tr><td colspan="3"><b>Correo Electrónico:</b> ' +data.data.st2_email_representante+'</td></tr>'+
+                    '<tr><td><b>Domicilio:</b> '+data.data.st2_domicilio_representante+'</td><td ><b>Num Ext:</b> '+data.data.st2_num_ext_representante+'</td><td><b>Num Int:</b> '+data.data.st2_num_int_representante+'</td></tr>' +
+                    '<tr><td colspan="2"><b>Colonia:</b> '+data.data.st2_colonia_representante+'</td><td colspan="1"><b>C.P.:</b> '+data.data.st2_cp_representante+'</td></tr>' +
+                    '<tr><td colspan="2"><b>Ciudad:</b> '+data.data.st2_ciudad_representante+'</td><td colspan="1"><b>Teléfono:</b> '+data.data.st2_telefono_representante+'</td></tr>' +
+                    '</tbody></table><br><br>')
+                if (data.data.st2_identificacion_representante != ''){
+                    $('#tbl_representante').append('<tr><td colspan="3"><a target="_blank" href="'+data.data.st2_identificacion_representante+'"><i class="fa fa-id-card-o" aria-hidden="true"></i> Identificación del representante</a></td></tr>');
+                }
+            }
+
+            /* Datos Solicitante */
+            resumen_isd.append('<table class="mui-table mui-table--bordered" id="tbl_solicitante"><thead><th colspan="3">Datos del solicitante:</th></tr></thead><tbody><tr><td colspan="3"> <b>Nombre del Solicitante/arrendatario:</b> '+ data.data.st2_nombre_solicitante + ' ' + data.data.st2_primer_apellido_solicitante + ' ' + data.data.st2_segundo_apellido_solicitante +'</td></tr>' +
+                '<tr><td><b>C.U.R.P.:</b> '+data.data.st2_curp_solicitante+'</td><td><b>R.F.C.:</b> '+data.data.st2_rfc_solicitante+'</td></tr>' +
+                '<tr><td colspan="3"><b>Correo Electrónico:</b> ' +data.data.st2_email_solicitante+'</td></tr>'+
+                '<tr><td><b>Domicilio:</b> '+data.data.st2_domicilio_solicitante+'</td><td ><b>Num Ext:</b> '+data.data.st2_num_ext_solicitante+'</td><td><b>Num Int:</b> '+data.data.st2_num_int_solicitante+'</td></tr>' +
+                '<tr><td colspan="2"><b>Colonia:</b> '+data.data.st2_colonia_solicitante+'</td><td colspan="1"><b>C.P.:</b> '+data.data.st2_cp_solicitante+'</td></tr>' +
+                '<tr><td colspan="2"><b>Ciudad:</b> '+data.data.st2_ciudad_solicitante+'</td><td colspan="1"><b>Teléfono:</b> '+data.data.st2_telefono_solicitante+'</td></tr>' +
+                '</tbody></table><br><br>');
+            if (data.data.st2_identidficacion_solicitante != ''){
+                $('#tbl_solicitante').append('<tr><td colspan="3"><a target="_blank" href="'+data.data.st2_identidficacion_solicitante+'"><i class="fa fa-id-card-o" aria-hidden="true"></i> Identificación del propietario/arrendatario</a></td></tr>');
+            }
+
+            /* Datos del Establecimiento */
+            if (data.data.st3_nombre_establecimiento != ''){
+                nombreEstablecimiento = data.data.st3_nombre_establecimiento;
+            }
+            else{
+                nombreEstablecimiento = 'No definido';
+            }
+
+            if (data.data.st3_especificaciones_establecimiento != ''){
+                referenciasEstablecimiento = data.data.st3_especificaciones_establecimiento;
+            }
+            else{
+                referenciasEstablecimiento = 'Sin referencias';
+            }
+            resumen_isd.append('<table class="mui-table mui-table--bordered" id="tbl_establecimiento"><thead><th colspan="3">Datos del establecimiento:</th></tr></thead><tbody><tr><td colspan="3"> <b>Nombre comercial del negocio: </b></bZ></b> '+ nombreEstablecimiento +'</td></tr>' +
+                '<tr><td><b>Domicilio:</b> '+data.data.st3_domicilio_establecimiento+'</td><td ><b>Num Ext:</b> '+data.data.st3_num_ext_establecimiento+'</td><td><b>Letra Ext:</b> '+data.data.st3_letra_ext_establecimiento+'</td></tr>' +
+                '<tr><td><b>Colonia:</b> '+data.data.st3_colonia_establecimiento+'</td><td ><b>Num Int:</b> '+data.data.st3_num_int_establecimiento+'</td><td><b>Letra Int:</b> '+data.data.st3_letra_int_establecimiento+'</td></tr>' +
+                '<tr><td><b>Ciudad:</b> '+data.data.st3_ciudad_establecimiento+'</td><td ><b>Estado:</b> '+data.data.st3_estado_establecimiento+'</td><td><b>C.P.:</b> '+data.data.st3_cp_establecimiento+'</td></tr>' +
+                '<tr><td colspan="3"><b>Referencias del inmueble:</b> ' +referenciasEstablecimiento+'</td></tr>'+
+                '<tr><td><b>Edificio o Plaza:</b> '+data.data.st3_edificio_plaza_establecimiento+'</td><td ><b>Número de local:</b> '+data.data.st3_num_local_establecimiento+'</td><td><b>Superficie construida:</b> '+data.data.st3_sup_construida_establecimiento+' mts. </td></tr>' +
+                '<tr><td><b>Area a utilizar:</b> '+data.data.st3_area_utilizar_establecimiento+' mts.</td><td ><b>Inversión estimada:</b> $'+data.data.st3_inversion_establecimiento+'</td><td><b>Número de empleados:</b> '+data.data.st3_empleados_establecimiento+'</td></tr>' +
+                '<tr><td colspan="3"><b>Número de cajones de estacionamiento:</b> ' + data.data.st3_cajones_estacionamiento_establecimiento +'</td></tr>'+
+                '<tr><td colspan="3"><a href="'+data.data.st3_img1_establecimiento+'" target="_blank"><i class="fa fa-file-image-o" aria-hidden="true"></i> Fotografía Panorámica de la fachada completa</a></td></tr>'+
+                '<tr><td colspan="3"><a href="'+data.data.st3_img2_establecimiento+'" target="_blank"><i class="fa fa-file-image-o" aria-hidden="true"></i> Fotografía Panorámica de la fachada con la puerta o cortina abierta</a></td></tr>'+
+                '<tr><td colspan="3"><a href="'+data.data.st3_img3_establecimiento+'" target="_blank"><i class="fa fa-file-image-o" aria-hidden="true"></i> Fotografía del Interior del Establecimiento</a></td></tr>'+
+                '</tbody></table><br><br>');
+
+
+        },
+        error:function(){
+
         }
-        RtipoSolicitante.append('<div class="col-md-8">Tipo Representante: <b>'+des+'</b></div>');
+    });
 
-
-        resumen_isd.append('<br>');
-        var RtipoCartaPoder = $('<div/>', {addClass:'row'}).appendTo(resumen_isd);
-        RtipoCartaPoder.append('<div class="col-md-4">Tipo Carta Poder: <b>'+ capitalize($('input:radio[name=st1_tipo_carta_poder]:checked').val().toLowerCase()) +'</b></div>');
-        RtipoCartaPoder.append('<div class="col-md-8">Carta Poder: <b><a href="http://192.168.66.93/licencia_giro/demo/carta_poder.pdf" target="_blank"><i class="fa fa-file-text" aria-hidden="true"></i> carta_poder.pdf</a></b></div>');
-        if ($('input:radio[name=st1_tipo_carta_poder]:checked').val() == 'simple'){
-            resumen_isd.append('<br>');
-            var Rtestigos = $('<div/>', {addClass:'row'}).appendTo(resumen_isd);
-            Rtestigos.append('<div class="col-md-4">Identificación del Otorgante: <b><a href="http://192.168.66.93/licencia_giro/demo/Identificacion.pdf" target="_blank"><i class="fa fa-user" aria-hidden="true"></i> identificaciion.pdf</a></b></div>');
-            Rtestigos.append('<div class="col-md-4">Identificación Testigo 1: <b><a href="http://192.168.66.93/licencia_giro/demo/Identificacion.pdf" target="_blank"><i class="fa fa-user" aria-hidden="true"></i> identificaciion.pdf</a></b></div>');
-            Rtestigos.append('<div class="col-md-4">Identificación Testigo 2: <b><a href="http://192.168.66.93/licencia_giro/demo/Identificacion.pdf" target="_blank"><i class="fa fa-user" aria-hidden="true"></i> identificaciion.pdf</a></b></div>');
-        }
-    }
-    if ($('input:radio[name=st1_tipo_solicitante]:checked').val() == 'arrendatario' || $('input:radio[name=st1_tipo_representante]:checked').val() == 'arrendatario'){
-        resumen_isd.append('<br>');
-        var Rarrendamiento = $('<div/>', {addClass:'row'}).appendTo(resumen_isd);
-        Rarrendamiento.append('<div class="col-md-5">Contrato de Arrendamiento: <b><a href="http://192.168.66.93/licencia_giro/demo/contrato_arrendamiento.pdf" target="_blank"><i class="fa fa-file-text" aria-hidden="true"></i> contrato_arrendamiento.pdf</a></b></div>');
-        var Rfaculta = $('input:radio[name=st1_faculta]:checked').val() != 's'?'No':'Si'
-        Rarrendamiento.append('<div class="col-md-7">¿El contrato de arrendamiento te faculta para abrir un negocio? <b>'+ Rfaculta +'</b></div>');
-        if($('input:radio[name=st1_faculta]:checked').val() == 'n'){
-            resumen_isd.append('<br>');
-            var Ranuencia = $('<div/>', {addClass:'row'}).appendTo(resumen_isd);
-            var RanuenciaDes = $('input:radio[name=st1_anuencia]:checked').val() != 's'?'No':'Si'
-            Ranuencia.append('<div class="col-md-6">¿Cuentas con la anuencia del arrendador para abrir un negocio? <b>'+ RanuenciaDes +'</b></div>');
-            Ranuencia.append('<div class="col-md-6">Carta de Anuencia: <b><a href="http://192.168.66.93/licencia_giro/demo/carta_anuencia.pdf" target="_blank"><i class="fa fa-file-text" aria-hidden="true"></i> carta_anuencia.pdf</a></b></div>');
-        }
-    }
-    resumen_isd.append('<br><hr><br>');
-    if ($('input:radio[name=st1_tipo_solicitante]:checked').val() == 'promotor'){
-        resumen_isd.append('<h3>Datos del representante:</h3><br>');
-        var Rrepresentante = $('<div/>', {addClass:'row'}).appendTo(resumen_isd);
-        Rrepresentante.append('<div class="col-md-12">Nombre del Representante: <b>'+ $('input:text[name=st2_nombre_representante]').val()+'</b></div>');
-        Rrepresentante.append('<br><br>');
-        Rrepresentante.append('<div class="col-md-4">C.U.R.P.: <b>'+ $('input:text[name=st2_curp_representante]').val()+'</b></div>');
-        Rrepresentante.append('<div class="col-md-4">R.F.C.: <b>'+ $('input:text[name=st2_rfc_representante]').val()+'</b></div>');
-        Rrepresentante.append('<div class="col-md-4">Correo electrónico: <b>'+ $('input[name=st2_email_representante]').val()+'</b></div>');
-        Rrepresentante.append('<br><br>');
-        Rrepresentante.append('<div class="col-md-8">Domicilio: <b>'+ $('input:text[name=st2_domicilio_representante]').val()+'</b></div>');
-        Rrepresentante.append('<div class="col-md-2">Num. Exterior: <b>'+ $('input:text[name=st2_num_ext_representante]').val()+'</b></div>');
-        Rrepresentante.append('<div class="col-md-2">Num. Interior: <b>'+ $('input[name=st2_num_int_representante]').val()+'</b></div>');
-        Rrepresentante.append('<br><br>');
-        Rrepresentante.append('<div class="col-md-4">Colonia: <b>'+ $('input:text[name=st2_colonia_representante]').val()+'</b></div>');
-        Rrepresentante.append('<div class="col-md-4">Ciudad: <b>'+ $('input:text[name=st2_ciudad_representante]').val()+'</b></div>');
-        Rrepresentante.append('<div class="col-md-2">C.P.: <b>'+ $('input[name=st2_cp_representante]').val()+'</b></div>');
-        Rrepresentante.append('<div class="col-md-2">Teléfono: <b>'+ $('input[name=st2_telefono_representante]').val()+'</b></div>');
-        Rrepresentante.append('<br><br>');
-        Rrepresentante.append('<div class="col-md-12">Identificación del Representante: <b><a href="http://192.168.66.93/licencia_giro/demo/Identificacion.pdf" target="_blank"><i class="fa fa-user" aria-hidden="true"></i> identificaciion.pdf</a></b></div>');
-        resumen_isd.append('<br><hr><br>');
-    }
-
-    resumen_isd.append('<h3>Datos del solicitante:</h3><br>');
-    var Rsolicitante = $('<div/>', {addClass:'row'}).appendTo(resumen_isd);
-    Rsolicitante.append('<div class="col-md-12">Nombre del Representante: <b>'+ $('input:text[name=st2_nombre_solicitante]').val()+'</b></div>');
-    Rsolicitante.append('<br><br>');
-    Rsolicitante.append('<div class="col-md-4">C.U.R.P.: <b>'+ $('input:text[name=st2_curp_solicitante]').val()+'</b></div>');
-    Rsolicitante.append('<div class="col-md-4">R.F.C.: <b>'+ $('input:text[name=st2_rfc_solicitante]').val()+'</b></div>');
-    Rsolicitante.append('<div class="col-md-4">Correo electrónico: <b>'+ $('input[name=st2_email_solicitante]').val()+'</b></div>');
-    Rsolicitante.append('<br><br>');
-    Rsolicitante.append('<div class="col-md-8">Domicilio: <b>'+ $('input:text[name=st2_domicilio_solicitante]').val()+'</b></div>');
-    Rsolicitante.append('<div class="col-md-2">Num. Exterior: <b>'+ $('input:text[name=st2_num_ext_solicitante]').val()+'</b></div>');
-    Rsolicitante.append('<div class="col-md-2">Num. Interior: <b>'+ $('input[name=st2_num_int_solicitante]').val()+'</b></div>');
-    Rsolicitante.append('<br><br>');
-    Rsolicitante.append('<div class="col-md-4">Colonia: <b>'+ $('input:text[name=st2_colonia_solicitante]').val()+'</b></div>');
-    Rsolicitante.append('<div class="col-md-4">Ciudad: <b>'+ $('input:text[name=st2_ciudad_solicitante]').val()+'</b></div>');
-    Rsolicitante.append('<div class="col-md-2">C.P.: <b>'+ $('input[name=st2_cp_solicitante]').val()+'</b></div>');
-    Rsolicitante.append('<div class="col-md-2">Teléfono: <b>'+ $('input[name=st2_telefono_solicitante]').val()+'</b></div>');
-    resumen_isd.append('<br><hr><br>');
-
-    resumen_isd.append('<h3>Datos del predio:</h3><br>');
-    var Rpredio = $('<div/>', {addClass:'row'}).appendTo(resumen_isd);
-    Rpredio.append('<div class="col-md-3">Clave Catastral: <b>'+ $('#claveCatastral').val()+'</b></div>');
-    Rpredio.append('<br><br>');
-    Rpredio.append('<div class="col-md-12">Actividad especifica: <b>'+ ($('input:text[name=descripcion_factibilidad]').val() ? $('input:text[name=descripcion_factibilidad]').val():'')+'</b></div>');
-    Rpredio.append('<br><br>');
-    Rpredio.append('<div class="col-md-12">Nombre del negocio: <b>'+ $('input:text[name=st3_nombre_establecimiento]').val()+'</b></div>');
-    Rpredio.append('<br><br>');
-    Rpredio.append('<div class="col-md-8">Domicilio: <b>'+ $('input:text[name=st3_domicilio_establecimiento]').val()+'</b></div>');
-    Rpredio.append('<div class="col-md-2">Num. Exterior: <b>'+ $('input:text[name=st3_num_ext_establecimiento]').val()+'</b></div>');
-    Rpredio.append('<div class="col-md-2">Letra Exterior: <b>'+ $('input:text[name=st3_letra_ext_establecimiento]').val()+'</b></div>');
-    Rpredio.append('<br><br>');
-    Rpredio.append('<div class="col-md-8">Colonia: <b>'+ $('input:text[name=st3_colonia_establecimiento]').val()+'</b></div>');
-    Rpredio.append('<div class="col-md-2">Num. Interior: <b>'+ $('input:text[name=st3_num_int_establecimiento]').val()+'</b></div>');
-    Rpredio.append('<div class="col-md-2">Letra Interior: <b>'+ $('input:text[name=st3_letra_int_establecimiento]').val()+'</b></div>');
-    Rpredio.append('<br><br>');
-    Rpredio.append('<div class="col-md-12">Especificaciones: <b>'+ $('input:text[name=st3_especificaciones_establecimiento]').val()+'</b></div>');
-    Rpredio.append('<br><br>');
-    Rpredio.append('<div class="col-md-3">Tipo de Edificacion: <b>'+ $('input:text[name=st3_edificio_plaza_establecimiento]').val()+'</b></div>');
-    Rpredio.append('<div class="col-md-3">Num. Local: <b>#'+ $('input:text[name=st3_num_local_establecimiento]').val()+'</b></div>');
-    Rpredio.append('<div class="col-md-3">Superficie Construida: <b>'+ $('input:text[name=st3_sup_construida_establecimiento]').val()+'mts.</b></div>');
-    Rpredio.append('<div class="col-md-3">Area a utilizar: <b>'+ $('input:text[name=st3_area_utilizar_establecimiento]').val()+'mts.</b></div>');
-    Rpredio.append('<br><br>');
-    Rpredio.append('<div class="col-md-4">Inversión estimada: <b>$'+ $('input:text[name=st3_inversion_establecimiento]').val()+'</b></div>');
-    Rpredio.append('<div class="col-md-4">Cajones Estacionamiento: <b>'+ $('input:text[name=st3_cajones_estacionamiento_establecimiento]').val()+'</b></div>');
-    Rpredio.append('<div class="col-md-4">Num. Empleados: <b>'+ $('input:text[name=st3_empleados_establecimiento]').val()+'</b></div>');
-    Rpredio.append('<br><br>');
-    Rpredio.append('<div class="col-md-4">Fotografia Fachada: <b><a href="http://192.168.66.93/licencia_giro/demo/imagen1.jpg" data-lightbox="imagen establecimiento 1"> <i class="fa fa-picture-o" aria-hidden="true"></i> fotografia.jpg</a></b></div>');
-    Rpredio.append('<div class="col-md-4">Fotografia puerta abierta: <b><a href="http://192.168.66.93/licencia_giro/demo/imagen2.jpg" data-lightbox="imagen establecimiento 2"> <i class="fa fa-picture-o" aria-hidden="true"></i> fotografia1.jpg</a></b></div>');
-    Rpredio.append('<div class="col-md-4">Fotografia interior: <b><a href="http://192.168.66.93/licencia_giro/demo/imagen3.jpg" data-lightbox="imagen establecimiento 3"> <i class="fa fa-picture-o" aria-hidden="true"></i> fotografia2.jpg</a></b></div>');
-    resumen_isd.append('<br><hr><br><br>');
 
     $('.cadenaFirmar').empty();
     var nombreFirmar = ($('input:radio[name=st1_tipo_solicitante]:checked').val() == 'promotor')?$('input:text[name=st2_nombre_representante]').val():$('input:text[name=st2_nombre_solicitante]').val();

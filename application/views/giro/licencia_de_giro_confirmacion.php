@@ -27,7 +27,7 @@
                             </div>
                             <div class="col-md-5">
                                 <div class="mui-textfield mui-textfield--float-label">
-                                    <input id="txtFFactibilidad" type="text" maxlength="13" name="folioFactibilidad"  class="input-material" required>
+                                    <input id="txtFFactibilidad" type="text" maxlength="13" name="folioFactibilidad"  class="input-material upercase" required>
                                     <label for="txtFFactibilidad">Folio de factibilidad de visor urbano</label>
                                 </div>
                             </div>

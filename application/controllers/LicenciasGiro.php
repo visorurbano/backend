@@ -215,6 +215,7 @@ class LicenciasGiro extends CI_Controller {
                 }else{
                     $data['st3_cajones_estacionamiento_establecimiento'] = '';
                 }
+                $data['st3_dictamen_tecnico_movilidad'] = $licencia->st3_dictamen_tecnico_movilidad;
                 $data['st3_img1_establecimiento'] = $licencia->st3_img1_establecimiento;
                 $data['st3_img2_establecimiento'] = $licencia->st3_img2_establecimiento;
                 $data['st3_img3_establecimiento'] = $licencia->st3_img3_establecimiento;
@@ -233,9 +234,11 @@ class LicenciasGiro extends CI_Controller {
 
         $this->load->css(base_url().'assets/css/admin/steps.css');
         $this->load->css(base_url().'assets/css/lightbox.min.css');
+        $this->load->css(base_url().'assets/css/select.css');
         $this->load->js(base_url().'assets/js/jquery.validate.min.js');
         $this->load->js(base_url().'assets/js/jquery.steps.min.js');
         $this->load->js(base_url().'assets/vendor/progressbar.js');
+        $this->load->js(base_url().'assets/vendor/select/select.min.js');
         $this->load->js(base_url().'assets/vendor/lightbox.min.js');
         $this->load->view('giro/licencia_de_giro_forma', $data);
     }
@@ -263,15 +266,15 @@ class LicenciasGiro extends CI_Controller {
                 throw new Exception('El folio del trámite es requerido', 404);
             }
             $data = $params['campos'];
-            if($data['step'] == 2){
+            /*if($data['step'] == 2){
                 $validacion=$this->validacionPropietarioLic($params['licencia']);
             }else{
                 $validacion=false;
-            }
+            }*/
             $result =  $this->LicenciasGiroModel->updateLicencia($params['licencia'], $data, $params['firma']);
             if ($result['status']){
                 $this->output->set_content_type('application/json');
-                $this->output->set_output(json_encode(array('status' => 200, 'message' =>'Sucesfully','validacionMultiLic' => $validacion)));
+                $this->output->set_output(json_encode(array('status' => 200, 'message' =>'Sucesfully','validacionMultiLic' => false)));
             }else{
                 throw new Exception('Ocurrio un error inesperado por favor intenta mas tarde.', 401);
             }

@@ -668,7 +668,8 @@ $(document).ready(function () {
     // ------------------------------------------------------- //
     // Validar area a utilizar
     // ------------------------------------------------------ //
-    $('#txtAreaUtilizar').on('blur', function(){
+    $('#txtAreaUtilizar').on('blur', function(e){
+        e.preventDefault();
         if ($(this).val() != ''){
             if($('#zncion').val() == 'H1' || $('#zncion').val() == 'H2' || $('#zncion').val() == 'H3' || $('#zncion').val() == 'H4' || $('#zncion').val() == 'H5'){
                 if ($(this).val() > 30){
@@ -678,6 +679,24 @@ $(document).ready(function () {
                 if ($(this).val() > 300){
                     $(this).val('')
                 }
+            }
+        }
+    });
+
+    // ------------------------------------------------------- //
+    // Validar cajones de estacionamiento
+    // ------------------------------------------------------ //
+    $('#txtCajonesEstacionamiento').on('blur', function(e){
+        e.preventDefault();
+        var cajones  = $(this).val();
+        if (cajones != '' || $('#txtAreaUtilizar').val() > 29){
+            //var area =  $('#txtAreaUtilizar').val();
+            var area = 300;
+            var res = (area/80);
+            if (cajones < Math.trunc(res)){
+                $('.cont-dictamen-tecnico-movilidad').show();
+            }else{
+                $('.cont-dictamen-tecnico-movilidad').hide();
             }
         }
     });
@@ -1241,14 +1260,27 @@ function loadFile(element){
                         var nombreTitular = (sdata.titular[0]);
                         var curpTitular = (sdata.titular[4]);
                         var rfcTitular = (sdata.titular[3]);
+                        var rfcTitular = ($('#txtCURPRep').val().toUpperCase());
                         if($('input:radio[name=st1_tipo_solicitante]:checked').val() == 'promotor'){
-
+                            if (nombreTitular == ($('#txtNombreRep').val().toUpperCase() + ' ' + $('#txtPApellido').val().toUpperCase() + ' ' + $('#txtSApellido').val().toUpperCase()) && curpTitular == $('#txtCURPRep').val().toUpperCase() && rfcTitular == $('#txtCURPRep').val().toUpperCase()){
+                                $('#contMSGFirmaError').empty();
+                                $('#firma_electronica').empty().text(sdata.firma);
+                                $('.contErrorInsideFirma').remove();
+                            }else{
+                                $('.contErrorInsideFirma').remove();
+                                $('#firmaContainer').append('<span style="color: #F35B53;" class="contErrorInsideFirma">Los datos del representante no coinciden con los de la firma electrónica.</span>');
+                            }
                         }else{
-
+                            if (nombreTitular == ($('#txtNombre').val().toUpperCase() + ' ' + $('#txtPApellidoSolicitante').val().toUpperCase() + ' ' + $('#txtSApellidoSolicitante').val().toUpperCase()) && curpTitular == $('#txtCURP').val().toUpperCase() && rfcTitular == $('#txtRFC').val().toUpperCase()){
+                                $('#contMSGFirmaError').empty();
+                                $('#firma_electronica').empty().text(sdata.firma);
+                                $('.contErrorInsideFirma').remove();
+                            }else{
+                                $('.contErrorInsideFirma').remove();
+                                $('#firmaContainer').append('<span style="color: #F35B53;" class="contErrorInsideFirma">Los datos del representante no coinciden con los de la firma electrónica.</span>');
+                            }
                         }
-                        $('#contMSGFirmaError').empty();
-                        $('#firma_electronica').empty().text(sdata.firma);
-                        $('.contErrorInsideFirma').remove();
+
                     }
                 },
                 error:function(){

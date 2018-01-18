@@ -52,7 +52,7 @@ function continuarVentanilla(){
     $('#overlayError').remove();
     var overlay = $('<div/>',{id:'overlayError'}).appendTo($('body'));
     var contLoading = $('<div/>',{id:'overlayWarningContent', class:'mui--z2'}).appendTo(overlay);
-    contLoading.append('<h3><i class="fa fa-info-circle" aria-hidden="true"></i> Contuniar el trñamite de manera precencial en ventanilla.</h3>');
+    contLoading.append('<h3><i class="fa fa-info-circle" aria-hidden="true"></i> Contuniar el trámite de manera precencial en ventanilla.</h3>');
     contLoading.append('<br><span style="margin-bottom: 40px;">Si no cuentas con tu firma electrónica y deseas finalizar tu trámite, acude a las ventanillas de la Dirección de padrón y Licencias de Guadalajara para continuar con el proceso.<br><br><i class="fa fa-map-marker" aria-hidden="true"></i> Av 5 de Febrero 249, Las Conchas, 44460 Guadalajara, Jal.</span><br>');
     contLoading.append('<div class="footer"><button type="button" class="mui-btn" id="btnVentanilla">Aceptar</button><a href="javascript:removeWarning()" class="mui-btn mui-btn--danger">Cancelar</a></div>')
     $('body').css('overflow', 'hidden');

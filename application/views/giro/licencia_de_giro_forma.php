@@ -386,7 +386,7 @@
                                </div>
                            </div>
                            <?php if ($zonificacion == 'H1' || $zonificacion == 'H2' || $zonificacion == 'H3' || $zonificacion == 'H4' || $zonificacion == 'H5'): ?>
-                           <h5 style="color: #F44336;"><b>Nota:</b> Hemos detectado que el predio se encuentra en una zona habitacional, de acuerdo con el Artículo 32 del Reglamento para la Gestión Integral del Municipio de Guadalajara. Por ello,  sólo se te permitirá utilizar 30m<sup>2</sup> de la totalidad del predio para el giro solicitado.</h5>
+                           <h5 style="color: #F44336;"><b>Nota:</b> La presente solicitud se encuentra en una zona habitacional y de acuerdo con el Artículo 32 del Reglamento para la Gestión Integral del Municipio de Guadalajara la superficie máxima utilizar es de 30m<sup>2</sup> de la totalidad del predio para el giro solicitado.</h5>
                            <?php endif; ?>
                            <div class="mui-textfield mui-textfield--float-label nerror">
                                <input id="txtNombreNegocio" type="text" name="st3_nombre_establecimiento"  class="input-material" value="<?=$st3_nombre_establecimiento;?>">
@@ -452,6 +452,18 @@
                                    </div>
                                </div>
                            </div>
+                           <div class="row" style="display: <?php echo $st3_asignacion_numero ? 'block' : 'none'; ?>;" id="asignacion_numero">
+                               <div class="col-md-12">
+
+                                       <label for="exampleInputFile"><b>* Adjuntar Certificado de Alineamiento y Número Oficial</b></label>
+                                       <input type="file" class="form-control-file <?php if(!empty($st3_asignacion_numero)){echo 'valid';}?>" id="fleFotoLocal4" onchange="loadFile(this);" name="st3_asignacion_numero" aria-describedby="fileHelp" data-type="st3_asignacion_numero" data-elastic="fleFotoLocal4Elastic" data-text="Dictamen de lineamiento y número oficial">
+                                       <div id="fleFotoLocal4Elastic" class="progress-bar-custom"></div>
+                                       <small id="fileHelp" class="form-text text-muted">Debe ser escaneada del documento original en formato .pdf.</small>
+                                       <?php if(!empty($st3_asignacion_numero)):?>
+                                           <a href="<?=$st3_asignacion_numero?>" target="_blank" class="link-to-file"><i class="fa fa-file-text-o" aria-hidden="true"></i> Asignación de numero oficial</a>
+                                       <?php endif;?>
+                               </div>
+                           </div>
                            <div class="row">
                                <div class="col-md-12">
                                    <div class="mui-textfield mui-textfield--float-label nerror">
@@ -476,13 +488,25 @@
                                <div class="col-md-3">
                                    <div class="mui-textfield mui-textfield--float-label nerror">
                                        <input id="txtSupConstruida" type="text" name="st3_sup_construida_establecimiento" class="input-material" value="<?=$st3_sup_construida_establecimiento;?>" required>
-                                       <label for="txtSupConstruida">* Sup. Construida mts.</label>
+                                       <label for="txtSupConstruida">* Sup. Construida mts<sup>2</sup>.</label>
                                    </div>
                                </div>
                                <div class="col-md-3">
                                    <div class="mui-textfield mui-textfield--float-label nerror">
-                                       <input id="txtAreaUtilizar" type="text" name="st3_area_utilizar_establecimiento" class="input-material" value="<?=$st3_area_utilizar_establecimiento;?>" required>
-                                       <label for="txtAreaUtilizar">* Area a utilizar mts.</label>
+                                       <?php if ($zonificacion == 'H1' || $zonificacion == 'H2' || $zonificacion == 'H3' || $zonificacion == 'H4' || $zonificacion == 'H5'): ?>
+                                           <?php if(empty($st3_area_utilizar_establecimiento)): ?>
+                                               <input id="txtAreaUtilizar" type="text" name="st3_area_utilizar_establecimiento" class="input-material" value="30" required>
+                                           <?php else: ?>
+                                               <input id="txtAreaUtilizar" type="text" name="st3_area_utilizar_establecimiento" class="input-material" value="<?=$st3_area_utilizar_establecimiento;?>" required>
+                                           <?php endif; ?>
+                                       <?php else: ?>
+                                           <?php if(empty($st3_area_utilizar_establecimiento)): ?>
+                                               <input id="txtAreaUtilizar" type="text" name="st3_area_utilizar_establecimiento" class="input-material" value="300" required>
+                                           <?php else: ?>
+                                               <input id="txtAreaUtilizar" type="text" name="st3_area_utilizar_establecimiento" class="input-material" value="<?=$st3_area_utilizar_establecimiento;?>" required>
+                                           <?php endif; ?>
+                                       <?php endif; ?>
+                                       <label for="txtAreaUtilizar">* Area a utilizar mts<sup>2</sup>.</label>
                                    </div>
                                </div>
                            </div>
@@ -501,11 +525,31 @@
                                </div>
                                <div class="col-md-4">
                                    <div class="mui-textfield mui-textfield--float-label nerror">
-                                       <input id="txtCajonesEstacionamiento" type="text" name="st3_cajones_estacionamiento_establecimiento" autocomplete="off" class="input-material" value="<?=$st3_cajones_estacionamiento_establecimiento;?>" required>
+                                       <?php if ($zonificacion == 'H1' || $zonificacion == 'H2' || $zonificacion == 'H3' || $zonificacion == 'H4' || $zonificacion == 'H5'): ?>
+                                           <?php if (empty($st3_cajones_estacionamiento_establecimiento)): ?>
+                                               <input id="txtCajonesEstacionamiento" type="text" name="st3_cajones_estacionamiento_establecimiento" autocomplete="off" class="input-material" value="0" required>
+                                           <?php else: ?>
+                                               <input id="txtCajonesEstacionamiento" type="text" name="st3_cajones_estacionamiento_establecimiento" autocomplete="off" class="input-material" value="<?=$st3_cajones_estacionamiento_establecimiento;?>" required>
+                                           <?php endif; ?>
+                                       <?php else: ?>
+                                           <input id="txtCajonesEstacionamiento" type="text" name="st3_cajones_estacionamiento_establecimiento" autocomplete="off" class="input-material" value="<?=$st3_cajones_estacionamiento_establecimiento;?>" required>
+                                       <?php endif; ?>
                                        <label for="txtCajonesEstacionamiento">* No. Cajones de estacionamiento </label>
                                    </div>
                                </div>
                            </div>
+                           <div class="row cont-dictamen-tecnico-movilidad" style="display: none;">
+                               <div class="col-md-12">
+                                   <label for="fleDictamenMovilidad"><b>* Adjuntar Dictamen Técnico de movilidad </b></label>
+                                   <input type="file" class="form-control-file <?php if(!empty($st3_dictamen_tecnico_movilidad)){echo 'valid';}?>" onchange="loadFile(this);" id="fleDictamenMovilidad" name="st3_dictamen_tecnico_movilidad" aria-describedby="fileHelp" data-type="st3_dictamen_tecnico_movilidad" data-elastic="fleIFESolicitanteElastic" data-text="Dictamen Técnico de Movilidad">
+                                   <div id="fleDictamenMovilidadElastic" class="progress-bar-custom"></div>
+                                   <small id="fileHelp" class="form-text text-muted">Debe ser escaneado del documento original en formato .pdf.</small>
+                                   <?php if(!empty($st3_dictamen_tecnico_movilidad)):?>
+                                       <a href="<?=$st3_dictamen_tecnico_movilidad?>" target="_blank" class="link-to-file"><i class="fa fa-file-text-o" aria-hidden="true"></i> Dictamen Técnico de Movilidad</a>
+                                   <?php endif;?>
+                               </div>
+                           </div>
+                           <br>
                            <br>
                            <div class="row">
                                <div class="col-md-4">
@@ -538,19 +582,6 @@
                                        <small id="fileHelp" class="form-text text-muted">La fotografía debe ser tomada desde el ingreso al establecimiento porcurando que se aprecie el área a utilizar.<br><b>No fotos de buscadores de internet</b><br>Formatos permitidos: .png, .jpg, .jpeg, .gif, .pdf<b></b></small>
                                        <?php if(!empty($st3_img3_establecimiento)):?>
                                            <a href="<?=$st3_img3_establecimiento?>" target="_blank" class="link-to-file"><i class="fa fa-file-text-o" aria-hidden="true"></i> Fotografía del interior del establecimiento</a>
-                                       <?php endif;?>
-                                   </div>
-                               </div>
-                           </div>
-                           <div class="row" style="margin-top:20px; display: <?php echo $st3_asignacion_numero ? 'block' : 'none'; ?>;" id="asignacion_numero">
-                               <div class="col-md-4">
-                                   <div class="form-group fto-st3">
-                                       <label for="exampleInputFile"><b>* Adjuntar Asignación de numero oficial</b></label>
-                                       <input type="file" class="form-control-file <?php if(!empty($st3_asignacion_numero)){echo 'valid';}?>" id="fleFotoLocal4" onchange="loadFile(this);" name="st3_asignacion_numero" aria-describedby="fileHelp" data-type="st3_asignacion_numero" data-elastic="fleFotoLocal4Elastic" data-text="Dictamen de lineamiento y número oficial">
-                                       <div id="fleFotoLocal4Elastic" class="progress-bar-custom"></div>
-                                       <small id="fileHelp" class="form-text text-muted">Debe ser escaneada del documento original en formato .pdf.</small>
-                                       <?php if(!empty($st3_asignacion_numero)):?>
-                                           <a href="<?=$st3_asignacion_numero?>" target="_blank" class="link-to-file"><i class="fa fa-file-text-o" aria-hidden="true"></i> Asignación de numero oficial</a>
                                        <?php endif;?>
                                    </div>
                                </div>

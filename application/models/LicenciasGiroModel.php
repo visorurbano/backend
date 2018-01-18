@@ -95,6 +95,11 @@ class LicenciasGiroModel extends CI_Model {
         return $licencia;
     }
 
+    public function getLicenciaFolio($folio){
+        $licencia =  $this->db->select('*')->from('tbl_licencias_giro')->where('id_usuario', $idU)->where('folio_licencia', $folio)->where('status', 'FL')->get()->row();
+        return $licencia;
+    }
+
     public function updateLicencia($idTramite, $params, $firma){
         $this->db->query('update tbl_rel_licencia_usuario set firma_e= "'.$firma.'" where id_licencia='.$idTramite);
         $this->db->trans_start();

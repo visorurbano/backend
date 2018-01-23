@@ -274,15 +274,15 @@ class LicenciasGiro extends CI_Controller {
                 throw new Exception('El folio del trámite es requerido', 404);
             }
             $data = $params['campos'];
-            /*if($data['step'] == 2){
+            if($data['step'] == 2){
                 $validacion=$this->validacionPropietarioLic($params['licencia']);
             }else{
                 $validacion=false;
-            }*/
+            }
             $result =  $this->LicenciasGiroModel->updateLicencia($params['licencia'], $data, $params['firma']);
             if ($result['status']){
                 $this->output->set_content_type('application/json');
-                $this->output->set_output(json_encode(array('status' => 200, 'message' =>'Sucesfully','validacionMultiLic' => false)));
+                $this->output->set_output(json_encode(array('status' => 200, 'message' =>'Sucesfully','validacionMultiLic' => $validacion)));
             }else{
                 throw new Exception('Ocurrio un error inesperado por favor intenta mas tarde.', 401);
             }

@@ -542,7 +542,7 @@
                                    </div>
                                </div>
                            </div>
-                           <div class="row cont-dictamen-tecnico-movilidad" style="display: none;">
+                           <div class="row cont-dictamen-tecnico-movilidad" style="display: <?php echo $st3_dictamen_tecnico_movilidad ? 'block' : 'none'; ?>;">
                                <div class="col-md-12">
                                    <label for="fleDictamenMovilidad"><b>* Adjuntar Dictamen Técnico de movilidad </b></label>
                                    <input type="file" class="form-control-file <?php if(!empty($st3_dictamen_tecnico_movilidad)){echo 'valid';}?>" onchange="loadFile(this);" id="fleDictamenMovilidad" name="st3_dictamen_tecnico_movilidad" aria-describedby="fileHelp" data-type="st3_dictamen_tecnico_movilidad" data-elastic="fleIFESolicitanteElastic" data-text="Dictamen Técnico de Movilidad">

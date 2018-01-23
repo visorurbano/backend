@@ -95,7 +95,7 @@ class LicenciasGiroModel extends CI_Model {
     }
 
     public function getLicenciaFolio($folio){
-        $licencia =  $this->db->select('*')->from('tbl_licencias_giro')->where('id_usuario', $idU)->where('folio_licencia', $folio)->where('status', 'FL')->get()->row();
+        $licencia =  $this->db->select('*')->from('tbl_licencias_giro')->where('folio_licencia', $folio)->where('status', 'FL')->get()->row();
         return $licencia;
     }
 

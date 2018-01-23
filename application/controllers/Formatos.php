@@ -387,8 +387,8 @@ class Formatos extends CI_Controller {
        if(!$licencia){
            echo "<center><h3>Licencia no se puede imprimir</h3></center>";
        }else{
-           $no_licencia=$licencia->clave_factibilidad;
            $actividad = $licencia->descripcion_factibilidad;
+           $scian = $licencia->clave_factibilidad;
            $cajones_estacionamiento=$licencia->st3_cajones_estacionamiento_establecimiento;
            $aforo_personas="0";
            $superficie=$licencia->st3_area_utilizar_establecimiento;
@@ -410,7 +410,7 @@ class Formatos extends CI_Controller {
            if($licencia->folio_licencia == 0){
                $params = array(
                    'tipo_tramite'=>'13',
-                   'scian'=>$actividad,
+                   'scian'=>$scian,
                    'x'=>'0',
                    'y'=>'0',
                    'zona'=>'0',
@@ -605,16 +605,22 @@ class Formatos extends CI_Controller {
                                <div  style="width: 5%; float: left;">
                                    &nbsp;
                                </div>
-                               <div style="width: 30%; float: left;">';
-                                   for ($i=0; $i < count($data_soap) ; $i++) {
-                                       $html .= $data_soap[$i]->descripcion.'<br>';
-                                   }
-
-                                   $html .='</div>
-                                   <div style="width: 30%; float: right; text-align: right;">';
+                               <div style="width: 65%; float: left;">';
+                                   $html .= '<table class="tamano_12" width="100%">';
                                        for ($i=0; $i < count($data_soap) ; $i++) {
-                                           $html .= '$'.$data_soap[$i]->importe.'<br>';
+                                           $html .= '<tr>
+                                           <td width="50%" style="text-align:left;">
+                                           '.$data_soap[$i]->descripcion.'
+                                           </td>
+                                           <td width="50%" style="text-align:right; vertical-align:bottom;">
+                                           $'.$data_soap[$i]->importe.'
+                                           </td>
+                                           </tr>';
                                        }
+                                   $html .= '</table>';
+                                 $html .='</div>
+                                   <div style="width: 30%; float: right; text-align: right;">';
+
 
                                        $html .='</div>
                                    </div>
@@ -812,24 +818,30 @@ class Formatos extends CI_Controller {
                'licencia'=>$idlicencia,
             );
             $data_soap=$this->utils->conec_soap('licDatos',$params);
-            $actividad = $data_soap->actividad;
-            $cajones_estacionamiento=$data_soap->num_cajones;
-            $aforo_personas=$data_soap->aforo;
-            $superficie=$data_soap->sup_autorizada;
-            $horario="";
-            $fecha_sesion="";
-            $calle = $data_soap->calle;
-            $no_ext = $data_soap->num_ext;
-            $col = $data_soap->colonia;
-            $clave_catastral = $data_soap->cvecatastral;
-            $no_int = $data_soap->num_int;
-            $nombre = $data_soap->propietario;
-            $apellido_primer = "";
-            $apellido_segundo = "";
-            $rfc = $data_soap->rfc;
-            $curp = $data_soap->curp;
-            $zona = $data_soap->zona;
-            $fechaTitle = date("d/m/Y H:i");
+            if($data_soap->mensaje == "LA LICENCIA NO EXISTE"){
+                 echo "<center><h3>Licencia no se puede imprimir</h3></center>";
+                 die();
+            }else{
+                $actividad = $data_soap->actividad;
+                $cajones_estacionamiento=$data_soap->num_cajones;
+                $aforo_personas=$data_soap->aforo;
+                $superficie=$data_soap->sup_autorizada;
+                $horario="";
+                $fecha_sesion="";
+                $calle = $data_soap->calle;
+                $no_ext = $data_soap->num_ext;
+                $col = $data_soap->colonia;
+                $clave_catastral = $data_soap->cvecatastral;
+                $no_int = $data_soap->num_int;
+                $nombre = $data_soap->propietario;
+                $apellido_primer = "";
+                $apellido_segundo = "";
+                $rfc = $data_soap->rfc;
+                $curp = $data_soap->curp;
+                $zona = $data_soap->zona;
+                $fechaTitle = date("d/m/Y H:i");
+                $aforo = $data_soap->aforo;
+            }
         }else{
             $actividad = $licencia->descripcion_factibilidad;
             $cajones_estacionamiento=$licencia->st3_cajones_estacionamiento_establecimiento;
@@ -849,6 +861,7 @@ class Formatos extends CI_Controller {
             $curp = $licencia->st2_curp_solicitante;
             $zona = $licencia->predio_distrito.(empty($licencia->predio_sub_distrito)?'':' - '.$licencia->predio_sub_distrito);
             $fechaTitle = date("d/m/Y H:i");
+            $aforo = '';
         }
         $pago = "Tarjeta bancaria";
         $folio_licencia=$idlicencia;
@@ -949,14 +962,17 @@ class Formatos extends CI_Controller {
                           </div>
 
                           <div class="tamano_12 margen_15">
-                              <div style="width: 35%; float: left;">
+                              <div style="width: 28%; float: left;">
                                   <span>Cajones de estacimiento: '.$cajones_estacionamiento.'</span>
                               </div>
-                              <div style="width: 30%; float: left;">
+                              <div style="width: 27%; float: left;">
                                   <span class="separador_20">Superficie Autorizadas: '.$superficie.' mts</span>
                               </div>
-                              <div style="width: 30%; float: right; margin-left: 10%;">
+                              <div style="width: 20%; float: left; margin-left: 10%;">
                                   <span class="separador_20">Horario: '.$horario.'</span>
+                              </div>
+                              <div style="width: 15%; float: right; margin-left: 10%;">
+                                  <span class="separador_20">Aforo: '.$aforo.'</span>
                               </div>
                           </div>
                           <div class="tamano_12 margen_20">
@@ -1004,7 +1020,6 @@ class Formatos extends CI_Controller {
                                   IMPORTE
                               </div>
                           </div>
-
                           <div class="tamano_12 margen_15">
                               <div style="width: 30%; float: left;">
                                   '.$folio_licencia.'
@@ -1012,16 +1027,22 @@ class Formatos extends CI_Controller {
                               <div  style="width: 5%; float: left;">
                                   &nbsp;
                               </div>
-                              <div style="width: 30%; float: left;">';
-                                  for ($i=0; $i < count($data_soap) ; $i++) {
-                                      $html .= $data_soap[$i]->descripcion.'<br>';
-                                  }
-
-                                  $html .='</div>
-                                  <div style="width: 30%; float: right; text-align: right;">';
+                              <div style="width: 65%; float: left;">';
+                                  $html .= '<table class="tamano_12" width="100%">';
                                       for ($i=0; $i < count($data_soap) ; $i++) {
-                                          $html .= '$'.$data_soap[$i]->importe.'<br>';
+                                          $html .= '<tr>
+                                          <td width="50%" style="text-align:left;">
+                                          '.$data_soap[$i]->descripcion.'
+                                          </td>
+                                          <td width="50%" style="text-align:right; vertical-align:bottom;">
+                                          $'.$data_soap[$i]->importe.'
+                                          </td>
+                                          </tr>';
                                       }
+                                  $html .= '</table>';
+                                $html .='</div>
+                                  <div style="width: 30%; float: right; text-align: right;">';
+
 
                                       $html .='</div>
                                   </div>
@@ -1205,10 +1226,24 @@ class Formatos extends CI_Controller {
                               $this->pdf->WriteHTML($html2);
                               $this->pdf->Output('Licencia_Municipal.pdf', 'I');
 
-      //}
   }
 
    public function acuse_envio(){
+       ini_set("soap.wsdl_cache_enabled", 0);
+       $wsdl = 'https://esb.jalisco.gob.mx/busservices/fe?wsdl';
+       $options = array(
+               'usuario'=>'sggip',
+               'Password'=>'jalpub98'
+           );
+       try {
+           $soap = new SoapClient($wsdl, $options);
+           $data = $soap->firmaObjeto(array('objFirmado' => 'TUQ1KERBR09CRVJUT19DQUxERVJPTi5rZXkucGVtKT0gYjMwYmY1ZWRhMjJjNjUxZTAzNjY5ZWNkMTBiNTlkZTEKTUQ1KHV0Zi50eHQpPSA3NWEyZTE2Nzg2MzVlMGVhNWM0YzI0YTA4Yzk4OGQ4Zgo='));
+       }
+       catch(Exception $e) {
+           die($e->getMessage());
+       }
+       print_r($data);
+       die();
        $dependencia="xxxxxx";
        $folio="xxxx";
        $tipo_asunto="xxxxxxxxx";
@@ -1872,7 +1907,7 @@ class Formatos extends CI_Controller {
            echo "<center><h3>Propuesta de pago no se puede imprimir</h3></center>";
        }else{
            $id_licencia = $licencia->id_licencia;
-           $no_licencia=$licencia->clave_factibilidad;
+           $scian = $licencia->clave_factibilidad;
            $actividad = strtoupper($licencia->descripcion_factibilidad);
            $cajones_estacionamiento=$licencia->st3_cajones_estacionamiento_establecimiento;
            $aforo_personas="0";
@@ -1895,7 +1930,7 @@ class Formatos extends CI_Controller {
            if($licencia->folio_licencia == 0){
                $params = array(
                    'tipo_tramite'=>'13',
-                   'scian'=>$actividad,
+                   'scian'=>$scian,
                    'x'=>'0',
                    'y'=>'0',
                    'zona'=>'0',

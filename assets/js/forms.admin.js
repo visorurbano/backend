@@ -478,7 +478,11 @@ $(document).ready(function () {
                     form.validate().settings.ignore = ":disabled,:hidden,.valid";
                     if (form.valid()) {
                         var frm = form.find(":input:not(:hidden)").serializeArray();
-                        updateForma(frm, newIndex, $('#tramite').val()).done(function (data) {});
+                        updateForma(frm, newIndex, $('#tramite').val()).done(function (data) {
+                            if(data.validacionMultiLic.status){
+                                console.log(data.validacionMultiLic.licencias);
+                            }
+                        });
                     }
                     if (newIndex == 3) {
                         resumenLicenciaGiro();
@@ -514,7 +518,11 @@ $(document).ready(function () {
                 }
                 if(currentIndex == 2){
                     getNegocio();
-                    consulLicP($('#tramite').val()).done(function(data){});
+                    consulLicP($('#tramite').val()).done(function(data){
+                        if(data.validacionMultiLic.status){
+                            console.log(data.validacionMultiLic.licencias);
+                        }
+                    });
                 }
                 getDataPropietario($('#claveCatastral').val()).done(function(data){
                     if (data.status == 200){
@@ -1269,7 +1277,7 @@ function loadFile(element){
                         var nombreTitular = (sdata.titular[0]);
                         var curpTitular = (sdata.titular[4]);
                         var rfcTitular = (sdata.titular[3]);
-                        var rfcTitular = ($('#txtCURPRep').val().toUpperCase());
+                        //var rfcTitular = ($('#txtCURPRep').val().toUpperCase());
                         if($('input:radio[name=st1_tipo_solicitante]:checked').val() == 'promotor'){
                             if (nombreTitular == ($('#txtNombreRep').val().toUpperCase() + ' ' + $('#txtPApellido').val().toUpperCase() + ' ' + $('#txtSApellido').val().toUpperCase()) && curpTitular == $('#txtCURPRep').val().toUpperCase() && rfcTitular == $('#txtCURPRep').val().toUpperCase()){
                                 $('#contMSGFirmaError').empty();

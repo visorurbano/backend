@@ -19,14 +19,18 @@
                         <input type="hidden" id="zncion" value="<?=$zonificacion?>">
                    <div>
                        <h3>Idenficación del Solicitante</h3>
-                       <?php if ($this->session->userdata('level') > 1): ?>
+                       <?php if ($this->session->userdata('level') > 1 && $licencia->status != 'V'): ?>
                            <section>
-                               <h3><?=$this->session->userdata('nombre')?></h3>
-                               <br>
-                               <div class="form-group">
-                                   <label for="exampleInputFile"><b>Adjuntar Carta Responsiva</b></label>
-                                   <input type="file" class="form-control-file" id="exampleInputFile" aria-describedby="fileHelp">
-                                   <small id="fileHelp" class="form-text text-muted">Debrerá ir firmada por el otorgante</small>
+                               <div class="col-md-12">
+                                   <div class="form-group">
+                                       <label for="exampleInputFile"><b>* Adjuntar Carta Responsiva</b>&nbsp;&nbsp;&nbsp;<small><a href="<?=base_url()?>formatos/carta_responsiva.docx"><i class="fa fa-download" aria-hidden="true"></i> Descarga aquí el formato</a></small></label>
+                                       <input type="file" name="st1_carta_responsiva" class="form-control-file <?php if(!empty($st1_carta_responsiva)){echo 'valid';}?>" onchange="loadFile(this);" id="fleCrataResponsiva" aria-describedby="fileHelp" data-type="st1_carta_responsiva" data-elastic="fleCrataResponsivaElastic" data-text="Carta Responsiva">
+                                       <div id="fleCrataResponsivaElastic" class="progress-bar-custom"></div>
+                                       <small id="fileHelp" class="form-text text-muted">El formato requerido del archivo es: .pdf</small>
+                                       <?php if(!empty($st1_carta_responsiva)):?>
+                                           <a href="<?=$st1_carta_responsiva?>" target="_blank" class="link-to-file"><i class="fa fa-file-text-o" aria-hidden="true"></i> Carta Responsiva</a>
+                                       <?php endif;?>
+                                   </div>
                                </div>
                            </section>
                        <?php else: ?>
@@ -310,7 +314,7 @@
                                <div class="col-md-4">
                                    <div class="mui-textfield mui-textfield--float-label nerror">
                                        <input id="txtEmail" type="email" name="st2_email_solicitante" class="input-material" value="<?=$st2_email_solicitante;?>" required>
-                                       <label for="txtEmail">* Correo Electrónico</label>
+                                       <label for="txtEmail">Correo Electrónico</label>
                                    </div>
                                </div>
                            </div>
@@ -591,7 +595,7 @@
                        <h3>Resumen</h3>
                        <section>
                            <div id="resumen-container"></div>
-
+                           <?php if($this->session->userdata('level') < 2): ?>
                            <div class="card card-body bg-light">
                                <h2>Cadena original a firmar</h2>
                                <div class="cadenaFirmar"></div>
@@ -612,11 +616,16 @@
                              <h2>Cadena Firmada</h2>
                              <span id="firma_electronica"><?=$firma?></span>
                            </div>
+                           <?php endif; ?>
                            <div class="row">
                                <div class="col-md-12 st4_aviso_privacidad">
                                    <label>
                                        <input  type="checkbox" name="st4_declaratoria" value="1" required="" aria-required="true" <?php if ($st4_declaratoria == 1) echo "checked"; ?>>
+                                       <?php if($this->session->userdata('level') > 1): ?>
                                        Bajo protesta de decir verdad manifiesto que todos los datos mencionados y documentos anexos al presente procedimiento administrativo son verdaderos y cotejables con documentación legal.
+                                       <?php else: ?>
+                                           Bajo protesta de decir verdad manifiesto que corrobore la identidad del solicitante al presente procedimiento administrativo mediante su identificación oficial
+                                       <?php endif; ?>
                                    </label>
                                </div>
                            </div>
@@ -637,13 +646,11 @@
                            <div class="row">
                                <div class="col-md-12">
                                    <center>
-                                       <!--<a href="<?=base_url()?>orden-pago/licencia-giro/<?= $this->utils->encode($licencia->id_licencia);?>/<?= $this->utils->encode($licencia->id_usuario);?>" target="_blank" class="btn btn-lg btn-secondary"><i class="fa fa-print" aria-hidden="true"></i> Imprimir Orden de Pago</a>-->
-                                       <!--a href="<?=base_url()?>/formatos/op.pdf" target="_blank" class="btn btn-lg btn-secondary"><i class="fa fa-print" aria-hidden="true"></i> Imprimir Orden de Pago</a-->
                                        <a href="<?=base_url()?>formatos/orden_pago?lic=<?= $this->utils->encode($licencia->id_licencia);?>&usu=<?= $this->utils->encode($licencia->id_usuario);?>" target="_blank" class="btn btn-lg btn-secondary"><i class="fa fa-print" aria-hidden="true"></i> Imprimir Propuesta de Cobro</a>
-
-                                       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                       <?php if($this->session->userdata('level') < 2): ?>
                                        <a id="btnPagoLinea" onclick="pago_linea()" class="btn btn-lg btn-secondary"><i class="fa fa-credit-card-alt" aria-hidden="true"></i> Pagar en  linea</a>
-                                       <!--a href="<?=base_url()?>confirmacion_licencia/pago_linea/<?= $this->utils->encode($licencia->id_licencia);?>/<?= $this->utils->encode($licencia->id_usuario);?>" id="btnPagoLinea" class="btn btn-lg btn-secondary"><i class="fa fa-credit-card-alt" aria-hidden="true"></i> Pagar en  linea</a-->
+                                       <?php endif; ?>
+
                                    </center>
                                </div>
                            </div>

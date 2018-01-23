@@ -1,1 +1,1 @@
-var userURL="http://api.guadalajara.gob.mx/autenticacion/auth/",baseURL="http://localhost/backend/";
+var userURL="http://api.guadalajara.gob.mx/autenticacion/auth/",baseURL="http://visorurbano.guadalajara.gob.mx/",baseURL="http://localhost/backend/";

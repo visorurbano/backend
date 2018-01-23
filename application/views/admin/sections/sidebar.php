@@ -45,7 +45,10 @@
             <?php if ($this->session->userdata('level') == 3): ?>
                 <li> <a href="<?=base_url()?>revision"><i class="fa fa-check-circle-o" aria-hidden="true"></i> Revisión</a></li>
             <?php endif; ?>
-            <!--<li class=""> <a href="./"><i class="fa fa-question" aria-hidden="true"></i> Ayuda</a></li>-->
+            <?php $pws = $this->utils->getJson('http://api.guadalajara.gob.mx/autenticacion/auth/get-password?idU='.$this->session->userdata('idU'));?>
+            <?php if ($this->session->userdata('level') == 1): ?>
+                <li> <a href="https://pagoenlinea.guadalajara.gob.mx/licenciasdegiro/valida.php/<?= $this->utils->encode($this->session->userdata('email'));?>/<?=$this->utils->encode($pws);?>"><i class="fa fa-retweet" aria-hidden="true"></i> Renueva tu Licencia</a></li>
+            <?php endif; ?>
 
         </ul>
     </nav>

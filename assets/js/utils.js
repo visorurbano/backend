@@ -60,7 +60,7 @@ function continuarVentanilla(){
     $('#btnVentanilla').on('click', function(e){
         e.preventDefault();
         var dataSend = {name:"status", value:"V"};
-        updateForma(new Array(dataSend), 1, $('#tramite').val()).done(function(data){
+        updateForma(new Array(dataSend), 0, $('#tramite').val()).done(function(data){
             window.location.href = baseURL + "admin";
         });
     });

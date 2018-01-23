@@ -250,7 +250,7 @@ $(document).ready(function () {
                     number: true
                 },
                 st2_email_solicitante: {
-                    required: true,
+                    required: false,
                     email: true
                 },
                 st2_num_ext_solicitante:{
@@ -335,6 +335,9 @@ $(document).ready(function () {
                 },
                 st1_tipo_representante:{
                     required: 'Elige un tipo de representante para continuar'
+                },
+                st1_carta_responsiva:{
+                    required: 'Adjunta la carta poder para continuar'
                 },
                 st1_carta_poder:{
                     required: 'Adjunta la carta poder para continuar'
@@ -455,14 +458,16 @@ $(document).ready(function () {
                     fill_pago();
                 }
                 if((newIndex+1) == 5){
-                    if($('#firma_electronica').text() == ''){
-                        $('#firma_electronica').text('');
-                        $('#firmaContainer').append('<span style="color: #F35B53;" class="contErrorInsideFirma">Debes firmar la solicitud utilizando tu firma electronica (FIEL) para poder continuar.</span>');
-                        $(window).scrollTop($('#firmaContainer').offset().top);
-                        return false;
-                    }else{
-                        $('.contErrorInsideFirma').remove();
-                        updateForma(frm, newIndex, $('#tramite').val()).done(function (data) {});
+                    if ($('#firma_electronica').length){
+                        if($('#firma_electronica').text() == ''){
+                            $('#firma_electronica').text('');
+                            $('#firmaContainer').append('<span style="color: #F35B53;" class="contErrorInsideFirma">Debes firmar la solicitud utilizando tu firma electronica (FIEL) para poder continuar.</span>');
+                            $(window).scrollTop($('#firmaContainer').offset().top);
+                            return false;
+                        }else{
+                            $('.contErrorInsideFirma').remove();
+                            updateForma(frm, newIndex, $('#tramite').val()).done(function (data) {});
+                        }
                     }
                 }
                 if(newIndex == 2){
@@ -689,9 +694,9 @@ $(document).ready(function () {
     $('#txtCajonesEstacionamiento').on('blur', function(e){
         e.preventDefault();
         var cajones  = $(this).val();
-        if (cajones != '' || $('#txtAreaUtilizar').val() > 29){
-            //var area =  $('#txtAreaUtilizar').val();
-            var area = 300;
+        if (cajones != '' || $('#txtAreaUtilizar').val() > 79){
+            var area =  $('#txtAreaUtilizar').val();
+            //var area = 300;
             var res = (area/80);
             if (cajones < Math.trunc(res)){
                 $('.cont-dictamen-tecnico-movilidad').show();
@@ -714,6 +719,9 @@ function fill_pago(){
         dataType: 'json',
         data: {
             'licencia':$('#tramite').val(),
+        },
+        beforeSend:function(){
+            setLoading();
         },
         success: function(data){
             $('#scian_form').val(data.data.scian);
@@ -742,6 +750,7 @@ function fill_pago(){
             $('#licencia_form').val(data.data.licencia);
             $('#importe_form').val(data.data.importe);
             $('#id_usuario_form').val(data.data.id_usuario);
+            unsetLoading();
         }
     });
 }
@@ -1268,7 +1277,7 @@ function loadFile(element){
                                 $('.contErrorInsideFirma').remove();
                             }else{
                                 $('.contErrorInsideFirma').remove();
-                                $('#firmaContainer').append('<span style="color: #F35B53;" class="contErrorInsideFirma">Los datos del representante no coinciden con los de la firma electrónica.</span>');
+                                $('#firmaContainer').append('<span style="color: #F35B53;" class="contErrorInsideFirma">Los datos del Representante no coinciden con los de la firma electrónica.</span>');
                             }
                         }else{
                             if (nombreTitular == ($('#txtNombre').val().toUpperCase() + ' ' + $('#txtPApellidoSolicitante').val().toUpperCase() + ' ' + $('#txtSApellidoSolicitante').val().toUpperCase()) && curpTitular == $('#txtCURP').val().toUpperCase() && rfcTitular == $('#txtRFC').val().toUpperCase()){
@@ -1277,10 +1286,9 @@ function loadFile(element){
                                 $('.contErrorInsideFirma').remove();
                             }else{
                                 $('.contErrorInsideFirma').remove();
-                                $('#firmaContainer').append('<span style="color: #F35B53;" class="contErrorInsideFirma">Los datos del representante no coinciden con los de la firma electrónica.</span>');
+                                $('#firmaContainer').append('<span style="color: #F35B53;" class="contErrorInsideFirma">Los datos del Propietario/Arrendatario no coinciden con los de la firma electrónica.</span>');
                             }
                         }
-
                     }
                 },
                 error:function(){

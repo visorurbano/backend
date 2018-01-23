@@ -31,7 +31,7 @@
                                         <a href="<?=base_url()?>nueva-licencia/<?= $this->utils->encode($licencia->id_licencia);?>/<?= $this->utils->encode($licencia->id_usuario);?>" class="mui-btn mui-btn--primary"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Editar</a>
                                     <?php endif; ?>
                                     <?php if($licencia->status =='FP'): ?>
-                                        <a href="<?=base_url()?>nueva-licencia/<?= $this->utils->encode($licencia->id_licencia);?>/<?= $this->utils->encode($licencia->id_usuario);?>" class="mui-btn mui-btn--primary"><i class="fa fa-eye" aria-hidden="true"></i> Ver Trámite</a>&nbsp;
+                                        <!--<a href="<?=base_url()?>nueva-licencia/<?= $this->utils->encode($licencia->id_licencia);?>/<?= $this->utils->encode($licencia->id_usuario);?>" class="mui-btn mui-btn--primary"><i class="fa fa-eye" aria-hidden="true"></i> Ver Trámite</a>&nbsp;-->
                                         <a href="<?=base_url()?>formatos/orden_pago?lic=<?= $this->utils->encode($licencia->id_licencia);?>&usu=<?= $this->utils->encode($licencia->id_usuario);?>" target="_blank" class="mui-btn mui-btn--primary"><i class="fa fa-print" aria-hidden="true"></i> Imprimir Propuesta de cobro</a>
                                     <?php endif; ?>
                                     <?php if($licencia->status =='V'): ?>

@@ -33,8 +33,15 @@ class LicenciasGiro extends CI_Controller {
         $this->output->set_template('admin');
         $idTramite = $this->utils->decode($this->uri->segment(2, 0));
         $idUsuario = $this->session->userdata('idU');
-        $licencia = $this->LicenciasGiroModel->getLicencia($idUsuario, $idTramite);
-        $firma = $this->LicenciasGiroModel->getFirma($idUsuario, $idTramite);
+        if ($this->session->userdata('level') == 2){
+            $licencia = $this->LicenciasGiroModel->getLicencia('',$idTramite);
+            $firma = "";
+
+        }else{
+            $licencia = $this->LicenciasGiroModel->getLicencia($idUsuario, $idTramite);
+            $firma = $this->LicenciasGiroModel->getFirma($idUsuario, $idTramite);
+        }
+
         if($firma != ""){
           $data['firma']= $firma->firma_e;
         }else{
@@ -61,6 +68,7 @@ class LicenciasGiro extends CI_Controller {
                 $zonificacion = explode('/', $licencia->predio_zonificacion);
                 $data['zonificacion'] = $zonificacion[2];
                 //Step 1
+                $data['st1_carta_responsiva'] = $licencia->st1_carta_responsiva;
                 $data['st1_tipo_solicitante'] = $licencia->st1_tipo_solicitante;
                 $data['st1_tipo_representante'] = $licencia->st1_tipo_representante;
                 $data['st1_tipo_carta_poder'] = $licencia->st1_tipo_carta_poder;

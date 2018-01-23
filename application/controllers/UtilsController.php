@@ -15,10 +15,9 @@ class UtilsController extends CI_Controller {
                 throw new Exception('Bad request', 400);
             }
             $params = $_REQUEST;
-            $result = $this->LicenciasGiroModel->getLicencia($this->session->userdata('idU'), $params['idTramite']);
+            $result = $this->LicenciasGiroModel->getLicencia('', $params['idTramite']);
             $this->output->set_content_type('application/json');
             $this->output->set_output(json_encode(array('status' => 200, 'message' =>'Sucesfully', 'data'=>$result)));
-
         }
         catch (Exception $e) {
             $this->output->set_content_type('application/json');

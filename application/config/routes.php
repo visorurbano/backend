@@ -50,6 +50,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 |		my-controller/my-method	-> my_controller/my_method
 */
 $route['default_controller'] = 'frontend';
+$route['normatividad'] = 'frontend/normatividad';
+$route['manuales'] = 'frontend/manuales';
+$route['preguntasfrecuentes'] = 'frontend/faq';
+$route['tramites1'] = 'frontend/tramites1';
 //Auth
 $route['ingresar'] = 'auth';
 $route['registro'] = 'auth/crearCuenta';
@@ -87,5 +91,5 @@ $route['getTramite'] = 'UtilsController/getTramite';
 $route['orden-pago/licencia-giro/(:any)/(:any)'] = 'Formatos/formaPagoLicencias';
 
 //Errors
-$route['404_override'] = '';
+$route['404_override'] = 'frontend/notFound';
 $route['translate_uri_dashes'] = FALSE;

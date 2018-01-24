@@ -444,4 +444,22 @@ class LicenciasGiro extends CI_Controller {
             echo json_encode(array("status"=>'true', "data" => $licencia));
         }
 
+        public function deleteFile(){
+            extract($_POST);
+            $delete = $this->LicenciasGiroModel->emptyField($licencia, $campo);
+            echo json_encode(array("status"=>'true'));
+        }
+
+        public function limpiar_tabla(){
+            extract($_POST);
+            $delete = $this->LicenciasGiroModel->emptyTabla($licencia);
+            echo json_encode(array("status"=>'true'));
+        }
+
+        public function step(){
+            extract($_GET);
+            $licencia = $this->LicenciasGiroModel->getStep($licencia);
+            echo json_encode(array("status"=>'true', "data" => $licencia));
+        }
+
     }

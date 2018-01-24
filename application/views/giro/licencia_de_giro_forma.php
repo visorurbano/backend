@@ -80,7 +80,7 @@
                                                <div id="fleCrataPoderElastic" class="progress-bar-custom"></div>
                                                <small id="fileHelp" class="form-text text-muted">Carta Poder simple firmada por el otorgante y dos testigos.<br>El formato requerido del archivo es: .pdf</small>
                                                <?php if(!empty($st1_carta_poder)):?>
-                                                <a href="<?=$st1_carta_poder?>" target="_blank" class="link-to-file"><i class="fa fa-file-text-o" aria-hidden="true"></i> Carta Poder</a>
+                                                <a href="<?=$st1_carta_poder?>" target="_blank" class="link-to-file update_file"><i class="fa fa-file-text-o" aria-hidden="true"></i> Carta Poder</a>
                                                <?php endif;?>
                                            </div>
                                        </div>
@@ -91,7 +91,7 @@
                                                <div id="fleIdentificacionOtorganteElastic" class="progress-bar-custom"></div>
                                                <small id="fileHelp" class="form-text text-muted">puede ser (INE, IFE, Pasaporte); la identicficacón debe estar vigente.<br>El formato requerido del archivo es: .pdf</small>
                                                <?php if(!empty($st1_identificacion_otorgante)):?>
-                                                   <a href="<?=$st1_identificacion_otorgante?>" target="_blank" class="link-to-file"><i class="fa fa-file-text-o" aria-hidden="true"></i> Identificación del otorgante</a>
+                                                   <a href="<?=$st1_identificacion_otorgante?>" target="_blank" class="link-to-file update_file"><i class="fa fa-file-text-o" aria-hidden="true"></i> Identificación del otorgante</a>
                                                <?php endif;?>
                                            </div>
                                        </div>
@@ -104,7 +104,7 @@
                                                <div id="fleTestigo1Elastic" class="progress-bar-custom"></div>
                                                <small id="fileHelp" class="form-text text-muted">puede ser (INE, IFE, Pasaporte); la identicficacón debe estar vigente.<br>El formato requerido del archivo es: .pdf</small>
                                                <?php if(!empty($st1_identificacion_testigo1)):?>
-                                                   <a href="<?=$st1_identificacion_testigo1?>" target="_blank" class="link-to-file"><i class="fa fa-file-text-o" aria-hidden="true"></i> Identificación del testigo 1</a>
+                                                   <a href="<?=$st1_identificacion_testigo1?>" target="_blank" class="link-to-file update_file"><i class="fa fa-file-text-o" aria-hidden="true"></i> Identificación del testigo 1</a>
                                                <?php endif;?>
                                            </div>
                                        </div>
@@ -115,7 +115,7 @@
                                                <div id="fleTestigo2Elastic" class="progress-bar-custom"></div>
                                                <small id="fileHelp" class="form-text text-muted">puede ser (INE, IFE, Pasaporte); la identicficacón debe estar vigente.<br>El formato requerido del archivo es: .pdf</small>
                                                <?php if(!empty($st1_identificacion_testigo2)):?>
-                                                   <a href="<?=$st1_identificacion_testigo2?>" target="_blank" class="link-to-file"><i class="fa fa-file-text-o" aria-hidden="true"></i> Identificación del testigo 2</a>
+                                                   <a href="<?=$st1_identificacion_testigo2?>" target="_blank" class="link-to-file update_file"><i class="fa fa-file-text-o" aria-hidden="true"></i> Identificación del testigo 2</a>
                                                <?php endif;?>
                                            </div>
                                        </div>
@@ -129,7 +129,7 @@
                                        <div id="fleContratoArrendamientoElastic" class="progress-bar-custom"></div>
                                        <small id="fileHelp" class="form-text text-muted">El formato requerido del archivo es: .pdf</small>
                                        <?php if(!empty($st1_contrato_arrendamiento)):?>
-                                           <a href="<?=$st1_contrato_arrendamiento?>" target="_blank" class="link-to-file"><i class="fa fa-file-text-o" aria-hidden="true"></i> Contrato de arrendamiento</a>
+                                           <a href="<?=$st1_contrato_arrendamiento?>" target="_blank" class="link-to-file update_file"><i class="fa fa-file-text-o" aria-hidden="true"></i> Contrato de arrendamiento</a>
                                        <?php endif;?>
                                    </div>
 
@@ -160,7 +160,7 @@
                                            <div id="fleAnuenciaElastic" class="progress-bar-custom"></div>
                                            <small id="fileHelp" class="form-text text-muted">El formato requerido del archivo es: .pdf</small>
                                            <?php if(!empty($st1_carta_anuencia)):?>
-                                               <a href="<?=$st1_carta_anuencia?>" target="_blank" class="link-to-file"><i class="fa fa-file-text-o" aria-hidden="true"></i> Carta de anuencia</a>
+                                               <a href="<?=$st1_carta_anuencia?>" target="_blank" class="link-to-file update_file"><i class="fa fa-file-text-o" aria-hidden="true"></i> Carta de anuencia</a>
                                            <?php endif;?>
                                        </div>
                                    </div>
@@ -271,7 +271,7 @@
                                        <div id="fleIFERepresentanteElastic" class="progress-bar-custom"></div>
                                        <small id="fileHelp" class="form-text text-muted">La imagen debera contener frente y reverso ademas debe ser escaneada del documento original en formato .pdf.</small>
                                        <?php if(!empty($st2_identificacion_representante)):?>
-                                           <a href="<?=$st2_identificacion_representante?>" target="_blank" class="link-to-file"><i class="fa fa-file-text-o" aria-hidden="true"></i> Identificacón del representante</a>
+                                           <a id="id_representante" href="<?=$st2_identificacion_representante?>" target="_blank" class="link-to-file update_file"><i class="fa fa-file-text-o" aria-hidden="true"></i> Identificacón del representante</a>
                                        <?php endif;?>
                                    </div>
                                </div>
@@ -372,7 +372,7 @@
                                   <div id="fleIFESolicitanteElastic" class="progress-bar-custom"></div>
                                   <small id="fileHelp" class="form-text text-muted">La imagen debera contener frente y reverso ademas debe ser escaneada del documento original en formato .pdf.</small>
                                   <?php if(!empty($st2_identidficacion_solicitante)):?>
-                                      <a href="<?=$st2_identidficacion_solicitante?>" target="_blank" class="link-to-file"><i class="fa fa-file-text-o" aria-hidden="true"></i> Identificacón del solicitante</a>
+                                      <a id="id_solicitante" href="<?=$st2_identidficacion_solicitante?>" target="_blank" class="link-to-file update_file"><i class="fa fa-file-text-o" aria-hidden="true"></i> Identificación del solicitante</a>
                                   <?php endif;?>
                               </div>
                           </div>
@@ -456,7 +456,7 @@
                                    </div>
                                </div>
                            </div>
-                           <div class="row" style="display: <?php echo $st3_asignacion_numero ? 'block' : 'none'; ?>;" id="asignacion_numero">
+                           <div class="row" style="display: <?php echo $st3_asignacion_numero != "" ? 'block' : 'none'; ?>;" id="asignacion_numero">
                                <div class="col-md-12">
 
                                        <label for="exampleInputFile"><b>* Adjuntar Certificado de Alineamiento y Número Oficial</b></label>
@@ -464,7 +464,7 @@
                                        <div id="fleFotoLocal4Elastic" class="progress-bar-custom"></div>
                                        <small id="fileHelp" class="form-text text-muted">Debe ser escaneada del documento original en formato .pdf.</small>
                                        <?php if(!empty($st3_asignacion_numero)):?>
-                                           <a href="<?=$st3_asignacion_numero?>" target="_blank" class="link-to-file"><i class="fa fa-file-text-o" aria-hidden="true"></i> Asignación de numero oficial</a>
+                                           <a id="file_asignacion_numero" href="<?=$st3_asignacion_numero?>" target="_blank" class="link-to-file update_file"><i class="fa fa-file-text-o" aria-hidden="true"></i> Asignación de numero oficial</a>
                                        <?php endif;?>
                                </div>
                            </div>
@@ -542,14 +542,14 @@
                                    </div>
                                </div>
                            </div>
-                           <div class="row cont-dictamen-tecnico-movilidad" style="display: <?php echo $st3_dictamen_tecnico_movilidad ? 'block' : 'none'; ?>;">
+                           <div class="row cont-dictamen-tecnico-movilidad" style="display: <?php echo $st3_dictamen_tecnico_movilidad != "" ? 'block' : 'none'; ?>;" id="dictamen_tecnico">
                                <div class="col-md-12">
                                    <label for="fleDictamenMovilidad"><b>* Adjuntar Dictamen Técnico de movilidad </b></label>
                                    <input type="file" class="form-control-file <?php if(!empty($st3_dictamen_tecnico_movilidad)){echo 'valid';}?>" onchange="loadFile(this);" id="fleDictamenMovilidad" name="st3_dictamen_tecnico_movilidad" aria-describedby="fileHelp" data-type="st3_dictamen_tecnico_movilidad" data-elastic="fleIFESolicitanteElastic" data-text="Dictamen Técnico de Movilidad">
                                    <div id="fleDictamenMovilidadElastic" class="progress-bar-custom"></div>
                                    <small id="fileHelp" class="form-text text-muted">Debe ser escaneado del documento original en formato .pdf.</small>
                                    <?php if(!empty($st3_dictamen_tecnico_movilidad)):?>
-                                       <a href="<?=$st3_dictamen_tecnico_movilidad?>" target="_blank" class="link-to-file"><i class="fa fa-file-text-o" aria-hidden="true"></i> Dictamen Técnico de Movilidad</a>
+                                       <a id="file_dictamen_tecnico" href="<?=$st3_dictamen_tecnico_movilidad?>" target="_blank" class="link-to-file update_file"><i class="fa fa-file-text-o" aria-hidden="true"></i> Dictamen Técnico de Movilidad</a>
                                    <?php endif;?>
                                </div>
                            </div>
@@ -563,7 +563,7 @@
                                        <div id="fleFotoLocal1Elastic" class="progress-bar-custom"></div>
                                        <small id="fileHelp" class="form-text text-muted">Debe abarcar las construcciones de la derecha, izquierda y la banqueta.<br><b>No fotos de buscadores de internet</b><br>Formatos permitidos: .png, .jpg, .jpeg, .gif, .pdf<b></b></small>
                                        <?php if(!empty($st3_img1_establecimiento)):?>
-                                           <a href="<?=$st3_img1_establecimiento?>" target="_blank" class="link-to-file"><i class="fa fa-file-text-o" aria-hidden="true"></i> Fotografía fachada</a>
+                                           <a id="file_img1" href="<?=$st3_img1_establecimiento?>" target="_blank" class="link-to-file update_file"><i class="fa fa-file-text-o" aria-hidden="true"></i> Fotografía fachada</a>
                                        <?php endif;?>
                                    </div>
                                </div>
@@ -574,7 +574,7 @@
                                        <div id="fleFotoLocal2Elastic" class="progress-bar-custom"></div>
                                        <small id="fileHelp" class="form-text text-muted">En la fotografía se deberá apreciar el número oficial.<br><b>No fotos de buscadores de internet</b><br>Formatos permitidos: .png, .jpg, .jpeg, .gif, .pdf<b></b></small>
                                        <?php if(!empty($st3_img2_establecimiento)):?>
-                                           <a href="<?=$st3_img2_establecimiento?>" target="_blank" class="link-to-file"><i class="fa fa-file-text-o" aria-hidden="true"></i> Fotografía fachada puerta abierta</a>
+                                           <a id="file_img2" href="<?=$st3_img2_establecimiento?>" target="_blank" class="link-to-file update_file"><i class="fa fa-file-text-o" aria-hidden="true"></i> Fotografía fachada puerta abierta</a>
                                        <?php endif;?>
                                    </div>
                                </div>
@@ -585,7 +585,7 @@
                                        <div id="fleFotoLocal3Elastic" class="progress-bar-custom"></div>
                                        <small id="fileHelp" class="form-text text-muted">La fotografía debe ser tomada desde el ingreso al establecimiento porcurando que se aprecie el área a utilizar.<br><b>No fotos de buscadores de internet</b><br>Formatos permitidos: .png, .jpg, .jpeg, .gif, .pdf<b></b></small>
                                        <?php if(!empty($st3_img3_establecimiento)):?>
-                                           <a href="<?=$st3_img3_establecimiento?>" target="_blank" class="link-to-file"><i class="fa fa-file-text-o" aria-hidden="true"></i> Fotografía del interior del establecimiento</a>
+                                           <a id="file_img3" href="<?=$st3_img3_establecimiento?>" target="_blank" class="link-to-file update_file"><i class="fa fa-file-text-o" aria-hidden="true"></i> Fotografía del interior del establecimiento</a>
                                        <?php endif;?>
                                    </div>
                                </div>

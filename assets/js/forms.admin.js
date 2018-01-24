@@ -2,6 +2,7 @@ var stepsForm = null;
 var currentStep = $('#step').val();
 var informado=false;
 var arregloDatosP=[];
+var NumExtPredio;
 $(document).ready(function () {
     'use strict';
     // ------------------------------------------------------- //
@@ -438,7 +439,7 @@ $(document).ready(function () {
                 st3_es_numero_interior:{
                     required: 'Confirma si la licencia será para número interior'
                 },
-                $st3_asignacion_numero:{
+                st3_asignacion_numero:{
                     required: 'Adjunta la asignación de número ofical para continuar'
                 },
                 st4_declaratoria:{
@@ -505,6 +506,48 @@ $(document).ready(function () {
 
             },
             onInit: function(event, currentIndex){
+                if(currentIndex == 2){
+                    getNegocio();
+                    consulLicP($('#tramite').val()).done(function(data){
+                        if(data.validacionMultiLic.status){
+                            console.log(data.validacionMultiLic.licencias);
+                        }
+                    });
+                }
+                step_bd().done(function(data){
+                    switch(data.data.step){
+                        case '1':
+                            if($('#id_solicitante').attr('href') != "" && data.data.st2_colonia_solicitante == "" && data.data.st2_cp_solicitante == "0"  && data.data.st2_ciudad_solicitante == "" && data.data.st2_telefono_solicitante == ""){
+                                delete_file('st2_identidficacion_solicitante');
+                                $('#id_solicitante').hide();
+                            }
+                        break;
+                        case '2':
+                            if($('#file_img1').attr('href') != "" && data.data.st3_inversion_establecimiento == "0" && data.data.st3_empleados_establecimiento == "0" && data.data.st3_cajones_estacionamiento_establecimiento == "0"){
+                                delete_file('st3_img1_establecimiento');
+                                $('#file_img1').hide();
+                            }
+                            if($('#file_img2').attr('href') != "" && data.data.st3_inversion_establecimiento == "0" && data.data.st3_empleados_establecimiento == "0" && data.data.st3_cajones_estacionamiento_establecimiento == "0"){
+                                delete_file('st3_img2_establecimiento');
+                                $('#file_img2').hide();
+                            }
+                            if($('#file_img3').attr('href') != "" && data.data.st3_inversion_establecimiento == "0" && data.data.st3_empleados_establecimiento == "0" && data.data.st3_cajones_estacionamiento_establecimiento == "0"){
+                                delete_file('st3_img3_establecimiento');
+                                $('#file_img3').hide();
+                            }
+                            if($('#file_dictamen_tecnico').attr('href') != "" && (data.data.st3_cajones_estacionamiento_establecimiento == "0" || data.data.st3_cajones_estacionamiento_establecimiento == "" > 3)){
+                                delete_file('st3_dictamen_lineamiento');
+                                $('#file_dictamen_tecnico').hide();
+                                $('#dictamen_tecnico').hide();
+                            }
+                            if($('#file_asignacion_numero').attr('href') != "" && $("#txtNExterior_establecimiento").val() == NumExtPredio){
+                                delete_file('st3_asignacion_numero');
+                                $('#file_asignacion_numero').hide();
+                                $('#asignacion_numero').hide();
+                            }
+                        break;
+                    }
+                });
                 ResumeLicenciaGiro();
                 informado = true;
                 if(currentIndex == 4){
@@ -515,14 +558,6 @@ $(document).ready(function () {
                 }
                 if(currentIndex == 1){
                     informado = false;
-                }
-                if(currentIndex == 2){
-                    getNegocio();
-                    consulLicP($('#tramite').val()).done(function(data){
-                        if(data.validacionMultiLic.status){
-                            console.log(data.validacionMultiLic.licencias);
-                        }
-                    });
                 }
                 getDataPropietario($('#claveCatastral').val()).done(function(data){
                     if (data.status == 200){
@@ -558,6 +593,7 @@ $(document).ready(function () {
     //tipo Solicitante
     $('input:radio[name=st1_tipo_solicitante]').each(function(index, el) {
         $(this).on('click', function (){
+            clear_table();
            var val =  $(this).val();
             $('#seccionPromotor, #seccionArrendatario').hide();
            switch (val){
@@ -666,6 +702,8 @@ $(document).ready(function () {
             if($(this).val() != NumExtPredio || $("#txtLExterior").val() != ""){
                 $('#asignacion_numero').show();
             }else{
+                delete_file('st3_asignacion_numero');
+                $('#file_asignacion_numero').hide();
                 $('#asignacion_numero').hide();
             }
         });
@@ -674,6 +712,8 @@ $(document).ready(function () {
         if($(this).val() != "" || $("#txtNExterior_establecimiento").val() != NumExtPredio){
             $('#asignacion_numero').show();
         }else{
+            delete_file('st3_asignacion_numero');
+            $('#file_asignacion_numero').hide();
             $('#asignacion_numero').hide();
         }
     });
@@ -710,11 +750,71 @@ $(document).ready(function () {
                 $('.cont-dictamen-tecnico-movilidad').show();
             }else{
                 $('.cont-dictamen-tecnico-movilidad').hide();
+                delete_file('st3_dictamen_tecnico_movilidad');
+                $('#file_dictamen_tecnico').hide();
             }
         }
     });
 
 });
+
+function step_bd(){
+    return $.ajax({
+        url: baseURL + "LicenciasGiro/step",
+        type: "GET",
+        dataType: 'json',
+        data: {
+            'licencia':$('#tramite').val(),
+        }
+    });
+}
+
+function clear_table(){
+    $.ajax({
+        url: baseURL + "LicenciasGiro/limpiar_tabla",
+        type: "POST",
+        dataType: 'json',
+        data: {
+            'licencia':$('#tramite').val(),
+        },
+        success: function(data){
+            var id=$('#tramite').val();
+
+            var calle_establecimiento=$('#txtDomicilio_establecimiento').val();
+            var no_ext_establecimiento=$('#txtNExterior_establecimiento').val();
+            var colonia_establecimiento=$('#txtColoniaEstablecimiento').val();
+            var ciudad_establecimiento=$('#txtCiudadEstablecimiento').val();
+            var estado_establecimiento=$('#txtEstadoEstablecimiento').val();
+            var sup_construida_establecimiento=$('#txtSupConstruida').val();
+            var area_utilizar_establecimiento=$('#txtAreaUtilizar').val();
+            $('input:text').val('');
+            $('input:file').val('');
+            $('.update_file').hide();
+            $('#tramite').val(id);
+            $('#txtDomicilio_establecimiento').val(calle_establecimiento);
+            $('#txtNExterior_establecimiento').val(no_ext_establecimiento);
+            $('#txtColoniaEstablecimiento').val(colonia_establecimiento);
+            $('#txtCiudadEstablecimiento').val(ciudad_establecimiento);
+            $('#txtEstadoEstablecimiento').val(estado_establecimiento);
+            $('#txtSupConstruida').val(sup_construida_establecimiento);
+            $('#txtAreaUtilizar').val(area_utilizar_establecimiento);
+        }
+    });
+}
+
+function delete_file(val){
+    $.ajax({
+        url: baseURL + "LicenciasGiro/deleteFile",
+        type: "POST",
+        dataType: 'json',
+        data: {
+            'licencia':$('#tramite').val(),
+            'campo':val,
+        },
+        success: function(data){
+        }
+    });
+}
 
 function pago_linea(){
     $('#enviar_form').trigger('click');
@@ -1236,7 +1336,7 @@ function loadFile(element){
             success:function(data){
                 var serialized = eval("(" + data + ")");
                 contObj.find('.link-to-file').remove();
-                contObj.append('<a href="'+serialized.url+'" target="_blank" class="link-to-file"><i class="fa fa-file-text-o" aria-hidden="true"></i> '+el.data('text')+'</a>');
+                contObj.append('<a href="'+serialized.url+'" target="_blank" class="link-to-file update_file"><i class="fa fa-file-text-o" aria-hidden="true"></i> '+el.data('text')+'</a>');
                 updateFiles(el.data('type'), serialized.url ,$('#tramite').val()).done(function(data){
                 });
             },

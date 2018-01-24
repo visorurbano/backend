@@ -254,4 +254,89 @@ class LicenciasGiroModel extends CI_Model {
         $licencia = $this->db->select('predio_numero_ext')->from('tbl_licencias_giro')->where('id_licencia', $idLicencia)->get()->row();
         return $licencia;
     }
+
+    public function getStep($idLicencia){
+        $licencia = $this->db->select('*')->from('tbl_licencias_giro')->where('id_licencia', $idLicencia)->get()->row();
+        return $licencia;
+    }
+
+    public function emptyField($licencia, $campo){
+        $licencia = $this->db->query('Update tbl_licencias_giro set '.$campo.'=""  where id_licencia='.$licencia);
+        return true;
+    }
+
+    public function emptyTabla($licencia){
+        $licencia = $this->db->query('Update tbl_licencias_giro set
+        st1_tipo_solicitante = "",
+        st1_tipo_representante = "",
+        st1_tipo_carta_poder = "",
+        st1_carta_poder = "",
+        st1_carta_responsiva = "",
+        st1_identificacion_otorgante = "",
+        st1_identificacion_testigo1 = "",
+        st1_identificacion_testigo2 = "",
+        st1_contrato_arrendamiento = "",
+        st1_faculta = "",
+        st1_anuencia = "",
+        st1_carta_anuencia = "",
+        st2_nombre_solicitante = "",
+        st2_priper_apellido_representante = "",
+        st2_nombre_representante = "",
+        st2_priper_apellido_representante = "",
+        st2_segundo_apellido_representante = "",
+        st2_curp_representante = "",
+        st2_rfc_representante = "",
+        st2_email_representante = "",
+        st2_domicilio_representante = "",
+        st2_num_ext_representante = "0",
+        st2_num_int_representante = "0",
+        st2_colonia_representante = "",
+        st2_ciudad_representante = "",
+        st2_cp_representante = "0",
+        st2_telefono_representante = "",
+        st2_identificacion_representante = "",
+        st2_nombre_solicitante = "",
+        st2_primer_apellido_solicitante = "",
+        st2_segundo_apellido_solicitante = "",
+        st2_curp_solicitante = "",
+        st2_rfc_solicitante = "",
+        st2_email_solicitante = "",
+        st2_domicilio_solicitante = "",
+        st2_num_ext_solicitante = "",
+        st2_num_int_solicitante = "",
+        st2_colonia_solicitante = "",
+        st2_ciudad_solicitante = "",
+        st2_cp_solicitante = "0",
+        st2_telefono_solicitante = "",
+        st2_identidficacion_solicitante = "",
+        st3_nombre_establecimiento = "",
+        st3_domicilio_establecimiento = "",
+        st3_num_ext_establecimiento = "0",
+        st3_num_int_establecimiento = "0",
+        st3_letra_ext_establecimiento = "",
+        st3_letra_int_establecimiento = "",
+        st3_colonia_establecimiento = "",
+        st3_ciudad_establecimiento = "",
+        st3_estado_establecimiento = "",
+        st3_cp_establecimiento = "0",
+        st3_especificaciones_establecimiento = "",
+        st3_edificio_plaza_establecimiento = "",
+        st3_num_local_establecimiento = "0",
+        st3_sup_construida_establecimiento = "0",
+        st3_area_utilizar_establecimiento = "0",
+        st3_inversion_establecimiento = "0",
+        st3_empleados_establecimiento = "0",
+        st3_cajones_estacionamiento_establecimiento = "0",
+        st3_dictamen_tecnico_movilidad = "",
+        st3_img1_establecimiento = "",
+        st3_img2_establecimiento = "",
+        st3_img3_establecimiento = "",
+        st3_dictamen_lineamiento = "",
+        st3_asignacion_numero = "",
+        st3_es_numero_interior = "N",
+        st4_declaratoria = "0",
+        revisada = "0",
+        metodo_pago = "", step="0" where id_licencia='.$licencia);
+        return true;
+    }
 }

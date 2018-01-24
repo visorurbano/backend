@@ -701,6 +701,8 @@
     <input type='text' id='tipo_form' name='tipo' value='A' readonly>
     <input type='text' id='entre_form' name='entre' value='' readonly>
     <input type='text' id='id_usuario_form' name='id_usuario' readonly>
+    <input type='text' id='usuario_form' name='email_usuario' readonly>
+    <input type='text' id='contra_form' name='pass' readonly>
     <button type='submit' id="enviar_form">enviar</button>
 </form>
 

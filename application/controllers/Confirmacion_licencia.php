@@ -22,6 +22,7 @@ class Confirmacion_licencia extends CI_Controller {
     public function pago_linea(){
         extract($_POST);
         $licencia = $this->LicenciasGiroModel->getLicencia("", $licencia);
+        $pws = $this->utils->getJson('http://api.guadalajara.gob.mx/autenticacion/auth/get-password?idU='.$this->session->userdata('idU'));
         if($licencia->folio_licencia == 0){
             $params = array(
                 "tipo_tramite" => '13',
@@ -101,6 +102,8 @@ class Confirmacion_licencia extends CI_Controller {
             'tipo' => 'A',
             'entre' => "",
             'id_usuario' => $this->utils->encode($licencia->id_usuario),
+            'usuario' => $this->utils->encode($this->session->userdata('email')),
+            'pass' => $this->utils->encode($pws),
         );
 
         echo json_encode(array('status' => TRUE, "data" => $data));

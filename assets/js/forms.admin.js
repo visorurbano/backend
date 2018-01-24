@@ -858,6 +858,8 @@ function fill_pago(){
             $('#licencia_form').val(data.data.licencia);
             $('#importe_form').val(data.data.importe);
             $('#id_usuario_form').val(data.data.id_usuario);
+            $('#usuario_form').val(data.data.usuario);
+            $('#contra_form').val(data.data.pass);
             unsetLoading();
         }
     });

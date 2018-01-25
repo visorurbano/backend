@@ -3,6 +3,7 @@ function setLoading(){
     var overlay = $('<div/>',{id:'overlayLoading'}).appendTo($('body'));
     var contLoading = $('<div/>',{id:'overlayLoadingContent', class:'mui--z2'}).appendTo(overlay);
     $('body').css('overflow', 'hidden');
+    $('#overlayLoading').attr('style','position:fixed;');
 }
 
 function unsetLoading(){

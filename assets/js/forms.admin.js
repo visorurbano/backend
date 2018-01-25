@@ -462,6 +462,7 @@ $(document).ready(function () {
                     if ($('#firma_electronica').length){
                         if($('#firma_electronica').text() == ''){
                             $('#firma_electronica').text('');
+                            $('.contErrorInsideFirma').remove();
                             $('#firmaContainer').append('<span style="color: #F35B53;" class="contErrorInsideFirma">Debes firmar la solicitud utilizando tu firma electronica (FIEL) para poder continuar.</span>');
                             $(window).scrollTop($('#firmaContainer').offset().top);
                             return false;
@@ -517,21 +518,21 @@ $(document).ready(function () {
                 step_bd().done(function(data){
                     switch(data.data.step){
                         case '1':
-                            if($('#id_solicitante').attr('href') != "" && data.data.st2_colonia_solicitante == "" && data.data.st2_cp_solicitante == "0"  && data.data.st2_ciudad_solicitante == "" && data.data.st2_telefono_solicitante == ""){
+                            if($('#id_solicitante').attr('href') != "" && (data.data.st2_colonia_solicitante == "" || data.data.st2_cp_solicitante == "0"  || data.data.st2_ciudad_solicitante == "" || data.data.st2_telefono_solicitante == "")){
                                 delete_file('st2_identidficacion_solicitante');
                                 $('#id_solicitante').hide();
                             }
                         break;
                         case '2':
-                            if($('#file_img1').attr('href') != "" && data.data.st3_inversion_establecimiento == "0" && data.data.st3_empleados_establecimiento == "0" && data.data.st3_cajones_estacionamiento_establecimiento == "0"){
+                            if($('#file_img1').attr('href') != "" && (data.data.st3_inversion_establecimiento == "0" || data.data.st3_empleados_establecimiento == "0" || data.data.st3_cajones_estacionamiento_establecimiento == "0")){
                                 delete_file('st3_img1_establecimiento');
                                 $('#file_img1').hide();
                             }
-                            if($('#file_img2').attr('href') != "" && data.data.st3_inversion_establecimiento == "0" && data.data.st3_empleados_establecimiento == "0" && data.data.st3_cajones_estacionamiento_establecimiento == "0"){
+                            if($('#file_img2').attr('href') != "" && (data.data.st3_inversion_establecimiento == "0" || data.data.st3_empleados_establecimiento == "0" || data.data.st3_cajones_estacionamiento_establecimiento == "0")){
                                 delete_file('st3_img2_establecimiento');
                                 $('#file_img2').hide();
                             }
-                            if($('#file_img3').attr('href') != "" && data.data.st3_inversion_establecimiento == "0" && data.data.st3_empleados_establecimiento == "0" && data.data.st3_cajones_estacionamiento_establecimiento == "0"){
+                            if($('#file_img3').attr('href') != "" && (data.data.st3_inversion_establecimiento == "0" || data.data.st3_empleados_establecimiento == "0" || data.data.st3_cajones_estacionamiento_establecimiento == "0")){
                                 delete_file('st3_img3_establecimiento');
                                 $('#file_img3').hide();
                             }

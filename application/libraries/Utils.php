@@ -18,7 +18,8 @@ class Utils {
     }
     public function conec_soap($metodo,$params){
         ini_set("soap.wsdl_cache_enabled", 0);
-        $wsdl = 'https://modulos.guadalajara.gob.mx:443/wsWebLic/wsWebLic.php?wsdl';
+        $wsdl = 'https://modulos.guadalajara.gob.mx:443/wsWebLic/wsWebLicTest.php?wsdl';
+        //$wsdl = 'https://modulos.guadalajara.gob.mx:443/wsWebLic/wsWebLic.php?wsdl';
         $options = array(
                 'login'=>'wspadron',
                 'password'=>'p4dr0nl1c'

@@ -119,7 +119,7 @@ class Formatos extends CI_Controller {
     .divisor11bold{
         width:740px;
         float:left;
-        font-size:12px;
+        font-size:12px;application/controllers/Formatos.php
         font-weight:bold;
     }
     </style>
@@ -453,7 +453,7 @@ class Formatos extends CI_Controller {
            if($licencia->folio_licencia == 0){
                $params = array(
                    'tipo_tramite'=>'13',
-                   'scian'=>$scian,
+                   'scian'=>intval($scian),
                    'x'=>'0',
                    'y'=>'0',
                    'zona'=>'0',
@@ -685,20 +685,17 @@ class Formatos extends CI_Controller {
                                            </div>
                                        </div>
                                        <div>
-                                           <div style="width: 50%; float: left; text-align: left; font-size: 12px;">
+                                           <div style="width: 60%; float: left; text-align: left; font-size: 12px;">
                                                    <br><br><br>
                                                <b>
                                                    LIC. DAGOBERTO CALDERÓN LEAL<br>
                                                    Director de Padrón y Licencias <br>
                                                    CURP: CALD650802HJCLLG00<br>
                                                    E-MAIL: dcalderon@guadalajara.gob.mx<br>
-                                                   Periodo de vigencia de la firma elctrónica:
+                                                   Periodo de vigencia de la firma elctrónica: Vigente hasta 31/03/18
                                                </b>
                                            </div>
                                            <div  style="width: 5%; float: left;">
-                                               &nbsp;
-                                           </div>
-                                           <div style="width: 10%; float: left;">
                                                &nbsp;
                                            </div>
                                            <div style="width: 30%; float: right; text-align: right;">
@@ -707,7 +704,7 @@ class Formatos extends CI_Controller {
                                                </div>
                                            </div>
                                        </div>
-                                       <br><br>
+                                       <br>
                                        <div style="widht:100%; font-size:8px; text-align:left;">
                                             ID:<b>'.$id_firma['id'].'</b>|'.preg_replace( "/\r|\n/", "", $id_firma['firma'] ).'
                                        </div>
@@ -811,21 +808,20 @@ class Formatos extends CI_Controller {
                                                </tr>
                                            </table>
                                        </div>
-                                       <div style="position:absolute; bottom:13%; text-align: left; font-size: 10px; width: 45%; border-right: solid #000000 1px">
+                                       <div style="position:absolute; bottom:12%; text-align: left; font-size: 10px; width: 45%; border-right: solid #000000 1px">
                                            <div>
-                                               <b>
-                                                   EXPEDIDO EN: <br>
-                                                   DATOS DEL PRESTADOR DE SERVICIOS DE CERTIFICACIÓN: <br>
-                                                   TECNOLOGÍA IMPLEMENTADA PARA LA CRECIÓN DE LAS FIRMAS: <br>
-                                                   NÚMERO DE SERIE: <br>
-                                                   AUTORIDAD CERTIFICADORA QUE LO EMITIÓ: <br>
-                                               </b>
+                                               <div style="margin-left: 10px; font-weight:bold;">EXPEDIDO EN: </div>
+                                               <div style="margin-left: 10px; font-weight:bold;">PRESTADOR DE SERVICIOS Y CERTIFICADORA: </div>
+                                               <div style="margin-left: 10px; font-weight:bold;">TECNOLOGÍA IMPLEMENTADA PARA LA CRECIÓN DE LAS FIRMAS: </div>
+                                               <div style="margin-left: 10px; font-weight:bold;">NÚMERO DE SERIE: </div>
                                            </div>
                                        </div>
                                        <div style="position:absolute; bottom:12%; right:7%; text-align: left; font-size: 10px;">
                                            <div style="border-left: #0d1318 solid 1px;">
-                                               <div style="margin-left: 10px;">Guadalajara, Jalisco, el día '.$fechaTitle.'</div><br><br><br><br>
+                                               <div style="margin-left: 10px;">Guadalajara, Jalisco, el día '.$fechaTitle.'</div>
                                                <div style="margin-left: 10px;">SECRETARIA GENERAL DE GOBIERNO DEL ESTADO DE JALISCO</div>
+                                               <div style="margin-left: 10px;">SSO</div>
+                                               <div style="margin-left: 10px;">30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 37 33 36 33</div>
                                            </div>
                                        </div>
                                        <div style="position:absolute; bottom:7%; text-align: left; font-size: 10px; width: 85%">
@@ -1098,20 +1094,17 @@ class Formatos extends CI_Controller {
                                       </div>
                                   </div>
                                   <div>
-                                      <div style="width: 50%; float: left; text-align: left; font-size: 12px;">
+                                      <div style="width: 60%; float: left; text-align: left; font-size: 12px;">
                                               <br><br><br>
                                           <b>
                                               LIC. DAGOBERTO CALDERÓN LEAL<br>
                                               Director de Padrón y Licencias <br>
                                               CURP: CALD650802HJCLLG00<br>
                                               E-MAIL: dcalderon@guadalajara.gob.mx<br>
-                                              Periodo de vigencia de la firma elctrónica:
+                                              Periodo de vigencia de la firma elctrónica: Vigente hasta 31/03/18
                                           </b>
                                       </div>
                                       <div  style="width: 5%; float: left;">
-                                          &nbsp;
-                                      </div>
-                                      <div style="width: 10%; float: left;">
                                           &nbsp;
                                       </div>
                                       <div style="width: 30%; float: right; text-align: right;">
@@ -1120,7 +1113,7 @@ class Formatos extends CI_Controller {
                                       </div>
                                       </div>
                                   </div>
-                                  <br><br>
+                                  <br>
                                   <div style="widht:100%; font-size:8px; text-align:left;">
                                   ID:<b>'.$id_firma['id'].'</b>|'.preg_replace( "/\r|\n/", "", $id_firma['firma'] ).'
                                   </div>
@@ -1224,21 +1217,20 @@ class Formatos extends CI_Controller {
                                           </tr>
                                       </table>
                                   </div>
-                                  <div style="position:absolute; bottom:13%; text-align: left; font-size: 10px; width: 45%; border-right: solid #000000 1px">
+                                  <div style="position:absolute; bottom:12%; text-align: left; font-size: 10px; width: 45%; border-right: solid #000000 1px">
                                       <div>
-                                          <b>
-                                              EXPEDIDO EN: <br>
-                                              DATOS DEL PRESTADOR DE SERVICIOS DE CERTIFICACIÓN: <br>
-                                              TECNOLOGÍA IMPLEMENTADA PARA LA CRECIÓN DE LAS FIRMAS: <br>
-                                              NÚMERO DE SERIE: <br>
-                                              AUTORIDAD CERTIFICADORA QUE LO EMITIÓ: <br>
-                                          </b>
+                                          <div style="margin-left: 10px; font-weight:bold;">EXPEDIDO EN: </div>
+                                          <div style="margin-left: 10px; font-weight:bold;">PRESTADOR DE SERVICIOS Y CERTIFICADORA: </div>
+                                          <div style="margin-left: 10px; font-weight:bold;">TECNOLOGÍA IMPLEMENTADA PARA LA CRECIÓN DE LAS FIRMAS: </div>
+                                          <div style="margin-left: 10px; font-weight:bold;">NÚMERO DE SERIE: </div>
                                       </div>
                                   </div>
                                   <div style="position:absolute; bottom:12%; right:7%; text-align: left; font-size: 10px;">
                                       <div style="border-left: #0d1318 solid 1px;">
-                                          <div style="margin-left: 10px;">Guadalajara, Jalisco, el día '.$fechaTitle.'</div><br><br><br><br>
+                                          <div style="margin-left: 10px;">Guadalajara, Jalisco, el día '.$fechaTitle.'</div>
                                           <div style="margin-left: 10px;">SECRETARIA GENERAL DE GOBIERNO DEL ESTADO DE JALISCO</div>
+                                          <div style="margin-left: 10px;">SSO</div>
+                                          <div style="margin-left: 10px;">3030303030303030303030303030303037333633</div>
                                       </div>
                                   </div>
                                   <div style="position:absolute; bottom:7%; text-align: left; font-size: 10px; width: 85%">
@@ -1955,7 +1947,7 @@ class Formatos extends CI_Controller {
            if($licencia->folio_licencia == 0){
                $params = array(
                    'tipo_tramite'=>'13',
-                   'scian'=>$scian,
+                   'scian'=>intval($scian),
                    'x'=>'0',
                    'y'=>'0',
                    'zona'=>'0',

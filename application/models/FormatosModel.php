@@ -227,4 +227,14 @@ class FormatosModel extends CI_Model {
         $fecha = $convert[2].'/'.$meses[($convert[1]-1)].'/'.$convert[0];
         return $fecha;
     }
+
+    public function cadena($licencia,$movimiento,$folio_licencia,$tipo){
+        $fechaTitle = date("d/m/Y");
+        $direct = '/var/www/html/backend/assets/llaves_licencias';
+        $cadena = $tipo.'+|+'.$movimiento.'+|+'.$folio_licencia.'+|+'.$licencia->descripcion_factibilidad.'+|+'.$licencia->st2_nombre_solicitante.' '.$licencia->st2_primer_apellido_solicitante.' '.$licencia->st2_segundo_apellido_solicitante.'+|+'.$licencia->st2_curp_solicitante.'+|+'.$licencia->st2_rfc_solicitante.'+|+'.$fechaTitle;
+        $fp = fopen ($direct.'/utf.txt', 'w+');
+        $fw = fwrite($fp, $cadena);
+        fclose($fp);
+        return true;
+    }
 }

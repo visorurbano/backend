@@ -68,7 +68,7 @@ class FormatosModel extends CI_Model {
             $number = explode($this->decimal_mark, str_replace($this->separator, '', trim($number)));
             $convertedNumber = array(
               $this->convertNumber($number[0], $miMoneda, 'entero'),
-              $this->convertNumber($number[1], $miMoneda, 'decimal'),
+              //$this->convertNumber($number[1], $miMoneda, 'decimal'),
             );
           }
           return implode($this->glue, array_filter($convertedNumber));
@@ -235,6 +235,32 @@ class FormatosModel extends CI_Model {
         $fp = fopen ($direct.'/utf.txt', 'w+');
         $fw = fwrite($fp, $cadena);
         fclose($fp);
+        return $cadena;
+    }
+
+    public function validarFirma($folio_licencia,$anio){
+        $licencia = $this->db->query('SELECT * FROM tbl_rel_licencia_usuario WHERE folio_licencia ='.$folio_licencia.' and anio='.$anio);
+        $resultado = $licencia->result();
+        if($licencia->num_rows() > 0){
+            return false;
+        }else{
+            return true;
+        }
+    }
+
+    public function traerFirma($folio_licencia,$anio){
+        $licencia = $this->db->query('SELECT * FROM tbl_rel_licencia_usuario WHERE folio_licencia ='.$folio_licencia.' and anio='.$anio);
+        if($licencia->num_rows() > 0){
+            $resultado = $licencia->result()[0];
+            return array('firma'=>$resultado->cadena_firmada,'id'=>$resultado->id_firma);
+        }else{
+            return true;
+        }
+    }
+
+    public function insertarFirma($id_licencia,$id_usuario,$folio_licencia,$cadena,$id_firma,$tipo,$anio){
+        $this->db->query('INSERT INTO tbl_rel_licencia_usuario VALUES (?,?,?,?,?,?,?,?,?,?)',array(0,$id_licencia,$id_usuario,$folio_licencia,'',$cadena,$id_firma['id'],$id_firma['firma'],$tipo,$anio));
         return true;
     }
+
 }

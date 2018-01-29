@@ -36,7 +36,8 @@ class LicenciasGiroModel extends CI_Model {
                 $this->db->trans_start();
                 $this->db->insert('tbl_licencias_giro',$data);
                 $idLicencia = $this->db->insert_id();
-                $this->db->query('insert into tbl_rel_licencia_usuario values(0,'.$idLicencia.','.$idU.',"")');
+                $anio = date('Y');
+                $this->db->query('insert into tbl_rel_licencia_usuario values(0,'.$idLicencia.','.$idU.',"","","",0,"","N",'.$anio.')');
                 if ($this->db->trans_status() === FALSE){
                     $this->db->trans_rollback();
                     return array('status'=>false);

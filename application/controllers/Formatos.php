@@ -449,7 +449,10 @@ class Formatos extends CI_Controller {
            $curp = $licencia->st2_curp_solicitante;
            $zona = $licencia->predio_distrito.(empty($licencia->predio_sub_distrito)?'':' - '.$licencia->predio_sub_distrito);
            $fechaTitle = date("d/m/Y H:i");
+           $anio=date('Y');
            $pago=$licencia->metodo_pago;
+           $id_licencia=$licencia->id_licencia;
+           $id_usuario=$licencia->id_usuario;
            if($licencia->folio_licencia == 0){
                $params = array(
                    'tipo_tramite'=>'13',
@@ -493,9 +496,17 @@ class Formatos extends CI_Controller {
                );
                $data_soap=$this->utils->conec_soap('licAdeudo',$params);
                $total=strtoupper($data_soap[(count($data_soap)-1)]->acumulado);
-               if($this->FormatosModel->cadena($licencia,'Nueva licencia',$folio_licencia,'licencias de giro tipo A')){
-                   $id_firma=$this->firmado();
+               if($cadena = $this->FormatosModel->cadena($licencia,'Nueva licencia',$folio_licencia,'licencias de giro tipo A')){
+                   if($this->FormatosModel->validarFirma($folio_licencia,$anio)){
+                       if($id_firma=$this->firmado()){
+                           $this->FormatosModel->insertarFirma($id_licencia,$id_usuario,$folio_licencia,$cadena,$id_firma,'N',$anio);
+                       }
+                   }else{
+                       $id_firma=$this->FormatosModel->traerFirma($folio_licencia,$anio);
+                   }
                }
+               $centavos = explode('.',$total);
+               $centavos = $centavos[1];
                    $html ='<html>
                    <head>
                        <style>
@@ -673,7 +684,7 @@ class Formatos extends CI_Controller {
 
                                        <div class="tamano_12 margen_15">
                                            <div style="width: 80%; float: left;">
-                                               ('.$this->FormatosModel->denominacion_moneda($this->FormatosModel->to_word($total,null)).' 00/100 M.N.)
+                                               ('.$this->FormatosModel->denominacion_moneda($this->FormatosModel->to_word($total,null)).' '.$centavos.'/100 M.N.)
                                            </div>
                                            <div style="width: 20%; float: right; text-align: right;">
                                                <b>$'.$total.'</b>
@@ -692,7 +703,7 @@ class Formatos extends CI_Controller {
                                                    Director de Padrón y Licencias <br>
                                                    CURP: CALD650802HJCLLG00<br>
                                                    E-MAIL: dcalderon@guadalajara.gob.mx<br>
-                                                   Periodo de vigencia de la firma elctrónica: Vigente hasta 31/03/18
+                                                   Vigencia hasta 31/03/18
                                                </b>
                                            </div>
                                            <div  style="width: 5%; float: left;">
@@ -826,13 +837,13 @@ class Formatos extends CI_Controller {
                                        </div>
                                        <div style="position:absolute; bottom:7%; text-align: left; font-size: 10px; width: 85%">
                                            <b>EL PRESENTE ACTO ADMINISTRATIVO CUENTA CON PLENA VALIDEZ, EFICACIA JURÍDICA Y OBLIGATORIEDAD DESDE LA FECHA DE SU EMISIÓN Y/O NOTIFICACIÓN TANTO PARA LOS PARTICULARES
-                                               COMO PARA LAS AUTORIDADES</b>
+                                               COMO PARA LAS AUTORIDADES.</b>
                                            </div>
                                    </body>
                                    </html>';
 
                                    $this->pdf->WriteHTML($html2);
-                                   $this->pdf->Output('Licencia_Municipal.pdf', 'I');
+                                   $this->pdf->Output('Licencia_Municipal_'.$folio_licencia.'.pdf', 'I');
 
        }
    }
@@ -871,6 +882,12 @@ class Formatos extends CI_Controller {
                 $zona = $data_soap->zona;
                 $fechaTitle = date("d/m/Y H:i");
                 $aforo = $data_soap->aforo;
+                $id_licencia="0";
+                $id_usuario="0";
+                $movimiento = $data_soap->movimiento;
+                $movimiento2 = explode(' ',$data_soap->movimiento);
+                $id_ultimo = $movimiento[count($movimiento2)-1];
+                $movimiento =preg_replace('/\W\w+\s*(\W*)$/', '$1', $movimiento);
             }
         }else{
             $actividad = $licencia->descripcion_factibilidad;
@@ -892,7 +909,11 @@ class Formatos extends CI_Controller {
             $zona = $licencia->predio_distrito.(empty($licencia->predio_sub_distrito)?'':' - '.$licencia->predio_sub_distrito);
             $fechaTitle = date("d/m/Y H:i");
             $aforo = '';
+            $id_licencia=$licencia->id_licencia;
+            $id_usuario=$licencia->id_usuario;
+            $movimiento = 'REFRENDO LICENCIA';
         }
+        $anio=date('Y');
         $pago = "Tarjeta bancaria";
         $folio_licencia=$idlicencia;
         $params = array(
@@ -900,9 +921,17 @@ class Formatos extends CI_Controller {
         );
         $data_soap=$this->utils->conec_soap('licAdeudo',$params);
         $total=$data_soap[(count($data_soap)-1)]->acumulado;
-        if($this->FormatosModel->cadena($licencia,'Modificación licencia',$folio_licencia,'licencias de giro tipo A')){
-            $id_firma=$this->firmado();
+        if($cadena = $this->FormatosModel->cadena($licencia,$movimiento,$folio_licencia,'licencias de giro tipo A')){
+            if($this->FormatosModel->validarFirma($folio_licencia,$anio)){
+                if($id_firma=$this->firmado()){
+                    $this->FormatosModel->insertarFirma($id_licencia,$id_usuario,$folio_licencia,$cadena,$id_firma,'R',$anio);
+                }
+            }else{
+                $id_firma=$this->FormatosModel->traerFirma($folio_licencia,$anio);
+            }
         }
+        $centavos = explode('.',$total);
+        $centavos = $centavos[1];
         $html ='<html>
               <head>
                   <style>
@@ -975,7 +1004,7 @@ class Formatos extends CI_Controller {
                               <span>MOVIMIENTO</span>
                           </div>
                           <div style="width:30%; margin-top:10px;">
-                              <span style="font-weight: 500; float: right; font-size: 12px">MODIFICACIÓN LICENCIA <span class="separador_20" style="font-weight: bold; font-size: 18px; margin-top:10px;">'.$folio_licencia.'</span></span>
+                              <span style="font-weight: 500; float: right; font-size: 12px">'.$movimiento.' <span class="separador_20" style="font-weight: bold; font-size: 18px; margin-top:10px;">'.$folio_licencia.'</span></span>
                           </div>
                       </div>
                       <div>
@@ -1082,7 +1111,7 @@ class Formatos extends CI_Controller {
 
                                   <div class="tamano_12 margen_15">
                                       <div style="width: 80%; float: left;">
-                                          ('.$this->FormatosModel->denominacion_moneda($this->FormatosModel->to_word($total,null)).' 00/100 M.N.)
+                                          ('.$this->FormatosModel->denominacion_moneda($this->FormatosModel->to_word($total,null)).' '.$centavos.'/100 M.N.)
                                       </div>
                                       <div style="width: 20%; float: right; text-align: right;">
                                           <b>$'.$total.'</b>
@@ -1101,7 +1130,7 @@ class Formatos extends CI_Controller {
                                               Director de Padrón y Licencias <br>
                                               CURP: CALD650802HJCLLG00<br>
                                               E-MAIL: dcalderon@guadalajara.gob.mx<br>
-                                              Periodo de vigencia de la firma elctrónica: Vigente hasta 31/03/18
+                                              Vigencia hasta 31/03/18
                                           </b>
                                       </div>
                                       <div  style="width: 5%; float: left;">
@@ -1235,32 +1264,17 @@ class Formatos extends CI_Controller {
                                   </div>
                                   <div style="position:absolute; bottom:7%; text-align: left; font-size: 10px; width: 85%">
                                       <b>EL PRESENTE ACTO ADMINISTRATIVO CUENTA CON PLENA VALIDEZ, EFICACIA JURÍDICA Y OBLIGATORIEDAD DESDE LA FECHA DE SU EMISIÓN Y/O NOTIFICACIÓN TANTO PARA LOS PARTICULARES
-                                          COMO PARA LAS AUTORIDADES</b>
+                                          COMO PARA LAS AUTORIDADES.</b>
                                       </div>
                               </body>
                               </html>';
 
                               $this->pdf->WriteHTML($html2);
-                              $this->pdf->Output('Licencia_Municipal.pdf', 'I');
+                              $this->pdf->Output('Licencia_Municipal_'.$folio_licencia.'.pdf', 'I');
 
   }
 
    public function acuse_envio(){
-       ini_set("soap.wsdl_cache_enabled", 0);
-       $wsdl = 'https://esb.jalisco.gob.mx/busservices/fe?wsdl';
-       $options = array(
-               'usuario'=>'sggip',
-               'Password'=>'jalpub98'
-           );
-       try {
-           $soap = new SoapClient($wsdl, $options);
-           $data = $soap->firmaObjeto(array('objFirmado' => 'TUQ1KERBR09CRVJUT19DQUxERVJPTi5rZXkucGVtKT0gYjMwYmY1ZWRhMjJjNjUxZTAzNjY5ZWNkMTBiNTlkZTEKTUQ1KHV0Zi50eHQpPSA3NWEyZTE2Nzg2MzVlMGVhNWM0YzI0YTA4Yzk4OGQ4Zgo='));
-       }
-       catch(Exception $e) {
-           die($e->getMessage());
-       }
-       print_r($data);
-       die();
        $dependencia="xxxxxx";
        $folio="xxxx";
        $tipo_asunto="xxxxxxxxx";

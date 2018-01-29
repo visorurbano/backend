@@ -972,7 +972,7 @@ function setFolder(id){
     params["id_tramite"] = id;
     params["tipo_tramite"] = 'g';
     return $.ajax({
-        url: 'http://192.168.66.93/api/vu_mkdir.php',
+        url: 'https://192.168.66.93/api/vu_mkdir.php',
         type: "post",
         dataType: 'json',
         data: params
@@ -1316,7 +1316,7 @@ function loadFile(element){
     if (el.valid() == true) {
         $.ajax({
             type: 'POST',
-            url: 'http://192.168.66.93/api/vu_up.php',
+            url: 'https://192.168.66.93/api/vu_up.php',
             contentType:false,
             data:data,
             processData:false,
@@ -1362,7 +1362,7 @@ function loadFile(element){
             data.append('key',key);
             $.ajax({
                 type: 'POST',
-                url: 'http://192.168.66.93/api/vu_firma.php',
+                url: 'https://192.168.66.93/api/vu_firma.php',
                 contentType:false,
                 data:data,
                 processData:false,

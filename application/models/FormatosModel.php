@@ -177,7 +177,12 @@ class FormatosModel extends CI_Model {
           $fechafin = strtotime($fechafin);
           if($fechainicio <= $fechafin){
               $fechafinO= explode('/',$fechafinO);
-              $fechafinO[1] = $fechafinO[1]+1;
+              if($fechafinO[1] == 12 || $fechafinO[1] == '12'){
+                $fechafinO[1] = '1';
+                $fechafinO[0] = $fechafinO[0]+1;
+              }else{
+                $fechafinO[1] = $fechafinO[1]+1;
+              }
               if($fechafinO[1] < 10){
                   $fechafinO[1] = "0".$fechafinO[1];
               }
@@ -239,7 +244,7 @@ class FormatosModel extends CI_Model {
     }
 
     public function validarFirma($folio_licencia,$anio){
-        $licencia = $this->db->query('SELECT * FROM tbl_rel_licencia_usuario WHERE folio_licencia ='.$folio_licencia.' and anio='.$anio);
+        $licencia = $this->db->query('SELECT * FROM tbl_rel_licencia_usuario WHERE folio_licencia ="'.$folio_licencia.'" and anio='.$anio);
         $resultado = $licencia->result();
         if($licencia->num_rows() > 0){
             return false;
@@ -249,7 +254,7 @@ class FormatosModel extends CI_Model {
     }
 
     public function traerFirma($folio_licencia,$anio){
-        $licencia = $this->db->query('SELECT * FROM tbl_rel_licencia_usuario WHERE folio_licencia ='.$folio_licencia.' and anio='.$anio);
+        $licencia = $this->db->query('SELECT * FROM tbl_rel_licencia_usuario WHERE folio_licencia ="'.$folio_licencia.'" and anio='.$anio);
         if($licencia->num_rows() > 0){
             $resultado = $licencia->result()[0];
             return array('firma'=>$resultado->cadena_firmada,'id'=>$resultado->id_firma);
@@ -261,6 +266,49 @@ class FormatosModel extends CI_Model {
     public function insertarFirma($id_licencia,$id_usuario,$folio_licencia,$cadena,$id_firma,$tipo,$anio){
         $this->db->query('INSERT INTO tbl_rel_licencia_usuario VALUES (?,?,?,?,?,?,?,?,?,?)',array(0,$id_licencia,$id_usuario,$folio_licencia,'',$cadena,$id_firma['id'],$id_firma['firma'],$tipo,$anio));
         return true;
+    }
+
+    public function firmado(){
+        $response = new stdClass();
+        $response->code = 200;
+        $direct = '/var/www/html/backend/assets/llaves_licencias';
+        $pass = fopen(realpath($direct.'/pass.txt'), 'r');
+        $pass = stream_get_contents($pass);
+        $cadena = fopen(realpath($direct.'/utf.txt'), 'r');
+        $cadena = stream_get_contents($cadena);
+        $response->status =  openssl_pkcs7_sign(realpath($direct.'/utf.txt'),realpath($direct.'/sello.txt'),'file://'.realpath($direct.'/llave.cer.pem'), array('file://'.realpath($direct.'/llave.key.pem'), $pass), array(), PKCS7_NOATTR);
+		if ($response->status) {
+		  		$signature = fopen(realpath($direct.'/sello.txt'), 'r');
+		  		$response->signature = stream_get_contents($signature);
+		  		$response->signature = implode(PHP_EOL, array_slice(preg_split('/\n/', $response->signature), 5));
+		  		fclose($signature);
+	  	} else {
+    		$response->message = 'Problem with certificates';
+  		}
+
+        $cert = $response->signature;
+        if (!$cert) {
+            $response->message = 'Missing Parameters';
+            $response->code = 400;
+        } else {
+            $this->load->library('Soap_Client');
+            $this->soap_client->execute('firmaObjeto', ['objFirmado'=> $cert]);
+            //$this->soap_client->execute('getHash', ['documento'=> $cadena,'metodo'=>'MD5']);
+            $response_soap = $this->soap_client->response;
+            if (isset($response_soap->error)) {
+                $response->message = $response_soap->error;
+                $response->code = 500;
+                echo "<center><h3>Lo sentimos estamos teniendo problemas técnicos temporalmente; estamos trabajando para resolver esta situación los más pronto posible, por favor intenta de nuevo mas tarde  :(</center></h3>";
+                die();
+            } else {
+                $response->data = isset($response_soap->return) ? $response_soap->return : $response_soap;
+                $id_firma=explode('|',$response->data);
+                $id_firma=$id_firma[0];
+                $data['id']=$id_firma;
+                $data['firma']=$cert;
+                return $data;
+            }
+        }
     }
 
 }

@@ -208,27 +208,27 @@ $(document).ready(function () {
             rules:{
                 st1_carta_poder:{
                     required: true,
-                    extension: "pdf"
+                    extension: "pdf,jpg,jpeg,png,tif"
                 },
                 fleIdentificacionOtorgante:{
                     required: true,
-                    extension: "pdf"
+                    extension: "pdf,jpg,jpeg,png,tif"
                 },
                 fleTestigo1:{
                     required: true,
-                    extension: "pdf"
+                    extension: "pdf,jpg,jpeg,png,tif"
                 },
                 fleTestigo2:{
                     required: true,
-                    extension: "pdf"
+                    extension: "pdf,jpg,jpeg,png,tif"
                 },
                 fleContratoArrendamiento:{
                     required: true,
-                    extension: "pdf"
+                    extension: "pdf,jpg,jpeg,png,tif"
                 },
-                fleAnuencia:{
+                fleAnuencia:{forms
                     required: true,
-                    extension: "pdf"
+                    extension: "pdf,jpg,jpeg,png,tif"
                 },
                 st2_email_representante: {
                     required: true,
@@ -272,11 +272,11 @@ $(document).ready(function () {
                 },
                 st2_identificacion_representante:{
                     required: true,
-                    extension: "pdf"
+                    extension: "pdf,jpg,jpeg,png,tif"
                 },
                 st2_identidficacion_solicitante:{
                     required: true,
-                    extension: "pdf"
+                    extension: "pdf,jpg,jpeg,png,tif"
                 },
                 st3_num_ext_establecimiento:{
                     required: true,

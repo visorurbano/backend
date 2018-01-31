@@ -175,7 +175,7 @@ class FormatosModel extends CI_Model {
           $fechafinO=$fechafin;
           $fechainicio = strtotime($fechainicio);
           $fechafin = strtotime($fechafin);
-          if($fechainicio == $fechafin){
+          if($fechainicio <= $fechafin){
               $fechafinO= explode('/',$fechafinO);
               $fechafinO[1] = $fechafinO[1]+1;
               if($fechafinO[1] < 10){

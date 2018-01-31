@@ -24,7 +24,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 |
 */
 $config['base_url'] = 'http://localhost/backend/';
-$config['ws_url'] = 'https://esb.jalisco.gob.mx/busservices/fe?wsdl';
+//$config['ws_url'] = 'https://esb.jalisco.gob.mx/busservices/fe?wsdl';
+$config['ws_url'] = 'https://esb.jalisco.gob.mx/busservices/fe_desarrollo?wsdl';
 $config['ws_user'] = 'sggip';
 $config['ws_pass'] = 'jalpub98';
 //$config['api_access_token'] = 'tr4m1t35.Gu4D4laj4R4';
